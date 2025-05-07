@@ -6,12 +6,12 @@
 /*   By: claghrab <claghrab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/05/07 15:27:53 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/05/07 15:31:35 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSING_H
-# define PARSING_H
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
 //INCLUDES
 # include <stdio.h>
@@ -40,7 +40,7 @@ typedef enum s_type {
 typedef struct s_token {
     char    *value;
     t_type  token;
-    s_token *next;
+    struct s_token *next;
 } t_token;
 
 #endif
