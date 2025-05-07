@@ -1,13 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenizer.c                                        :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/07 15:14:37 by claghrab          #+#    #+#             */
-/*   Updated: 2025/05/07 15:42:52 by claghrab         ###   ########.fr       */
+/*   Created: 2024/10/30 17:38:45 by claghrab          #+#    #+#             */
+/*   Updated: 2024/10/30 17:50:22 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
+
+void	ft_putstr_fd(char *s, int fd)
+{
+	if (!s)
+		return ;
+	write (fd, s, ft_strlen(s));
+}
