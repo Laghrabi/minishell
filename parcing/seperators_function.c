@@ -63,7 +63,7 @@ void operator_sep(char *input, t_info info, int *i, t_token **token)
 
 int operator(char c)
 {
-	if (c == '|' || c == '&' || c == '<' || c == '>' || c == '(' ||c == ')')
+	if (c == '|'  || c == '<' || c == '>' || c == '(' ||c == ')')
 		return (1);
 	return (0);
 }
@@ -77,7 +77,7 @@ void word_sep(char *input, t_info info, int *i, t_token **token)
     j = 0;
     while(input[j] && input[j] != ' ')
 	{
-		if (operator(input[j]))
+		if ((input[j] == '&' && input[j + 1] == '&') || operator(input[j]))
 			break;
         j++;
 	}

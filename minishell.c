@@ -27,6 +27,7 @@ int main()
         {
             printf("[%s]  ", current->value);
             current = current->next;
+            printf("\n");
         }
     }
 
