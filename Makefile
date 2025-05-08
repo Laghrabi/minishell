@@ -1,10 +1,10 @@
 CC = cc
 CFLAGS = -Wall -Werror -Wextra
 LDFLAGS = -lreadline
-SRC = minishell.c parcing/tokenizer.c
+SRC = minishell.c parcing/tokenizer.c parcing/seperators_function.c
 
 # SRC_BONUS = 
-
+LIBFT = libft/libft.a
 NAME = minishell
 # NAME_BONUS = so_long_bonus
 OBJECT = $(SRC:%.c=%.o)
@@ -12,8 +12,13 @@ OBJECT = $(SRC:%.c=%.o)
 
 all:  $(NAME)
 
-$(NAME): $(OBJECT)
-	$(CC) $(OBJECT) -o $(NAME) $(LDFLAGS)
+$(LIBFT) :
+	make -C libft
+
+$(NAME): $(OBJECT) $(LIBFT)
+	$(CC) $(OBJECT) $(LIBFT) -o $(NAME)  $(LDFLAGS)
+
+
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -25,9 +30,12 @@ $(NAME): $(OBJECT)
 # 	$(CC) $(CFLAGS) $(SRC_BONUS) -o $(NAME_BONUS)
 
 clean:
-	rm -f $(OBJECT) 
+	rm -f $(OBJECT)
+	$(MAKE) clean -C libft
+
 fclean: clean
-	rm -f $(NAME) 
+	rm -f $(NAME)
+	$(MAKE) fclean -C libft
 
 re: fclean all
 

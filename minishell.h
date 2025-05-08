@@ -19,8 +19,9 @@
 # include <unistd.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+#include "libft/libft.h"
 
-//ENUMERATION
+/* ENUMERATION */
 typedef enum s_type {
     T_WORD,
     T_PIPE,
@@ -35,14 +36,27 @@ typedef enum s_type {
     T_APPEND,
     T_HEREDOC,
     T_LPAREN,
-    T_RPAREN 
+    T_RPAREN
 } t_type;
 
-//STRUCTURES
+/* STRUCTURES */
 typedef struct s_token {
     char    *value;
     t_type  token;
     struct s_token *next;
 } t_token;
+
+typedef struct s_info {
+    char *str;
+    int size;
+    t_type type;
+    void		(*func)(char *input,struct s_info info, int *i, t_token **token);
+} t_info;
+
+
+/* FUNCTIONS */
+t_token *tokenization(char *input);
+void word_sep(char *input, t_info info, int *i, t_token **token);
+void operator_sep(char *input, t_info info, int *i, t_token **token);
 
 #endif

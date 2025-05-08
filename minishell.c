@@ -15,12 +15,19 @@
 int main()
 {
     char *input;
-
+    t_token *token;
     while (1)
     {
         input = readline("minishell$ ");
-        printf("%s\n", input);
+        //printf("%s\n", input);
+        token = tokenization(input);
         free(input);
+        t_token *current = token;
+        while (current)
+        {
+            printf("[%s]  ", current->value);
+            current = current->next;
+        }
     }
 
     return 0;
