@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/05/16 17:52:59 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/05/17 15:00:42 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <stdbool.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "libft/libft.h"
@@ -88,7 +89,7 @@ t_ast   *parse_simple_command(void);
 t_ast   *parse_subshell(void);
 t_ast   *parse_command(void);
 t_ast   *parse_pipeline(void);
-t_ast   *parse_compound_command(void);
+t_ast   *parse_compound_command(bool subshell);
 t_ast   *parse_redir_list(void);
 t_node_type	convert_t_type(t_type op);
 void	append_token(t_token **head, t_token *new_token);

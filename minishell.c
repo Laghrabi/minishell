@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:39:50 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/05/16 18:06:19 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/05/17 15:00:18 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ int main()
         //printf("%s\n", input);
         g_token = tokenization(input);
         free(input);
-        t_token *current = g_token;
-        while (current)
-        {
-            printf("[%s]  [%d]\n", current->value, current->token);
-            current = current->next;
-            printf("\n");
-        }
-        ast = parse_compound_command();
+        // t_token *current = g_token;
+        // while (current)
+        // {
+        //     printf("[%s]  [%d]\n", current->value, current->token);
+        //     current = current->next;
+        //     printf("\n");
+        // }
+        ast = parse_compound_command(false);
     }
 
     return 0;
