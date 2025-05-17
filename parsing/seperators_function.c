@@ -81,6 +81,8 @@ void word_sep(char *input, t_info info, int *i, t_token **token)
     {
         if ((input[j] == '&' && input[j + 1] == '&') || operator(input[j]))
             break;
+        if (input[j] == '*')
+            info.type = T_WILDCARD;
         j++;
     }
     value = ft_substr(input, 0, j);
