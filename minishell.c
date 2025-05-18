@@ -22,6 +22,7 @@ int main()
     while (1)
     {
         input = readline("minishell$ ");
+        add_history(input);
         //printf("%s\n", input);
         g_token = tokenization(input);
         free(input);

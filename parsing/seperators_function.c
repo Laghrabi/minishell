@@ -65,9 +65,21 @@ void operator_sep(char *input, t_info info, int *i, t_token **token)
 
 int operator(char c)
 {
-    if (c == '|'  || c == '<' || c == '>' || c == '(' ||c == ')')
+    if (c == '|'  || c == '<' || c == '>' || c == '(' || c == ')' || c == ' ')
         return (1);
     return (0);
+}
+
+void is_qoute(char c, int *i, int *j)
+{
+    if (c == '\'' && *j == 0)
+        *j = 1;
+    else if(c == '\'' && *j == 1)
+        *j = 1;
+    else if (c == '\"' && *i == 0)
+        *i = 1;
+    else if(c == '\"' && *i == 1)
+        *i = 1;
 }
 
 void word_sep(char *input, t_info info, int *i, t_token **token)
@@ -75,12 +87,18 @@ void word_sep(char *input, t_info info, int *i, t_token **token)
     int j;
     char *value;
     t_token *one_token;
+    int db_qoute;
+    int  sg_qoute;
 
+    db_qoute = 0;
+    sg_qoute = 0;
     j = 0;
-    while(input[j] && input[j] != ' ')
+    while(input[j])
     {
-        if ((input[j] == '&' && input[j + 1] == '&') || operator(input[j]))
-            break;
+        is_qoute(input[j], &db_qoute, &sg_qoute);
+        if (db_qoute == 0 && sg_qoute == 0) 
+            if ((input[j] == '&' && input[j + 1] == '&') || operator(input[j]))
+                break;
         if (input[j] == '*')
             info.type = T_WILDCARD;
         j++;
