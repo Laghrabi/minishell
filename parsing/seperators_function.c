@@ -75,11 +75,11 @@ void is_qoute(char c, int *i, int *j)
     if (c == '\'' && *j == 0)
         *j = 1;
     else if(c == '\'' && *j == 1)
-        *j = 1;
+        *j = 0;
     else if (c == '\"' && *i == 0)
         *i = 1;
     else if(c == '\"' && *i == 1)
-        *i = 1;
+        *i = 0;
 }
 
 void word_sep(char *input, t_info info, int *i, t_token **token)
@@ -96,7 +96,7 @@ void word_sep(char *input, t_info info, int *i, t_token **token)
     while(input[j])
     {
         is_qoute(input[j], &db_qoute, &sg_qoute);
-        if (db_qoute == 0 && sg_qoute == 0) 
+        if (db_qoute == 0 && sg_qoute == 0)
             if ((input[j] == '&' && input[j + 1] == '&') || operator(input[j]))
                 break;
         if (input[j] == '*')
