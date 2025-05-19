@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:31:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/05/17 19:18:57 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/05/19 13:26:49 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,10 @@ t_ast   *parse_compound_command(bool subshell)
         left = node;
     }
     if (peek() && ((peek()->token == T_RPAREN && subshell == false) || (peek()->token != T_AND && peek()->token != T_OR && subshell == false)))
+    {
+        // printf("here\n");
         return (syntax_error());
+    }
     return (left);
 }
 
@@ -80,7 +83,7 @@ t_ast   *parse_command(void)
     // }
     if (peek() && peek()->token == T_LPAREN)
         return (parse_subshell());
-    else if (peek() && (peek()->token == T_WORD || is_red_list(peek()->value) == 1))
+    else if (peek() && (peek()->token == T_WORD || peek()->token == T_DOLLAR_S || peek()->token == T_SINGLE_Q || peek()->token == T_DOUBLE_Q || peek()->token == T_WILDCARD || is_red_list(peek()->value) == 1))
     {
         node = parse_simple_command();
         //printf("[%s]  [%d]\n", g_token->value, g_token->token);
@@ -149,7 +152,9 @@ t_ast   *parse_simple_command(void)
 			break ;
 	}
     if (!args_node->token_list && !redir_head)
+    {
         return (syntax_error());
+    }
     cmd = create_ast_node(args_node, redir_head, NULL, NODE_CMD);
     return (cmd);
 }
