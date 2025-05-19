@@ -16,12 +16,7 @@ $(LIBFT) :
 	make -C libft
 
 $(NAME): $(OBJECT) $(LIBFT)
-	$(CC) $(OBJECT) $(LIBFT) -o $(NAME)  $(LDFLAGS)
-
-
-
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(OBJECT) $(LIBFT) -o $(NAME)  $(LDFLAGS)
 
 
 # bonus: $(NAME_BONUS)
