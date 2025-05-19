@@ -76,7 +76,7 @@ typedef struct s_info {
     char *str;
     int size;
     t_type type;
-    void		(*func)(char *input,struct s_info info, int *i, t_token **token);
+    int		(*func)(char *input,struct s_info info, int *i, t_token **token);
 } t_info;
 
 
@@ -96,7 +96,7 @@ void	append_token(t_token **head, t_token *new_token);
 t_token	*single_token_list(t_token *token);
 t_ast	*create_ast_node(t_ast *left, t_ast *right, t_token	*token_list, t_node_type type);
 t_token *tokenization(char *input);
-void word_sep(char *input, t_info info, int *i, t_token **token);
-void operator_sep(char *input, t_info info, int *i, t_token **token);
+int word_sep(char *input, t_info info, int *i, t_token **token);
+int operator_sep(char *input, t_info info, int *i, t_token **token);
 
 #endif

@@ -53,7 +53,7 @@ void    add_back(t_token **token, t_token *new)
     new->pre = current;
 }
 
-void operator_sep(char *input, t_info info, int *i, t_token **token)
+int operator_sep(char *input, t_info info, int *i, t_token **token)
 {
     t_token *one_token;
 
@@ -61,6 +61,7 @@ void operator_sep(char *input, t_info info, int *i, t_token **token)
     one_token = new_token(info.str, info.type);
     add_back(token, one_token);
     *i = *i + info.size;
+    return (1);
 }
 
 int operator(char c)
@@ -72,17 +73,18 @@ int operator(char c)
 
 void is_qoute(char c, int *i, int *j)
 {
-    if (c == '\'' && *j == 0)
+    if (c == '\'' && *j == 0 && *i == 0)
         *j = 1;
     else if(c == '\'' && *j == 1)
         *j = 0;
-    else if (c == '\"' && *i == 0)
+    else if (c == '\"' && *i == 0 && *j == 0)
         *i = 1;
     else if(c == '\"' && *i == 1)
         *i = 0;
 }
 
-void word_sep(char *input, t_info info, int *i, t_token **token)
+
+int word_sep(char *input, t_info info, int *i, t_token **token)
 {
     int j;
     char *value;
@@ -103,10 +105,13 @@ void word_sep(char *input, t_info info, int *i, t_token **token)
             info.type = T_WILDCARD;
         j++;
     }
+    if (db_qoute || sg_qoute)
+        return (0);
     value = ft_substr(input, 0, j);
     one_token = new_token(value, info.type);
     one_token->token = info.type;
     free (value);
     add_back(token, one_token);
     *i = *i + j;
+    return (1);
 }

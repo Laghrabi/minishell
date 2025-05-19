@@ -106,6 +106,8 @@ int main()
         add_history(input);
         //printf("%s\n", input);
         g_token = tokenization(input);
+        if (g_token == NULL)
+            continue;
         free(input);
         t_token *current = g_token;
         while (current)

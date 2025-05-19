@@ -40,6 +40,7 @@ t_token *tokenization(char *input)
     int j;
     t_info *info;
     t_token *token;
+    int check;
 
     token = NULL;
     init_struct(&info);
@@ -53,8 +54,13 @@ t_token *tokenization(char *input)
         {
             if (ft_strncmp(&input[i], info[j].str, info[j].size) == 0)
             {
-                info[j].func(input + i, info[j], &i, &token);
+                check = info[j].func(input + i, info[j], &i, &token);
                 break;
+            }
+            if (check == 0)
+            {
+                printf("quote not closed\n");
+                return (NULL);
             }
         }
     }
