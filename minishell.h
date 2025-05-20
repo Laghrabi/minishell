@@ -89,6 +89,11 @@ typedef struct s_gr_cl
 
 
 /* FUNCTIONS */
+t_gr_cl *last_node(t_gr_cl *gar);
+t_gr_cl *new_node(void *ptr);
+void free_garbage_collecter(t_gr_cl *garbage);
+void garbage_collecter(void *new_pointer, int  should_free);
+void *gc_malloc(size_t size);
 int	is_red_list(char *str);
 t_token	*peek(void);
 t_token	*consume(void);

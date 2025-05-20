@@ -16,7 +16,7 @@ t_token    *new_token(char *str, t_type type)
 {
     t_token    *node;
 
-    node = malloc(sizeof(t_token));
+    node = gc_malloc(sizeof(t_token));
     if (!node)
         return (NULL);
     node->value = ft_strdup(str);
@@ -86,11 +86,9 @@ void is_qoute(char c, int *i, int *j)
 
 int word_sep(char *input, t_info info, int *i, t_token **token)
 {
-    int j;
     char *value;
     t_token *one_token;
-    int db_qoute;
-    int  sg_qoute;
+    int (j), (db_qoute), (sg_qoute);
 
     db_qoute = 0;
     sg_qoute = 0;
@@ -110,7 +108,6 @@ int word_sep(char *input, t_info info, int *i, t_token **token)
     value = ft_substr(input, 0, j);
     one_token = new_token(value, info.type);
     one_token->token = info.type;
-    free (value);
     add_back(token, one_token);
     *i = *i + j;
     return (1);

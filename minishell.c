@@ -92,9 +92,6 @@ void print_ast(t_ast *node, int depth)
 }
 
 
-
-
-
 int main()
 {
     char *input;
@@ -120,6 +117,7 @@ int main()
             ast = parse_compound_command(false);
         if (ast)
             print_ast(ast, 0);
+        garbage_collecter(NULL, 1);
     }
 
     return 0;
