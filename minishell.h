@@ -80,6 +80,14 @@ typedef struct s_info {
 } t_info;
 
 
+typedef struct s_gr_cl
+{
+    void *pointer;
+    struct s_gr_cl *next;
+    struct s_gr_cl *prev;
+} t_gr_cl;
+
+
 /* FUNCTIONS */
 int	is_red_list(char *str);
 t_token	*peek(void);
