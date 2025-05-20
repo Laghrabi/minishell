@@ -117,7 +117,7 @@ int main()
             ast = parse_compound_command(false);
         if (ast)
             print_ast(ast, 0);
-        garbage_collecter(NULL, 1);
+        garbage_collector(NULL, 1);
     }
 
     return 0;

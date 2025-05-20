@@ -22,7 +22,7 @@ t_gr_cl *new_node(void *ptr)
     return (node);
 }
 
-void free_garbage_collecter(t_gr_cl *garbage)
+void free_garbage_collector(t_gr_cl *garbage)
 {
     t_gr_cl *current;
     current = garbage;
@@ -35,7 +35,7 @@ void free_garbage_collecter(t_gr_cl *garbage)
     }
 }
 
-void garbage_collecter(void *new_pointer, int should_free)
+void garbage_collector(void *new_pointer, int should_free)
 {
     static t_gr_cl *garbage;
     static t_gr_cl *current;
@@ -56,7 +56,7 @@ void garbage_collecter(void *new_pointer, int should_free)
     }
     if (should_free == 1)
     {
-        free_garbage_collecter(garbage);
+        free_garbage_collector(garbage);
         garbage = NULL;
         current = NULL;
     }
@@ -67,6 +67,6 @@ void *gc_malloc(size_t size)
     void *ptr = malloc(size);
     if (!ptr)
         return NULL;
-    garbage_collecter(ptr, 0);
+    garbage_collector(ptr, 0);
     return ptr;
 }
