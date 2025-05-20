@@ -37,7 +37,7 @@ t_ast	*create_ast_node(t_ast *left, t_ast *right, t_token	*token_list, t_node_ty
 {
 	t_ast	*node;
 
-	node = malloc(sizeof(t_ast));
+	node = gc_malloc(sizeof(t_ast));
 	if (node == NULL)
 		return (NULL);
 	node->left = left;
