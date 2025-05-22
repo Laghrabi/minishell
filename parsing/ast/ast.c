@@ -18,8 +18,8 @@ t_ast   *parse_compound_command(bool subshell)
     t_node_type node_type;
 
     t_ast (*left), (*right), (*node);
-    // if (peek() == NULL)
-    //     return (NULL);
+    if (peek() == NULL)
+        return (NULL);
     left = parse_pipeline();
     if (left == NULL)
         return (NULL);
