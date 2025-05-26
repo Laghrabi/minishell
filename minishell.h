@@ -22,6 +22,11 @@
 # include <readline/history.h>
 # include "libft/libft.h"
 
+#define double_quoted = 4;
+#define single_quoted = 2;
+#define expanded = 1;
+#define normale = 0;
+
 /* ENUMERATION */
 typedef enum s_type {
     T_WORD,
