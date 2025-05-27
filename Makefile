@@ -1,7 +1,7 @@
 CC = cc
 CFLAGS = -Wall -Werror -Wextra
 LDFLAGS = -lreadline
-SRC = minishell.c parsing/tokenizer.c parsing/seperators_function.c parsing/ast/ast.c parsing/ast/ast_utils.c parsing/garbage_collector.c
+SRC = minishell.c parsing/tokenization/tokenizer.c parsing/tokenization/seperators_function.c parsing/ast/ast.c parsing/ast/ast_utils.c parsing/memory_leak/garbage_collector.c
 
 # SRC_BONUS = 
 LIBFT = libft/libft.a
