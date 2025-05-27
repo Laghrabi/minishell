@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 14:41:55 by claghrab          #+#    #+#             */
-/*   Updated: 2025/05/26 14:52:11 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/05/26 17:27:44 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ int ft_strcmp(char *s1, char *s2)
     j = 0;
 	while (s1[j]|| s2[i])
     {
-        while (s1[j] == '\'' || s1[j] == '\"')
-            j++;
         if (s1[j] != s2[i])
 			return ((unsigned char)s1[j] - (unsigned char)s2[i]);
 		i++;
