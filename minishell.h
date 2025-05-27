@@ -100,6 +100,10 @@ typedef struct s_gr_cl
 
 
 /* FUNCTIONS */
+t_env	*init_env(char **envp);
+void	env_add_back(t_env **lst, t_env *new);
+t_env	*find_last(t_env *lst);
+int	find_chr_pos(char *str, char c);
 t_gr_cl *last_node(t_gr_cl *gar);
 t_gr_cl *new_node(void *ptr);
 void free_garbage_collector(t_gr_cl *garbage);
