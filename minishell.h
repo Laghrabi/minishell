@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/05/17 15:00:42 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/05/27 14:30:37 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,12 @@ typedef struct s_ast {
     struct s_ast    *left;
     struct s_ast    *right;
 } t_ast;
+
+typedef struct s_env {
+    char			*key;
+	char			*value;
+	struct s_env	*next;
+} t_env;
 
 typedef struct s_info {
     char *str;
