@@ -6,11 +6,11 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:49:21 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/05/16 17:53:46 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/05/27 17:21:06 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 void init_struct(t_info **info)
 {

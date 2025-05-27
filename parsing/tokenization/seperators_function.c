@@ -6,11 +6,11 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 20:26:28 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/05/16 17:53:21 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/05/27 17:21:00 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 t_token    *new_token(char *str, t_type type)
 {
