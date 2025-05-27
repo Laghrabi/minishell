@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 14:16:51 by claghrab          #+#    #+#             */
-/*   Updated: 2025/05/26 15:52:35 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/05/27 14:20:22 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	cmd_or_builtin(t_token *token)
 	
 	if (token == NULL)
 		return ;
+	expansion();
 	flag = if_builtin(token->value);
 	if (if_builtin(token->value) == 0)
 		exec_cmd();
@@ -82,8 +83,6 @@ int	builtin_echo(t_token *token)
 		i = 0;
 		while (token->value[i] != '\0')
 		{
-			if (token->value[i] == '\"' && token->value[i + 1] == '$')
-				expansion();
 			if (token->value[i] != '\'' && token->value[i] != '\"')
 				if (write(1, &token->value[i], 1) == -1)
 					return (1);
