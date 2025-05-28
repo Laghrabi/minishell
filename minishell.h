@@ -100,6 +100,8 @@ typedef struct s_gr_cl
 
 
 /* FUNCTIONS */
+void	update_env(char *key, char *new_value, t_env *env_list);
+char    *get_env_value(char *key, t_env *env_list);
 t_env	*init_env(char **envp);
 void	env_add_back(t_env **lst, t_env *new);
 t_env	*find_last(t_env *lst);
