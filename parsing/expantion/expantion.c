@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:04:58 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/05/27 20:12:08 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/05/28 16:25:22 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,10 @@ char *expanded_token(char *token, char *field, t_env *env)
     j = 0;
     while (token[++i])
     {
-        if (extra_quote(token[i], filed[i]))
+        if (extra_quote(token[i], field[i]))
             continue;
-        
+        if (token[i] == '$')
+            check_var
     }
     
 }
