@@ -1,34 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memcpy.c                                        :+:      :+:    :+:   */
+/*    realloc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/23 09:45:17 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/05/27 18:36:56 by zfarouk          ###   ########.fr       */
+/*   Created: 2025/05/27 18:31:12 by zfarouk           #+#    #+#             */
+/*   Updated: 2025/05/27 18:41:13 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../../minishell.h"
 
-void	*ft_memcpy(void *dst, void *src, size_t n)
+void *realloc(void *old_ptr, size_t size)
 {
-	size_t			i;
-	unsigned char	*d;
-	unsigned char	*s;
-
-	if (!dst && !src)
-		return (dst);
-	if (dst == src)
-		return (dst);
-	d = (unsigned char *)dst;
-	s = (unsigned char *)src;
-	i = 0;
-	while (i < n)
-	{
-		d[i] = s[i];
-		i++;
-	}
-	return (dst);
+    void *ptr;
+    
+    ptr = malloc(size);
+    ft_bzero(ptr, size);
+    
 }
