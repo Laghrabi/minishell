@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:20:21 by claghrab          #+#    #+#             */
-/*   Updated: 2025/05/29 16:22:54 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/05/30 12:19:55 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	cmd_or_builtin(t_token *token, t_env *env_list)
 	
 	if (token == NULL)
 		return ;
-	expansion();
+	//expansion();
 	flag = if_builtin(token->value);
 	if (if_builtin(token->value) == 0)
 		exec_cmd();

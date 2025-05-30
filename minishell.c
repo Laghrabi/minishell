@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:39:50 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/05/27 18:16:01 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/05/30 12:00:07 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,15 @@ void print_ast(t_ast *node, int depth)
     }
 }
 
+void test_expansion(t_ast *node, t_env *env_list)
+{
+	if (node->token_list)
+		expansion(node->token_list, env_list);
+	if (node->left)
+		test_expansion(node->left, env_list);
+	if (node->right)
+		test_expansion(node->right, env_list);
+}
 
 int main(int ac, char **av, char **envp)
 {
@@ -113,11 +122,11 @@ int main(int ac, char **av, char **envp)
             current = current->next;
             printf("\n");
         }
+        test_expansion(ast, env_list);
         if (peek())
             ast = parse_compound_command(false);
         if (ast)
             print_ast(ast, 0);
-        garbage_collector(NULL, 1);
     }
     return 0;
 }
