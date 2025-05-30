@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 20:41:06 by zfarouk           #+#    #+#             */
-/*   Updated: 2024/11/06 17:12:16 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/05/30 20:26:21 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 	if (!s1 || !s2)
 		return (NULL);
-	t = (char *)malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
+	t = (char *)gc_malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
 	if (!t)
 		return (NULL);
 	i = 0;

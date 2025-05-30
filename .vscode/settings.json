@@ -1,3 +1,7 @@
 {
-    "functionHeaderExtension.headerFilePath": "/home/zfarouk/Desktop/projects/minishell/minishell.h"
+    "functionHeaderExtension.headerFilePath": "/home/zfarouk/Desktop/projects/minishell/minishell.h",
+    "files.associations": {
+        "history.h": "c",
+        "type_traits": "c"
+    }
 }

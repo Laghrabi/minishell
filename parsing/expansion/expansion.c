@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:04:58 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/05/30 12:08:13 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/05/30 20:35:38 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,19 +62,23 @@ int  write_value(char **token, char *value, int *field, db_int yes)
     int i;
     char *new_token;
     
-    if (field[yes.i] == 4)
+    if (field[yes.i] == 0)
         fix_value(value);
     len = ft_strlen(value);
     new_token = gc_malloc((yes.len + len + 1) * sizeof(char));
     len = 0;
-    while ((*token)[len])
+    while (len <= yes.i)
     {
         new_token[len] = (*token)[len];
         len++;
     }
     i = -1;
+    printf("\n%s\n", new_token);
+    printf("%s", value);
     while (value[++i])
         new_token[len + i] = value[i];
+    new_token[len + i] = '\0';
+    printf("\n%s\n", new_token);
     *token = new_token;
     return (len + i);
 }
@@ -112,6 +116,8 @@ void expansion(t_token *arg_list, t_env *env)
 {
     int *field;
 
+    if (!arg_list || !env)
+        return;
     while (arg_list)
     {
         field = set_field(arg_list->value);

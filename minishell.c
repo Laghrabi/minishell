@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:39:50 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/05/30 12:00:07 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/05/30 20:04:14 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,12 +90,30 @@ void print_ast(t_ast *node, int depth)
 
 void test_expansion(t_ast *node, t_env *env_list)
 {
+    (void)node;
+    (void)env_list;
+	if (!node || !env_list)
+        return;
+
 	if (node->token_list)
 		expansion(node->token_list, env_list);
+
 	if (node->left)
 		test_expansion(node->left, env_list);
 	if (node->right)
 		test_expansion(node->right, env_list);
+}
+
+void print_env(t_env *env)
+{
+    t_env *current;
+
+    current = env;
+    while (current)
+    {
+        printf("variable : %s -> valeur : %s\n", current->key, current->value);
+        current = current->next;
+    }
 }
 
 int main(int ac, char **av, char **envp)
@@ -103,9 +121,11 @@ int main(int ac, char **av, char **envp)
     char *input;
     t_ast *ast;
     //t_token *token;
+
     (void)ac;
     (void)av;
 	t_env	*env_list = init_env(envp);
+    print_env(env_list);
     while (1)
     {
         input = readline("minishell$ ");
@@ -115,16 +135,16 @@ int main(int ac, char **av, char **envp)
         if (g_token == NULL)
             continue;
         free(input);
-        t_token *current = g_token;
-        while (current)
-        {
-            printf("[%s]  [%d]\n", current->value, current->token);
-            current = current->next;
-            printf("\n");
-        }
-        test_expansion(ast, env_list);
+        //t_token *current = g_token;
+        // while (current)
+        // {
+        //     printf("[%s]  [%d]\n", current->value, current->token);
+        //     current = current->next;
+        //     printf("\n");
+        // }
         if (peek())
             ast = parse_compound_command(false);
+        test_expansion(ast, env_list);
         if (ast)
             print_ast(ast, 0);
     }

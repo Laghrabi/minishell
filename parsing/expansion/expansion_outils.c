@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 20:02:07 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/05/30 12:14:48 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/05/30 12:51:03 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,22 @@ int which_type(char c, int *db_quote, int *sg_quote, int *quote_state)
         }
     }
     return (*quote_state);
+}
+
+char    *get_env_value(char *key, t_env *env_list)
+{
+    t_env   *current;
+    
+    if (key == NULL || env_list == NULL)
+        return (NULL);
+    current = env_list;
+    while (current != NULL)
+    {
+		if (ft_strcmp(key, current->key) == 0)
+			return (current->value);
+		current = current->next;
+    }
+	return (NULL);
 }
 
 int *set_field(char *str)
