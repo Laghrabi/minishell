@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 20:02:07 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/05/30 12:51:03 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/05/31 16:48:09 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int *set_field(char *str)
 void skip_var(char *token, int *i)
 {
     (*i)++;
-    while (token[*i] != ' ' && token[*i] != '\t' && token[*i] != '\0'&& token[*i] != '\"' && token[*i] != '\'')
+    while (ft_isalnum(token[*i]) || token[*i] == '_')
         (*i)++;
     (*i)--;
 }
