@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/05/31 14:08:02 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/05/31 15:18:43 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ int which_type(char c, int *db_quote, int *sg_quote, int *quote_state);
 int *set_field(char *str);
 void skip_var(char *token, int *i);
 int extra_quote(char c, int i);
-char *check_var(char *token, t_env *env);
+char *check_var(char *token, t_env *env, int *index);
 void fix_value(char *value);
 char *expanded_token(char *token, int *field, t_env *env);
 void expansion(t_token *arg_list, t_env *env);
