@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:04:58 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/05/30 20:35:38 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/05/31 14:35:45 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,43 +56,65 @@ void fix_value(char *value)
     value[j] = '\0';
 }
 
-int  write_value(char **token, char *value, int *field, db_int yes)
+// int  write_value(char **token, char *value, int *field, db_int yes)
+// {
+//     int len;
+//     int i;
+//     char *new_token;
+    
+//     if (field[yes.i] == 0)
+//         fix_value(value);
+//     len = ft_strlen(value);
+//     new_token = gc_malloc((yes.len + len + 1) * sizeof(char));
+//     len = 0;
+//     while (len <= yes.i)
+//     {
+//         new_token[len] = (*token)[len];
+//         len++;
+//     }
+//     i = -1;
+//     printf("\n%s\n", new_token);
+//     printf("%s", value);
+//     while (value[++i])
+//         new_token[len + i] = value[i];
+//     new_token[len + i] = '\0';
+//     printf("\n%s\n", new_token);
+//     *token = new_token;
+//     return (len + i);
+// }
+
+void write_value(t_extoken *ex_token, char *value, int *field)
 {
-    int len;
     int i;
+    int jl
     char *new_token;
     
-    if (field[yes.i] == 0)
+    if (field[ex_token->index] == 4)
         fix_value(value);
-    len = ft_strlen(value);
-    new_token = gc_malloc((yes.len + len + 1) * sizeof(char));
-    len = 0;
-    while (len <= yes.i)
-    {
-        new_token[len] = (*token)[len];
-        len++;
-    }
+    i = ft_strlen(value);
+    new_token = gc_malloc((ex_token->buffer_size - ex_token->removed_quote + i + 1) * sizeof(char));
+    ex_token->removed_quote = 0;
     i = -1;
-    printf("\n%s\n", new_token);
-    printf("%s", value);
-    while (value[++i])
-        new_token[len + i] = value[i];
-    new_token[len + i] = '\0';
-    printf("\n%s\n", new_token);
-    *token = new_token;
-    return (len + i);
+    while (++i < ex_token->index)
+        new_token[i] = ex_token->new_token[i];
+    j = 0;
+    while(value[j])
+    {
+        
+    }
 }
 
 char *expanded_token(char *token, int *field, t_env *env)
 {
-    int (i), (j), (len);
-    char *new_token;
+    int (i), (len);
+    t_extoken *ex_token;
     char *value;
 
-    len = ft_strlen(token);
-    new_token = gc_malloc(len * sizeof(char) + 1);
+    ex_token->buffer_size = ft_strlen(token);
+    ex_token->new_token = gc_malloc(ex_token->buffer_size * sizeof(char) + 1);
+    ex_token->removed_quote = 0;
+    ex_token->index = 0;
     i = -1;
-    j = 0;
     while (token[++i])
     {
         if (extra_quote(token[i], field[i]))
@@ -101,15 +123,15 @@ char *expanded_token(char *token, int *field, t_env *env)
         {
             value = check_var(&token[i+1], env);
             if (value)
-                j = write_value(&new_token, value, field, (db_int){i, len});
+                write_value(ex_token, value, field);
             else
                 skip_var(token, &i);
         }
         else
-            new_token[j++] = token[i]; 
+            ex_token->new_token[ex_token->index++] = token[i]; 
     }
-    new_token[j] = '\0';
-    return (new_token);
+    ex_token->new_token[ex_token->index] = '\0';
+    return (ex_token->new_token);
 }
 
 void expansion(t_token *arg_list, t_env *env)

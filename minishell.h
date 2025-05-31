@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/05/30 19:34:37 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/05/31 14:08:02 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,14 @@ typedef struct double_int {
     int len;
 } db_int;
 
+typedef struct expanded_token
+{
+    char    *new_token;
+    int     buffer_size;
+    int     index;
+    int     removed_quote;
+} t_extoken;
+
 typedef struct s_info {
     char *str;
     int size;
@@ -111,7 +119,6 @@ void skip_var(char *token, int *i);
 int extra_quote(char c, int i);
 char *check_var(char *token, t_env *env);
 void fix_value(char *value);
-int  write_value(char **token, char *value, int *field, db_int yes);
 char *expanded_token(char *token, int *field, t_env *env);
 void expansion(t_token *arg_list, t_env *env);
 void	update_env(char *key, char *new_value, t_env *env_list);
