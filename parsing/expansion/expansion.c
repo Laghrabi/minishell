@@ -46,34 +46,51 @@ char *check_var(char *token, t_env *env, int *index)
     return (ft_strdup(value));
 }
 
-void fix_value(char *value)
+
+void fix_arg_list(t_token **arg, t_token *token)
 {
-    int (i), (j);
-    int in_space;
+    t_token *next;
+
+    next = (*arg)->next;
+    (*arg)->next = token;
+    token->pre = (*arg);
+    token->next = next;
+    if (next)
+        next->pre = token;
+}
+
+void fix_value(char *value, t_token **arg)
+{
+    int (i), (word), (l);
+    char *one_token;
+    t_token *token;
 
     i = 0;
-    j = 0;
-    in_space = 0;
+    word = 0;
     while (value[i] == ' ' || value[i] == '\t')
         i++;
     while (value[i])
     {
-        if (value[i] == ' ' || value[i] == '\t')
+        if (value[i] != ' ' && value[i] != '\t' && word == 0)
         {
-            if (!in_space)
-                value[j++] = ' ';
-            in_space = 1;
+            l = i;
+            word = 1;
         }
-        else
+        if ((value[i] == ' ' || value[i] == '\t') && word == 1)
         {
-            value[j++] = value[i];
-            in_space = 0;
+            one_token = ft_substr(value, l, i - l);
+            token = new_token(one_token, T_WORD);
+            fix_arg_list(arg, token);
+            word = 0;
         }
         i++;
     }
-    if (j > 0 && value[j - 1] == ' ')
-        j--;
-    value[j] = '\0';
+    if (word == 1)
+    {
+        one_token = ft_substr(value, l, i - l);
+        token = new_token(one_token, T_WORD);
+        fix_arg_list(arg, token);
+    }
 }
 
 void write_value(t_extoken *ex_token, char *value, int *field, int yes)
@@ -84,7 +101,7 @@ void write_value(t_extoken *ex_token, char *value, int *field, int yes)
     char *new_token;
     
     if (field[yes] == 0)
-        fix_value(value);
+        fix_value(value, ex_token->arg_list);
     len = ft_strlen(value);
     new_token = gc_malloc((ex_token->buffer_size - ex_token->removed_quote + len + 1) * sizeof(char));
     ex_token->removed_quote = 0;
@@ -101,7 +118,7 @@ void write_value(t_extoken *ex_token, char *value, int *field, int yes)
     ex_token->new_token = new_token;
 }
 
-char *expanded_token(char *token, int *field, t_env *env)
+char *expanded_token(t_token **arg_list, char *token, int *field, t_env *env)
 {
     int i;
     t_extoken *ex_token;
@@ -112,6 +129,7 @@ char *expanded_token(char *token, int *field, t_env *env)
     ex_token->new_token = gc_malloc(ex_token->buffer_size * sizeof(char) + 1);
     ex_token->removed_quote = 0;
     ex_token->index = 0;
+    ex_token->arg_list = arg_list;
     i = -1;
     while (token[++i])
     {
@@ -138,10 +156,10 @@ void expansion(t_token *arg_list, t_env *env)
 
     if (!arg_list || !env)
         return;
-    while (arg_list)
+    while (arg_list)c
     {
         field = set_field(arg_list->value);
-		arg_list->value = expanded_token(arg_list->value, field, env);
+		arg_list->value = expanded_token(&arg_list, arg_list->value, field, env);
         arg_list = arg_list->next;
     }
 }

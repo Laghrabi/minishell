@@ -95,6 +95,7 @@ typedef struct expanded_token
     int     buffer_size;
     int     index;
     int     removed_quote;
+    t_token **arg_list;
 } t_extoken;
 
 typedef struct s_info {
@@ -119,8 +120,8 @@ int *set_field(char *str);
 void skip_var(char *token, int *i);
 int extra_quote(char c, int i);
 char *check_var(char *token, t_env *env, int *index);
-void fix_value(char *value);
-char *expanded_token(char *token, int *field, t_env *env);
+void fix_value(char *value, t_token **arg);
+char *expanded_token(t_token **arg_list, char *token, int *field, t_env *env);
 void expansion(t_token *arg_list, t_env *env);
 void	update_env(char *key, char *new_value, t_env *env_list);
 char    *get_env_value(char *key, t_env *env_list);
@@ -147,6 +148,7 @@ t_node_type	convert_t_type(t_type op);
 void	append_token(t_token **head, t_token *new_token);
 t_token	*single_token_list(t_token *token);
 t_ast	*create_ast_node(t_ast *left, t_ast *right, t_token	*token_list, t_node_type type);
+t_token    *new_token(char *str, t_type type);
 t_token *tokenization(char *input);
 int word_sep(char *input, t_info info, int *i, t_token **token);
 int operator_sep(char *input, t_info info, int *i, t_token **token);
