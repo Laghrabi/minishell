@@ -125,7 +125,7 @@ int main(int ac, char **av, char **envp)
     (void)ac;
     (void)av;
 	t_env	*env_list = init_env(envp);
-    print_env(env_list);
+    //print_env(env_list);
     while (1)
     {
         input = readline("minishell$ ");

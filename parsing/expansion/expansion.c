@@ -33,12 +33,17 @@ char *check_var(char *token, t_env *env, int *index)
         if (value)
             *index = *index + ft_strlen(var_name);
     }
+    else if (token[0] == '$')
+    {
+        *index = *index + 1;
+        return (ft_strdup(""));
+    }
     else 
     {
         *index = *index + 1;
         return (ft_strdup("$"));
     }
-    return (value);
+    return (ft_strdup(value));
 }
 
 void fix_value(char *value)
