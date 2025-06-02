@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:39:50 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/06/02 11:52:04 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/02 14:06:03 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ int main(int ac, char **av, char **envp)
     char *input;
     t_ast *ast;
     //t_token *token;
+    //(void)envp;
     (void)ac;
     (void)av;
 	t_env	*env_list = init_env(envp);

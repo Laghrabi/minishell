@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:31:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/01 19:50:05 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/02 14:01:02 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,34 @@ int	redir_list_helper(t_ast **redir_head, t_ast **redir_tail)
 	return (0);
 }
 
+char	*join(char *s1, char *s2)
+{
+	char	*new;
+
+	int (i), (j);
+	i = 0;
+	j = 0;
+	if (!s1)
+	{
+		new = gc_malloc(sizeof(char) * (ft_strlen(s2) + 1));
+		if (!new)
+			return (NULL);
+		while (s2[j])
+			new[i++] = s2[j++];
+		return (new[i] = '\0', new);
+	}
+	new = gc_malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (!new)
+		return (NULL);
+	while (s1[i])
+		new[j++] = s1[i++];
+	i = 0;
+	while (s2[i])
+		new[j++] = s2[i++];
+	new[j] = '\0';
+	return (new);
+}
+
 char	*parse_herdoc_helper(void)
 {
 	char	*line;
@@ -152,6 +180,7 @@ char	*parse_herdoc_helper(void)
 	while (ft_strcmp(line, str) != 0)
 	{
 		buffer = join(buffer, line);
+        buffer = join(buffer, "\n");
 		free(line);
 		line = readline("> ");
 	}
@@ -169,12 +198,7 @@ int	parse_herdoc(t_ast **redir_head, t_ast **redir_tail)
     	return (1);
 text = parse_herdoc_helper();
 	peek()->value = text;
-	//printf("%s\n", peek()->value);
-	//free(text);
-    redir = create_ast_node(NULL, NULL, peek(), convert_t_type(op_type));
-    consume();
-    // printf("here: %s\n", peek()->value);
-	// printf("here: %s\n", redir->token_list->value);
+    redir = create_ast_node(NULL, NULL, single_token_list(consume()), convert_t_type(op_type));
     if (*redir_head == NULL)
     {
     	*redir_head = redir;
