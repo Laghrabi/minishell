@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:31:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/05/19 13:26:49 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/01 19:50:05 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,12 +117,80 @@ t_ast   *parse_subshell(void)
     return (node);
 }
 
-
-t_ast   *parse_simple_command(void)
+int	redir_list_helper(t_ast **redir_head, t_ast **redir_tail)
 {
 	t_type  (op_type);
     t_token (*file_name);
-    t_ast   (*cmd), (*args_node), (*redir),(*redir_head), (*redir_tail);
+	t_ast   (*redir);
+	op_type = consume()->token;
+    if (!peek() || (peek()->token != T_WORD && peek()->token != T_DOLLAR_S && peek()->token != T_SINGLE_Q && peek()->token != T_DOUBLE_Q))
+        return (1);
+    file_name = consume();
+    redir = create_ast_node(NULL, NULL, single_token_list(file_name), convert_t_type(op_type));
+    if (*redir_head == NULL)
+    {
+    	*redir_head = redir;
+        *redir_tail = redir;
+    }
+    else
+    {
+    	(*redir_tail)->right = redir;
+    	*redir_tail = redir;
+    }
+	return (0);
+}
+
+char	*parse_herdoc_helper(void)
+{
+	char	*line;
+	char	*str;
+	char	*buffer;
+	
+	line = readline("> ");
+	buffer = NULL;
+	str = peek()->value;
+	while (ft_strcmp(line, str) != 0)
+	{
+		buffer = join(buffer, line);
+		free(line);
+		line = readline("> ");
+	}
+	free(line);
+	return (buffer);
+}
+
+int	parse_herdoc(t_ast **redir_head, t_ast **redir_tail)
+{
+	t_type  (op_type);
+    char	(*text);
+	t_ast   (*redir);
+	op_type = consume()->token;
+    if (!peek() || (peek()->token != T_WORD && peek()->token != T_DOLLAR_S && peek()->token != T_SINGLE_Q && peek()->token != T_DOUBLE_Q))
+    	return (1);
+text = parse_herdoc_helper();
+	peek()->value = text;
+	//printf("%s\n", peek()->value);
+	//free(text);
+    redir = create_ast_node(NULL, NULL, peek(), convert_t_type(op_type));
+    consume();
+    // printf("here: %s\n", peek()->value);
+	// printf("here: %s\n", redir->token_list->value);
+    if (*redir_head == NULL)
+    {
+    	*redir_head = redir;
+        *redir_tail = redir;
+    }
+    else
+    {
+    	(*redir_tail)->right = redir;
+    	*redir_tail = redir;
+    }
+	return (0);
+}
+
+t_ast   *parse_simple_command(void)
+{
+    t_ast   (*cmd), (*args_node),(*redir_head), (*redir_tail);
     args_node = create_ast_node(NULL, NULL, NULL, NODE_ARGS_LIST);
     redir_head = NULL;
 	redir_tail = NULL;
@@ -132,29 +200,16 @@ t_ast   *parse_simple_command(void)
         	append_token(&args_node->token_list, consume());
     	else if (peek() && is_red_list(peek()->value) == 1)
         {
-			op_type = consume()->token;
-        	if (!peek() || (peek()->token != T_WORD && peek()->token != T_DOLLAR_S && peek()->token != T_SINGLE_Q && peek()->token != T_DOUBLE_Q))
-            	return (syntax_error());
-        	file_name = consume();
-        	redir = create_ast_node(NULL, NULL, single_token_list(file_name), convert_t_type(op_type));
-        	if (redir_head == NULL)
-        	{
-            	redir_head = redir;
-            	redir_tail = redir;
-        	}
-        	else
-        	{
-            	redir_tail->right = redir;
-            	redir_tail = redir;
-        	}
+			if (peek()->token == T_HEREDOC)
+				parse_herdoc(&redir_head, &redir_tail);
+			else if (redir_list_helper(&redir_head, &redir_tail) == 1)
+				return (syntax_error());
 		}
 		else
 			break ;
 	}
     if (!args_node->token_list && !redir_head)
-    {
         return (syntax_error());
-    }
     cmd = create_ast_node(args_node, redir_head, NULL, NODE_CMD);
     return (cmd);
 }
