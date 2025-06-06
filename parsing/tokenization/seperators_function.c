@@ -12,6 +12,7 @@
 
 #include "../../minishell.h"
 
+
 t_token    *new_token(char *str, t_type type)
 {
     t_token    *node;

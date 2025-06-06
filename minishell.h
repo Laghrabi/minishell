@@ -92,10 +92,10 @@ typedef struct double_int {
 typedef struct expanded_token
 {
     char    *new_token;
+    int     *field;
     int     buffer_size;
     int     index;
-    int     removed_quote;
-    t_token **arg_list;
+    int     inherited_field;
 } t_extoken;
 
 typedef struct s_info {
@@ -115,14 +115,13 @@ typedef struct s_gr_cl
 
 
 /* FUNCTIONS */
-int which_type(char c, int *db_quote, int *sg_quote, int *quote_state);
 int *set_field(char *str);
 void skip_var(char *token, int *i);
 int extra_quote(char c, int i);
 char *check_var(char *token, t_env *env, int *index);
 void fix_value(char *value, t_token **arg);
-char *expanded_token(t_token **arg_list, char *token, int *field, t_env *env);
-void expansion(t_token *arg_list, t_env *env);
+t_extoken *expanded_token(char *token, t_env *env);
+void expansion(t_token **arg_list, t_env *env);
 void	update_env(char *key, char *new_value, t_env *env_list);
 char    *get_env_value(char *key, t_env *env_list);
 t_env	*init_env(char **envp);

@@ -88,21 +88,6 @@ void print_ast(t_ast *node, int depth)
     }
 }
 
-void test_expansion(t_ast *node, t_env *env_list)
-{
-    (void)node;
-    (void)env_list;
-	if (!node || !env_list)
-        return;
-
-	if (node->token_list)
-		expansion(node->token_list, env_list);
-
-	if (node->left)
-		test_expansion(node->left, env_list);
-	if (node->right)
-		test_expansion(node->right, env_list);
-}
 
 void print_env(t_env *env)
 {
@@ -116,12 +101,29 @@ void print_env(t_env *env)
     }
 }
 
+
+
+
+void test_expansion(t_ast *node, t_env *env_list)
+{
+    if (!node || !env_list)
+        return;
+
+    if (node->token_list)
+        expansion(&(node->token_list), env_list);
+
+    if (node->left)
+        test_expansion(node->left, env_list);
+    if (node->right)
+        test_expansion(node->right, env_list);
+}
+
 int main(int ac, char **av, char **envp)
 {
     char *input;
     t_ast *ast;
     //t_token *token;
-    //(void)envp;
+
     (void)ac;
     (void)av;
 	t_env	*env_list = init_env(envp);

@@ -44,6 +44,7 @@ t_token *tokenization(char *input)
 
     token = NULL;
     info = NULL;
+    check = 1;
     init_struct(&info);
     i = 0;
     while (input[i])
