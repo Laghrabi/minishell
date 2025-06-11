@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:04:58 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/06/11 17:43:23 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/11 17:54:15 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,6 +267,8 @@ void delete_node(t_token **arg_list)
         pre->next = next;
     if (next)
         next->pre = pre;
+    
+    *arg_list = next;
 }
 
 void split_expanded_token(t_extoken *extoken, t_token **arg_list)
