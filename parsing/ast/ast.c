@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:31:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/02 14:01:02 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/12 15:08:41 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,21 @@ char	*join(char *s1, char *s2)
 	return (new);
 }
 
-char	*parse_herdoc_helper(void)
+int is_quote(char *str)
+{
+    int i;
+
+    i = 0;
+    while (str[i])
+    {
+        if (str[i] == '\"' || str[i] == '\'')
+            return (1);
+        i++;
+    }
+    return (0);
+}
+
+char	*parse_herdoc_helper(int *i)
 {
 	char	*line;
 	char	*str;
@@ -184,7 +198,9 @@ char	*parse_herdoc_helper(void)
 		free(line);
 		line = readline("> ");
 	}
-	free(line);
+    if(is_quote(str))
+        {*i = 0;}
+    free(line);
 	return (buffer);
 }
 
@@ -196,8 +212,9 @@ int	parse_herdoc(t_ast **redir_head, t_ast **redir_tail)
 	op_type = consume()->token;
     if (!peek() || (peek()->token != T_WORD && peek()->token != T_DOLLAR_S && peek()->token != T_SINGLE_Q && peek()->token != T_DOUBLE_Q))
     	return (1);
-text = parse_herdoc_helper();
+    text = parse_herdoc_helper(&(peek()->expansion));
 	peek()->value = text;
+    peek()->is_herdoc = 7;
     redir = create_ast_node(NULL, NULL, single_token_list(consume()), convert_t_type(op_type));
     if (*redir_head == NULL)
     {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:49:21 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/05/27 17:21:06 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/12 12:38:01 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ t_token *tokenization(char *input)
         j = -1;
         while (input[i] == ' ' || input[i] == '\t')
             i++;
-        while (++j < 14)
+        while (input[i] && ++j < 14)
         {
             if (ft_strncmp(&input[i], info[j].str, info[j].size) == 0)
             {

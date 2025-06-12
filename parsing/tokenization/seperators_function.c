@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   seperators_function.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 20:26:28 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/05/27 17:21:00 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/12 14:24:12 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ t_token    *new_token(char *str, t_type type)
     node->token = type;
     node->next = NULL;
     node->pre = NULL;
+    node->ambiguous = 0;
+    node->is_herdoc = 0;
+    node->expansion = 1;
     return (node);
 }
 

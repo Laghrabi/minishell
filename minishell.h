@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/11 17:30:57 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/06/12 14:35:01 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,9 @@ typedef struct s_token {
     char            *value;
     struct s_token  *next;
     struct s_token  *pre;
+    int             ambiguous;
+    int             is_herdoc;
+    int             expansion;    
 } t_token;
 
 extern t_token	*g_token;
@@ -96,6 +99,7 @@ typedef struct expanded_token
     int     buffer_size;
     int     index;
     int     inherited_field;
+    int     ambiguous;
 } t_extoken;
 
 typedef struct s_info {
@@ -120,7 +124,7 @@ void skip_var(char *token, int *i);
 int extra_quote(char c, int i);
 char *check_var(char *token, t_env *env, int *index);
 void fix_value(char *value, t_token **arg);
-t_extoken *expanded_token(char *token, t_env *env);
+t_extoken *expanded_token(char *token, t_env *env, int k);
 void expansion(t_token **arg_list, t_env *env);
 void	update_env(char *key, char *new_value, t_env *env_list);
 char    *get_env_value(char *key, t_env *env_list);

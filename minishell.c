@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:39:50 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/06/02 14:06:03 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/12 14:59:03 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ void print_token_list(t_token *tokens, int depth)
     {
         print_indent(depth);
         printf("TOKEN: [%s]\n", current->value);
+        // print_indent(depth);
+        // printf("ambg: [%d]\n", current->ambiguous);
         current = current->next;
     }
 }
@@ -111,7 +113,6 @@ void test_expansion(t_ast *node, t_env *env_list)
 
     if (node->token_list)
         expansion(&(node->token_list), env_list);
-
     if (node->left)
         test_expansion(node->left, env_list);
     if (node->right)
@@ -123,6 +124,7 @@ int main(int ac, char **av, char **envp)
     char *input;
     t_ast *ast;
     //t_token *token;
+    t_token *test;
 
     (void)ac;
     (void)av;
@@ -136,6 +138,12 @@ int main(int ac, char **av, char **envp)
         g_token = tokenization(input);
         if (g_token == NULL)
             continue;
+        test = g_token;
+        // while (test)
+        // {
+        //     printf("%sbaa3\n", test->value);
+        //     test = test->next;
+        // }
         free(input);
         //t_token *current = g_token;
         // while (current)
