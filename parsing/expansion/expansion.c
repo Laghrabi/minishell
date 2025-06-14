@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:04:58 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/06/12 16:38:15 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/06/13 12:33:17 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -309,10 +309,9 @@ void split_expanded_token(t_extoken *extoken, t_token **arg_list, t_token **orig
 
 void expansion(t_token **arg_list, t_env *env)
 {
-    t_extoken *extoken;
-    t_token *current;
-    t_token *next;
-    
+    t_extoken (*extoken);
+    t_token (*current), (*next);
+    extoken = NULL;
     if (!arg_list || !(*arg_list) || !env)
         return;
     current = *arg_list;

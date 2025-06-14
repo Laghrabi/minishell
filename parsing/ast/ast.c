@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:31:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/12 15:08:41 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/06/13 12:39:46 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,29 @@ int is_quote(char *str)
     return (0);
 }
 
+void remove_quote(char *token)
+{
+    int i;
+    int j;
+
+    i = 0;
+    j = 0;
+    while (token[i])
+    {
+        if ((token[i] == '\'' || token[i] == '\"'))
+        {
+            j = i;
+            while (token[j])
+            {
+                token[j] = token[j + 1];
+                j++;
+            }
+            continue;
+        }
+        i++;
+    }
+}
+
 char	*parse_herdoc_helper(int *i)
 {
 	char	*line;
@@ -191,6 +214,9 @@ char	*parse_herdoc_helper(int *i)
 	line = readline("> ");
 	buffer = NULL;
 	str = peek()->value;
+    if(is_quote(str))
+        {*i = 0;}
+    remove_quote(str);
 	while (ft_strcmp(line, str) != 0)
 	{
 		buffer = join(buffer, line);
@@ -198,8 +224,6 @@ char	*parse_herdoc_helper(int *i)
 		free(line);
 		line = readline("> ");
 	}
-    if(is_quote(str))
-        {*i = 0;}
     free(line);
 	return (buffer);
 }
