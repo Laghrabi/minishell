@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/12 14:35:01 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/06/15 14:59:24 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,8 @@ typedef struct s_token {
 extern t_token	*g_token;
 
 typedef struct s_ast {
-    //t_type          type;
     t_node_type     type;
-    t_token         *token_list;    // for NODE_CMD
+    t_token         *token_list;
     struct s_ast    *left;
     struct s_ast    *right;
 } t_ast;
