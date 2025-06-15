@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:39:50 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/06/14 18:00:52 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/06/15 23:25:44 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,6 @@ void print_token_list(t_token *tokens, int depth)
         printf("TOKEN: [%s]\n", current->value);
         i = 0;
         print_indent(depth);
-        while (current->value[i])
-        {
-            printf("%d", current->field[i]);
-            i++;
-        }
         printf("\n");
         current = current->next;
     }
@@ -119,7 +114,10 @@ void test_expansion(t_ast *node, t_env *env_list)
         return;
 
     if (node->token_list)
+    {
         expansion(&(node->token_list), env_list);
+        wildcard(&(node->token_list));
+    }
     if (node->left)
         test_expansion(node->left, env_list);
     if (node->right)
