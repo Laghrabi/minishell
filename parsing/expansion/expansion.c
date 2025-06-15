@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:04:58 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/06/13 12:33:17 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/06/14 18:42:04 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,6 +217,22 @@ void add_last(t_token **head, t_token *token)
     current->next = token;
 }
 
+int *ft_subint(int *field, int start, int len)
+{
+    int i;
+    int *new_field;
+
+    if (!field)
+        return (NULL);
+    new_field = gc_malloc(len * sizeof(int));
+    i = 0;
+    while (i < len)
+    {
+        new_field[i] = field[start + i];
+        i++;
+    }
+    return (new_field);
+}
 
 t_token *list_token(t_extoken *extoken)
 {
@@ -225,8 +241,10 @@ t_token *list_token(t_extoken *extoken)
     t_token *token;
     t_token *head;
     char *value;
+    int *token_field;
     
     head = NULL;
+    token_field = NULL;
     value = extoken->new_token;
     i = 0;
     word = 0;
@@ -241,7 +259,8 @@ t_token *list_token(t_extoken *extoken)
         else if ((value[i] == ' ' || value[i] == '\t') && word == 1 && (extoken->field[i] == 1 || extoken->field[i] == 0))
         {
             one_token = ft_substr(value, l, i - l);
-            token = new_token(one_token, T_WORD);
+            token_field = ft_subint(extoken->field, l, i - l);
+            token = new_token(one_token, T_WORD, token_field);
             add_last(&head, token);
             word = 0;
         }
@@ -250,7 +269,8 @@ t_token *list_token(t_extoken *extoken)
     if (word == 1)
     {
         one_token = ft_substr(value, l, i - l);
-        token = new_token(one_token, T_WORD);
+        token_field = ft_subint(extoken->field, l, i - l);
+        token = new_token(one_token, T_WORD, token_field);
         add_last(&head, token);
     }
     return (head);

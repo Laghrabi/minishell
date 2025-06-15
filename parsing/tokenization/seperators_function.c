@@ -6,14 +6,14 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 20:26:28 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/06/12 14:24:12 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/06/14 17:57:07 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
 
-t_token    *new_token(char *str, t_type type)
+t_token    *new_token(char *str, t_type type, int *field)
 {
     t_token    *node;
 
@@ -27,6 +27,7 @@ t_token    *new_token(char *str, t_type type)
     node->ambiguous = 0;
     node->is_herdoc = 0;
     node->expansion = 1;
+    node->field = field;
     return (node);
 }
 
@@ -62,7 +63,7 @@ int operator_sep(char *input, t_info info, int *i, t_token **token)
     t_token *one_token;
 
     (void)input;
-    one_token = new_token(info.str, info.type);
+    one_token = new_token(info.str, info.type, NULL);
     add_back(token, one_token);
     *i = *i + info.size;
     return (1);
@@ -103,14 +104,12 @@ int word_sep(char *input, t_info info, int *i, t_token **token)
         if (db_qoute == 0 && sg_qoute == 0)
             if ((input[j] == '&' && input[j + 1] == '&') || operator(input[j]))
                 break;
-        if (input[j] == '*')
-            info.type = T_WILDCARD;
         j++;
     }
     if (db_qoute || sg_qoute)
         return (0);
     value = ft_substr(input, 0, j);
-    one_token = new_token(value, info.type);
+    one_token = new_token(value, info.type, NULL);
     one_token->token = info.type;
     add_back(token, one_token);
     *i = *i + j;

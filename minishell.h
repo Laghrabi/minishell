@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/15 14:59:24 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/15 15:05:23 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ typedef struct s_token {
     struct s_token  *pre;
     int             ambiguous;
     int             is_herdoc;
-    int             expansion;    
+    int             expansion;
+    int             *field;   
 } t_token;
 
 extern t_token	*g_token;
@@ -150,7 +151,7 @@ t_node_type	convert_t_type(t_type op);
 void	append_token(t_token **head, t_token *new_token);
 t_token	*single_token_list(t_token *token);
 t_ast	*create_ast_node(t_ast *left, t_ast *right, t_token	*token_list, t_node_type type);
-t_token    *new_token(char *str, t_type type);
+t_token    *new_token(char *str, t_type type, int *field);
 t_token *tokenization(char *input);
 int word_sep(char *input, t_info info, int *i, t_token **token);
 int operator_sep(char *input, t_info info, int *i, t_token **token);

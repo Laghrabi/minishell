@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:39:50 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/06/14 14:38:14 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/06/14 18:00:52 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,20 @@ void print_node_type(t_node_type type)
 
 void print_token_list(t_token *tokens, int depth)
 {
+    int i;
     t_token *current = tokens;
     while (current)
     {
         print_indent(depth);
         printf("TOKEN: [%s]\n", current->value);
-        // print_indent(depth);
-        // printf("ambg: [%d]\n", current->ambiguous);
+        i = 0;
+        print_indent(depth);
+        while (current->value[i])
+        {
+            printf("%d", current->field[i]);
+            i++;
+        }
+        printf("\n");
         current = current->next;
     }
 }
