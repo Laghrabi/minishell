@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 14:16:51 by claghrab          #+#    #+#             */
-/*   Updated: 2025/05/31 17:11:54 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/08 15:56:08 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,7 @@ long long	ft_stoi(const char *str)
 	while (str[i] <= '9' && str[i] >= '0')
 	{
 		result = result * 10 + (str[i] - '0');
-		if (result > (long)LONG_LONG_MAX + sign)
+		if (result > (long long)LONG_MAX + sign)
 			return (LONG_LONG_MAX);
 		i++;
 	}
@@ -208,14 +208,39 @@ int	builtin_exit(t_token *token)
 	if (token == NULL)
 		return (1);
 	if (token->next == NULL)
+	{
+		printf("exit\n");
 		exit(0);
+	}
 	else if (token->next != NULL)
 	{
 		token = token->next;
+		if (token->next != NULL)
+		{
+			printf("exit\nbash: exit: too many arguments\n");
+			return (1);
+		}
 		if (if_all_num(token->value) == 1)
 			return (1);
 		nbr = ft_stoi(token->value);
 		if (nbr == LONG_LONG_MAX)
+		{
+			printf("exit\nbash: exit: %s: numeric argument required\n", token->value);
 			return (1);
+		}
+		else
+		{
+			printf("exit\n");
+			exit(nbr % 256);
+		}
 	}
+}
+
+int	builtin_export(t_token *token, t_env **env_list)
+{
+	t_env *current;
+
+	if (token == NULL || env_list == NULL  || *env_list == NULL)
+		return (1);
+	
 }
