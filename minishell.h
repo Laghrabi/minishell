@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
 /*   Updated: 2025/06/08 15:20:18 by claghrab         ###   ########.fr       */
@@ -21,6 +21,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "libft/libft.h"
+# include <dirent.h>
 
 #define LONG_LONG_MAX 9223372036854775807LL
 #define LONG_MAX 9223372036854775807L
@@ -67,6 +68,10 @@ typedef struct s_token {
     char            *value;
     struct s_token  *next;
     struct s_token  *pre;
+    int             ambiguous;
+    int             is_herdoc;
+    int             expansion;
+    int             *field;   
 } t_token;
 
 extern t_token	*g_token;
@@ -97,6 +102,7 @@ typedef struct expanded_token
     int     buffer_size;
     int     index;
     int     inherited_field;
+    int     ambiguous;
 } t_extoken;
 
 typedef struct s_info {
@@ -116,12 +122,14 @@ typedef struct s_gr_cl
 
 
 /* FUNCTIONS */
+void wildcard(t_token **arg_list);
+void    add_back(t_token **token, t_token *new);
 int *set_field(char *str);
 void skip_var(char *token, int *i);
 int extra_quote(char c, int i);
 char *check_var(char *token, t_env *env, int *index);
 void fix_value(char *value, t_token **arg);
-t_extoken *expanded_token(char *token, t_env *env);
+t_extoken *expanded_token(char *token, t_env *env, int k);
 void expansion(t_token **arg_list, t_env *env);
 void	update_env(char *key, char *new_value, t_env *env_list);
 char    *get_env_value(char *key, t_env *env_list);
@@ -148,7 +156,7 @@ t_node_type	convert_t_type(t_type op);
 void	append_token(t_token **head, t_token *new_token);
 t_token	*single_token_list(t_token *token);
 t_ast	*create_ast_node(t_ast *left, t_ast *right, t_token	*token_list, t_node_type type);
-t_token    *new_token(char *str, t_type type);
+t_token    *new_token(char *str, t_type type, int *field);
 t_token *tokenization(char *input);
 int word_sep(char *input, t_info info, int *i, t_token **token);
 int operator_sep(char *input, t_info info, int *i, t_token **token);

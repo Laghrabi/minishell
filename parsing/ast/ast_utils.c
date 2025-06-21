@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:01:37 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/01 19:43:41 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:24:32 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ void	append_token(t_token **head, t_token *new_token)
 	while (tmp->next != NULL)
 		tmp = tmp->next;
 	tmp->next = new_token;
+	new_token->next = NULL;
 }
 
 t_token	*single_token_list(t_token *token)
@@ -87,7 +88,10 @@ t_token	*single_token_list(t_token *token)
 	if (token == NULL)
 		return (NULL);
 	else
+	{
+		token->pre = NULL;
 		token->next = NULL;
+	}
 	return (token);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:49:21 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/05/27 17:21:06 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/14 15:41:24 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,6 @@ void init_struct(t_info **info)
         {"||", 2, T_OR, operator_sep},
         {"|", 1, T_PIPE, operator_sep},
         {"&&", 2, T_AND, operator_sep},
-        {"*", 1, T_WILDCARD, word_sep},
-        {"\"", 1, T_DOUBLE_Q, word_sep},
-        {"'", 1, T_SINGLE_Q, word_sep},
-        {"$", 1, T_DOLLAR_S, word_sep},
         {">>", 2, T_APPEND, operator_sep},
         {"<<", 2, T_HEREDOC, operator_sep},
         {"<", 1, T_RED_IN, operator_sep},
@@ -52,7 +48,7 @@ t_token *tokenization(char *input)
         j = -1;
         while (input[i] == ' ' || input[i] == '\t')
             i++;
-        while (++j < 14)
+        while (input[i] && ++j < 10)
         {
             if (ft_strncmp(&input[i], info[j].str, info[j].size) == 0)
             {
