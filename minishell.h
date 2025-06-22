@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/15 15:05:23 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/15 15:36:15 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdbool.h>
+# include <aio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "libft/libft.h"
