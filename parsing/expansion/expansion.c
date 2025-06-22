@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:04:58 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/06/14 18:42:04 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/06/15 22:57:26 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,23 +200,6 @@ void remove_extra_quote(char *token, int *field)
     }
 }
 
-void add_last(t_token **head, t_token *token)
-{
-    t_token *current;
-
-    if (head == NULL || token == NULL)
-        return;
-    if (*head == NULL)
-    {
-        *head = token;
-        return;
-    }
-    current = *head;
-    while (current->next)
-        current = current->next;
-    current->next = token;
-}
-
 int *ft_subint(int *field, int start, int len)
 {
     int i;
@@ -261,7 +244,7 @@ t_token *list_token(t_extoken *extoken)
             one_token = ft_substr(value, l, i - l);
             token_field = ft_subint(extoken->field, l, i - l);
             token = new_token(one_token, T_WORD, token_field);
-            add_last(&head, token);
+            add_back(&head, token);
             word = 0;
         }
         i++;
@@ -271,7 +254,7 @@ t_token *list_token(t_extoken *extoken)
         one_token = ft_substr(value, l, i - l);
         token_field = ft_subint(extoken->field, l, i - l);
         token = new_token(one_token, T_WORD, token_field);
-        add_last(&head, token);
+        add_back(&head, token);
     }
     return (head);
 }
@@ -298,6 +281,7 @@ void split_expanded_token(t_extoken *extoken, t_token **arg_list, t_token **orig
     t_token *last;
     t_token *old;
 
+    (*arg_list)->field = extoken->field;
     old = *arg_list;
     remove_extra_quote(extoken->new_token, extoken->field);
     current = list_token(extoken);

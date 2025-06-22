@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/15 15:36:15 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/22 16:21:51 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,10 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "libft/libft.h"
+# include <dirent.h>
 
 #define LONG_LONG_MAX 9223372036854775807LL
+#define LONG_MAX 9223372036854775807L
 #define double_quoted = 4;
 #define single_quoted = 2;
 #define expanded = 1;
@@ -120,6 +122,8 @@ typedef struct s_gr_cl
 
 
 /* FUNCTIONS */
+void wildcard(t_token **arg_list);
+void    add_back(t_token **token, t_token *new);
 int *set_field(char *str);
 void skip_var(char *token, int *i);
 int extra_quote(char c, int i);
