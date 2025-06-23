@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 18:04:27 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/06/15 23:28:20 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/06/20 17:13:40 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,10 @@ void check_wildcard(t_token **token)
 
 void wildcard(t_token **arg_list)
 {
+	int check;
+	t_token *test;
+	
+	check = 0;
     t_token *current;
     if (arg_list == NULL || *arg_list == NULL)
         return;
@@ -129,6 +133,13 @@ void wildcard(t_token **arg_list)
     while (current)
     {
         check_wildcard(&current);
+		if (!check)
+		{
+			test = current;
+			while (test->pre)
+				test = test->pre;
+			*arg_list = test;
+		}
         if (current->pre == NULL)
             *arg_list = current;
         current = current->next;
