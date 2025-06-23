@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/08 15:20:18 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/21 17:53:58 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,14 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdbool.h>
+# include <aio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "libft/libft.h"
 # include <dirent.h>
 
 #define LONG_LONG_MAX 9223372036854775807LL
-#define LONG_MAX 9223372036854775807L
+// #define LONG_MAX 9223372036854775807L
 #define double_quoted = 4;
 #define single_quoted = 2;
 #define expanded = 1;
