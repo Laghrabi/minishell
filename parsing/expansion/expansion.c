@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:04:58 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/06/23 15:58:10 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/06/23 16:06:57 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ t_extoken *expanded_token(char *token, t_env *env, int k)
     if (ex_token->index == 0)
     {
         ex_token->ambiguous = 1;
-        ex_token->empty = 1;
+        // ex_token->empty = 1;
     }
     ex_token->new_token[ex_token->index] = '\0';
     return (ex_token);
