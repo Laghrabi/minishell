@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/22 16:21:51 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/23 15:03:07 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # include <dirent.h>
 
 #define LONG_LONG_MAX 9223372036854775807LL
-#define LONG_MAX 9223372036854775807L
+// #define LONG_MAX 9223372036854775807L
 #define double_quoted = 4;
 #define single_quoted = 2;
 #define expanded = 1;
