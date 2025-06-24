@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:04:58 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/06/23 16:06:57 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/06/24 18:55:14 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,11 +98,6 @@ char *check_var(char *token, t_env *env, int *index)
         if (value)
             *index = *index + ft_strlen(var_name);
     }
-    else if (token[0] == '$')
-    {
-        *index = *index + 1;
-        return (ft_strdup(""));
-    }
     else 
         return (ft_strdup("$"));
     return (ft_strdup(value));
@@ -143,6 +138,8 @@ t_extoken *expanded_token(char *token, t_env *env, int k)
     t_extoken *ex_token;
     char *value;
 
+    if (!token)
+        return (NULL);
     ex_token = gc_malloc(sizeof(t_extoken));
     ex_token->buffer_size = ft_strlen(token);
     ex_token->new_token = gc_malloc((ex_token->buffer_size + 1) * sizeof(char));
@@ -159,7 +156,7 @@ t_extoken *expanded_token(char *token, t_env *env, int k)
     {
         ex_token->field[ex_token->index] = which_type(token[i], &db_quote, &sg_quote, &quote_state) | k;
         ex_token->inherited_field = ex_token->field[ex_token->index];
-        if (token[i] == '$' && sg_quote == 0)
+        if (token[i] == '$' && (sg_quote == 0 || k != 0))
         {
             value = check_var(&token[i+1], env, &i);
             if (value)
@@ -171,10 +168,7 @@ t_extoken *expanded_token(char *token, t_env *env, int k)
         ex_token->new_token[ex_token->index++] = token[i];
     }
     if (ex_token->index == 0)
-    {
         ex_token->ambiguous = 1;
-        // ex_token->empty = 1;
-    }
     ex_token->new_token[ex_token->index] = '\0';
     return (ex_token);
 }
@@ -278,7 +272,7 @@ void delete_node(t_token **arg_list, t_token **original_arg)
     *arg_list = next;
 }
 
-void split_expanded_token(t_extoken *extoken, t_token **arg_list, t_token **original_arg)
+void split_expanded_token(t_extoken *extoken, t_token **arg_list, t_token **original_arg, int herdoc)
 {
     t_token *current;
     t_token *last;
@@ -288,50 +282,37 @@ void split_expanded_token(t_extoken *extoken, t_token **arg_list, t_token **orig
     (*arg_list)->field = extoken->field;
     old = *arg_list;
     remove_extra_quote(extoken->new_token, extoken->field);
-    current = list_token(extoken);
-    if (!current)
-    {
-        // delete_node(arg_list, original_arg);
-        (*arg_list)->value = ft_strdup("");
-        return;
-    }
-    last = current;
-    while (last->next)
-        last = last->next;
-    if (old->pre)
-    {
-        old->pre->next = current;
-        current->pre = old->pre;
-    }
+    if (herdoc)
+        (*arg_list)->value = extoken->new_token;
     else
-        current->pre = NULL;
-    if (old->next)
     {
-        old->next->pre = last;
-        last->next = old->next;
+        current = list_token(extoken);
+        if (!current)
+        {
+            (*arg_list)->value = ft_strdup("");
+            return;
+        }
+        last = current;
+        while (last->next)
+            last = last->next;
+        if (old->pre)
+        {
+            old->pre->next = current;
+            current->pre = old->pre;
+        }
+        else
+            current->pre = NULL;
+        if (old->next)
+        {
+            old->next->pre = last;
+            last->next = old->next;
+        }
+        else
+            last->next = NULL;
+        if (old->pre == NULL)
+            *arg_list = current;
     }
-    else
-        last->next = NULL;
-    if (old->pre == NULL)
-        *arg_list = current;
 }
-
-// void delete_token (t_token **current)
-// {
-//     t_token *prev;
-//     t_token *next;
-    
-//     next = (*current)->next;
-//     prev = (*current)->pre;
-    
-//     if (next)
-//         next->pre = prev;
-//     if (prev)
-//         prev->next = next;
-//     *current = next;    
-// }
-            // printf("---%s---\n", current->value);
-            // printf("---%s---\n", extoken->new_token);
 
 void expansion(t_token **arg_list, t_env *env)
 {
@@ -343,18 +324,19 @@ void expansion(t_token **arg_list, t_env *env)
     current = *arg_list;
     while (current)
     {
+        next = current->next;
         if (current->expansion)
         {
-            next = current->next;
             extoken = expanded_token(current->value, env, current->is_herdoc);
             if (extoken->ambiguous == 1)
             {
                 current->value = extoken->new_token;
                 current->ambiguous = 1;
+                current->empty = 1;
                 current = next;
                 continue;
             }
-            split_expanded_token(extoken, &current, arg_list);
+            split_expanded_token(extoken, &current, arg_list, current->is_herdoc);
             if (current && current->pre == NULL)
                 *arg_list = current;
         }

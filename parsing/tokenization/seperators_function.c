@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 20:26:28 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/06/14 17:57:07 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/06/23 20:46:20 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ t_token    *new_token(char *str, t_type type, int *field)
     node->is_herdoc = 0;
     node->expansion = 1;
     node->field = field;
+    node->empty = 0;
     return (node);
 }
 

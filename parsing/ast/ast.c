@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:31:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/13 12:39:46 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/06/24 17:18:48 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,14 +184,22 @@ int is_quote(char *str)
 
 void remove_quote(char *token)
 {
-    int i;
-    int j;
-
+    int (i), (j), (sg_quote), (db_quote);
     i = 0;
     j = 0;
+    sg_quote = 0;
+    db_quote = 0;
     while (token[i])
     {
-        if ((token[i] == '\'' || token[i] == '\"'))
+        if (token[i] == '\'' && sg_quote == 0 && db_quote == 0)
+            sg_quote = 1;
+        else if (token[i] == '\'' && sg_quote == 1)
+            sg_quote = 0;
+        else if (token[i] == '\"' && sg_quote == 0 && db_quote == 0)
+            db_quote = 1;
+        else if (token[i] == '\"' && db_quote == 1)
+            db_quote = 0;  
+        if (((token[i] == '\'' && db_quote == 0) || (token[i] == '\"' && sg_quote == 0)))
         {
             j = i;
             while (token[j])

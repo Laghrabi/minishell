@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/23 15:03:07 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/23 20:39:34 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ typedef struct s_token {
     int             ambiguous;
     int             is_herdoc;
     int             expansion;
-    int             *field;   
+    int             *field;
+    int             empty;  
 } t_token;
 
 extern t_token	*g_token;
@@ -103,6 +104,7 @@ typedef struct expanded_token
     int     index;
     int     inherited_field;
     int     ambiguous;
+    int     empty;
 } t_extoken;
 
 typedef struct s_info {

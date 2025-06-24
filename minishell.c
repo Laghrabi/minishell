@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:39:50 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/06/15 23:25:44 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/06/24 18:13:46 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,11 @@ void print_token_list(t_token *tokens, int depth)
     {
         print_indent(depth);
         printf("TOKEN: [%s]\n", current->value);
+        print_indent(depth);
+        printf("is empty: [%d]   ", current->empty);
+        printf("is heredoc: [%d]   ", current->is_herdoc);
+        printf("is ambigeouse: [%d]   ", current->ambiguous);
+        printf("is expansion: [%d]\n", current->expansion);
         i = 0;
         print_indent(depth);
         printf("\n");
@@ -116,7 +121,7 @@ void test_expansion(t_ast *node, t_env *env_list)
     if (node->token_list)
     {
         expansion(&(node->token_list), env_list);
-        wildcard(&(node->token_list));
+        // wildcard(&(node->token_list));
     }
     if (node->left)
         test_expansion(node->left, env_list);
@@ -133,6 +138,7 @@ int main(int ac, char **av, char **envp)
 
     (void)ac;
     (void)av;
+    // (void)envp;
 	t_env	*env_list = init_env(envp);
     //print_env(env_list);
     while (1)
