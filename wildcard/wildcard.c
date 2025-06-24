@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 18:04:27 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/06/20 17:13:40 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/06/24 21:01:53 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,11 @@ t_token *search_matches(char *str)
 	entry = readdir(dir);
 	while (entry)
 	{
+		if (entry->d_name[0] == '.' && str[0] != '.')
+		{
+			entry = readdir(dir);
+			continue;
+		}
 		if (is_matche(str, entry->d_name))
 		{
 			node = new_token(entry->d_name, T_WORD, NULL);
@@ -46,38 +51,6 @@ t_token *search_matches(char *str)
 	}
 	return (head);
 }
-// void append_matches(t_token **token, t_token *match)
-// {
-// 	t_token *prev = (*token)->pre;
-// 	t_token *next = (*token)->next;
-// 	t_token *head = match;
-// 	t_token *tail;
-
-// 	// Link head of match list to previous
-// 	if (prev)
-// 		prev->next = head;
-// 	head->pre = prev;
-
-// 	// Find tail
-// 	tail = head;
-// 	while (tail->next)
-// 	{
-// 		tail->next->pre = tail; // Ensure doubly linked list consistency
-// 		tail = tail->next;
-// 	}
-
-// 	// Link tail to next
-// 	tail->next = next;
-// 	if (next)
-// 		next->pre = tail;
-
-// 	// Optionally free old token here
-// 	// free_token(*token); if you have such function
-
-// 	// Update current token pointer to tail of new match list
-// 	*token = tail;
-// }
-
 
 void append_matches(t_token **token, t_token *match)
 {
@@ -132,16 +105,19 @@ void wildcard(t_token **arg_list)
     current = *arg_list;
     while (current)
     {
-        check_wildcard(&current);
-		if (!check)
-		{
-			test = current;
-			while (test->pre)
-				test = test->pre;
-			*arg_list = test;
+		if (current->is_herdoc == 0)
+		{        
+			check_wildcard(&current);
+			if (!check)
+			{
+				test = current;
+				while (test->pre)
+					test = test->pre;
+				*arg_list = test;
+			}
+			if (current->pre == NULL)
+				*arg_list = current;
 		}
-        if (current->pre == NULL)
-            *arg_list = current;
         current = current->next;
     }
 }

@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:39:50 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/06/24 18:13:46 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/06/24 19:29:10 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ void test_expansion(t_ast *node, t_env *env_list)
     if (node->token_list)
     {
         expansion(&(node->token_list), env_list);
-        // wildcard(&(node->token_list));
+        wildcard(&(node->token_list));
     }
     if (node->left)
         test_expansion(node->left, env_list);
