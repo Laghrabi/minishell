@@ -48,7 +48,6 @@ void print_node_type(t_node_type type)
 
 void print_token_list(t_token *tokens, int depth)
 {
-    int i;
     t_token *current = tokens;
     while (current)
     {
@@ -59,7 +58,6 @@ void print_token_list(t_token *tokens, int depth)
         printf("is heredoc: [%d]   ", current->is_herdoc);
         printf("is ambigeouse: [%d]   ", current->ambiguous);
         printf("is expansion: [%d]\n", current->expansion);
-        i = 0;
         print_indent(depth);
         printf("\n");
         current = current->next;
@@ -134,7 +132,7 @@ int main(int ac, char **av, char **envp)
     char *input;
     t_ast *ast;
     //t_token *token;
-    t_token *test;
+    // t_token *test;
 
     (void)ac;
     (void)av;
@@ -149,7 +147,7 @@ int main(int ac, char **av, char **envp)
         g_token = tokenization(input);
         if (g_token == NULL)
             continue;
-        test = g_token;
+        // test = g_token;
         // while (test)
         // {
         //     printf("%sbaa3\n", test->value);

@@ -74,6 +74,7 @@ void	append_token(t_token **head, t_token *new_token)
 	if (*head == NULL)
 	{
 		*head = new_token;
+		(*head)->pre = NULL;
 		return ;
 	}
 	tmp = *head;
