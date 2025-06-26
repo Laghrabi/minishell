@@ -1,7 +1,7 @@
 CC = cc
 CFLAGS = -Wall -Werror -Wextra
 LDFLAGS = -lreadline
-SRC = minishell.c parsing/tokenization/tokenizer.c parsing/tokenization/seperators_function.c parsing/ast/ast.c parsing/ast/ast_utils.c parsing/memory_leak/garbage_collector.c parsing/expansion/env_list.c parsing/expansion/expansion.c parsing/expansion/expansion_outils.c wildcard/wildcard.c
+SRC = minishell.c parsing/tokenization/tokenizer.c parsing/tokenization/seperators_function.c parsing/ast/ast.c parsing/ast/ast_utils.c parsing/memory_leak/garbage_collector.c parsing/expansion/env_list.c parsing/expansion/expansion.c parsing/expansion/expansion_outils.c wildcard/wildcard.c ast_traversing/traversing.c builtins/builtins.c builtins/builtins_utils.c 
  
 LIBFT = libft/libft.a
 NAME = minishell

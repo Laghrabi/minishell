@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/23 20:39:34 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/06/26 15:32:42 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,20 @@ typedef struct s_gr_cl
 
 
 /* FUNCTIONS */
+int	if_builtin(char *cmd);
+int	which_one(int flag, t_token *token, t_env *env_list);
+int	cmd_or_builtin(t_token *token, t_env *env_list);
+int	builtin_exit(t_token *token);
+long long	ft_stoi(const char *str);
+int if_all_num(char *str);
+int	builtin_unset(t_token *token, t_env **env_list);
+int	builtin_env(t_token *token, t_env *env_list);
+int	builtin_pwd(t_token *token, t_env *env_list);
+int	builtin_cd(t_token *token, t_env *env_list);
+int	cd_helper(char *new_path, t_env *env_list);
+int	builtin_echo(t_token *token);
+int execute_command(t_ast *node, t_env *env_list);
+int	execute_ast(t_ast *node, t_env *env_list);
 void wildcard(t_token **arg_list);
 void    add_back(t_token **token, t_token *new);
 int *set_field(char *str);

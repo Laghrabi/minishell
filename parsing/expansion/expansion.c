@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:04:58 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/06/24 19:18:20 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/06/26 15:42:38 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,21 +58,21 @@ int which_type(char c, int *db_quote, int *sg_quote, int *quote_state)
     return (*quote_state);
 }
 
-char    *get_env_value(char *key, t_env *env_list)
-{
-    t_env   *current;
+// char    *get_env_value(char *key, t_env *env_list)
+// {
+//     t_env   *current;
     
-    if (key == NULL || env_list == NULL)
-        return (NULL);
-    current = env_list;
-    while (current != NULL)
-    {
-		if (ft_strcmp(key, current->key) == 0)
-            return (current->value);
-		current = current->next;
-    }
-	return (NULL);
-}
+//     if (key == NULL || env_list == NULL)
+//         return (NULL);
+//     current = env_list;
+//     while (current != NULL)
+//     {
+// 		if (ft_strcmp(key, current->key) == 0)
+//             return (current->value);
+// 		current = current->next;
+//     }
+// 	return (NULL);
+// }
 
 void skip_var(char *token, int *i)
 {

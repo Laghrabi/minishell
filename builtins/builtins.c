@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 14:16:51 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/08 15:56:08 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/26 19:07:54 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,12 @@ int	builtin_cd(t_token *token, t_env *env_list)
 	else if (ft_strcmp(token->next->value, "-") == 0)
 		new_path = get_env_value("OLDPWD", env_list);
 	else
-		new_path = token->next->value;
+	{
+		if (token->next->value[0] == '\0')
+			new_path = ".";
+		else
+			new_path = token->next->value;
+	}
 	if (cd_helper(new_path, env_list) == 1)
 		return (1);
 	return (0);
@@ -234,13 +239,14 @@ int	builtin_exit(t_token *token)
 			exit(nbr % 256);
 		}
 	}
+	return (1);
 }
 
-int	builtin_export(t_token *token, t_env **env_list)
-{
-	t_env *current;
+// int	builtin_export(t_token *token, t_env **env_list)
+// {
+// 	t_env *current;
 
-	if (token == NULL || env_list == NULL  || *env_list == NULL)
-		return (1);
+// 	if (token == NULL || env_list == NULL  || *env_list == NULL)
+// 		return (1);
 	
-}
+// }

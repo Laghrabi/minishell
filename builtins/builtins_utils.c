@@ -3,52 +3,55 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:20:21 by claghrab          #+#    #+#             */
-/*   Updated: 2025/05/30 12:19:55 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/06/26 15:56:38 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	cmd_or_builtin(t_token *token, t_env *env_list)
+int	cmd_or_builtin(t_token *token, t_env *env_list)
 {
 	int flag;
 	
+	// printf("LOL\n");
 	if (token == NULL)
-		return ;
+		return (-1);
 	//expansion();
 	flag = if_builtin(token->value);
-	if (if_builtin(token->value) == 0)
-		exec_cmd();
+	if (flag == 0)
+		return(-1);
 	else
-		which_one(flag, token, env_list);
+		return(which_one(flag, token, env_list));
+	return (-1);
 }
 
-void	which_one(int flag, t_token *token, t_env *env_list)
+int	which_one(int flag, t_token *token, t_env *env_list)
 {
 	if (flag == 1)
-		builtin_cd(token, env_list);
+		return(builtin_cd(token, env_list));
 	else if (flag == 2)
-		builtin_echo(token);
+		return(builtin_echo(token));
 	else if (flag == 3)
-		builtin_pwd(token, env_list);
-	else if (flag == 4)
-		builtin_export(token);
+		return(builtin_pwd(token, env_list));
+	// else if (flag == 4)
+	// 	return(builtin_export(token));
 	else if (flag == 5)
-		builtin_unset(token);
+		return(builtin_unset(token, &env_list));
 	else if (flag == 6)
-		builtin_env(token);
+		return(builtin_env(token, env_list));
 	else if (flag == 7)
-		builtin_exit(token);
+		return(builtin_exit(token));
+	return (-1);
 }
 
 int	if_builtin(char *cmd)
 {
 	if (cmd == NULL)
 		return (0);
-	if (ft_cmp(cmd, "cd") == 0)
+	if (ft_strcmp(cmd, "cd") == 0)
 		return (1);
 	else if (ft_strcmp(cmd, "echo") == 0)
 		return (2);
