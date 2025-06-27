@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/26 15:32:42 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/27 03:10:08 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,12 +124,15 @@ typedef struct s_gr_cl
 
 
 /* FUNCTIONS */
+int	check_nm_var(char *str);
+int	check_for_var(char *key, t_env *env_list);
 int	if_builtin(char *cmd);
 int	which_one(int flag, t_token *token, t_env *env_list);
 int	cmd_or_builtin(t_token *token, t_env *env_list);
 int	builtin_exit(t_token *token);
 long long	ft_stoi(const char *str);
 int if_all_num(char *str);
+int	builtin_export(t_token *token, t_env **env_list);
 int	builtin_unset(t_token *token, t_env **env_list);
 int	builtin_env(t_token *token, t_env *env_list);
 int	builtin_pwd(t_token *token, t_env *env_list);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_list.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:10:56 by claghrab          #+#    #+#             */
-/*   Updated: 2025/05/30 21:45:39 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/06/27 02:41:32 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,6 @@ t_env	*init_env(char **envp)
 	while (envp[i] != NULL)
 	{
 		node = gc_malloc(sizeof(t_env));
-		if (node == NULL)
-		{
-			garbage_collector(NULL, 1);
-			return (NULL);
-		}
 		pos = find_chr_pos(envp[i], '=');
 		node->key = ft_substr(envp[i], 0, pos);
 		node->value = ft_substr(envp[i], pos + 1, ft_strlen(envp[i]) - pos - 1);

@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:20:21 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/26 15:56:38 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/27 03:24:53 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	cmd_or_builtin(t_token *token, t_env *env_list)
 {
 	int flag;
 	
-	// printf("LOL\n");
 	if (token == NULL)
 		return (-1);
 	//expansion();
@@ -36,8 +35,8 @@ int	which_one(int flag, t_token *token, t_env *env_list)
 		return(builtin_echo(token));
 	else if (flag == 3)
 		return(builtin_pwd(token, env_list));
-	// else if (flag == 4)
-	// 	return(builtin_export(token));
+	else if (flag == 4)
+		return(builtin_export(token, &env_list));
 	else if (flag == 5)
 		return(builtin_unset(token, &env_list));
 	else if (flag == 6)
@@ -96,12 +95,45 @@ void	update_env(char *key, char *new_value, t_env *env_list)
 	{
 		if (ft_strcmp(key, current->key) == 0)
 		{
-			if (current->value != NULL)
-				free(current->value);
+			// if (current->value != NULL)
+			// 	free(current->value);
 			current->value = ft_strdup(new_value);
 			return ;
 		}
 		current = current->next;
 	}
 	return ;
+}
+
+int	check_nm_var(char *str)
+{
+	if (str == NULL)
+		return (1);
+	if (str[0] == '!')
+	{
+		printf("bash: %s: event not found\n", str);
+		return (130);
+	}
+	else if ((str[0] < 'a' || str[0] > 'z') && (str[0] < 'A' || str[0] > 'Z') && str[0] != '_')
+	{
+		printf ("bash: export: `%s': not a valid identifier\n", str);
+		return (1);
+	}
+	return (0);
+}
+
+int	check_for_var(char *key, t_env *env_list)
+{
+	t_env	*current;
+	
+	if (key == NULL || env_list == NULL)
+		return (1);
+	current = env_list;
+	while (current != NULL)
+	{
+		if (ft_strcmp(key, current->key) == 0)
+			return (0);
+		current = current->next;
+	}
+	return (1);
 }

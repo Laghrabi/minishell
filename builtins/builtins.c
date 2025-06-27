@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 14:16:51 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/26 19:07:54 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/27 03:09:38 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,11 +242,33 @@ int	builtin_exit(t_token *token)
 	return (1);
 }
 
-// int	builtin_export(t_token *token, t_env **env_list)
-// {
-// 	t_env *current;
-
-// 	if (token == NULL || env_list == NULL  || *env_list == NULL)
-// 		return (1);
-	
-// }
+int	builtin_export(t_token *token, t_env **env_list)
+{
+	t_env	(*node);
+	char	(*key), *value;
+	int		(pos), (status);
+	if (token == NULL || env_list == NULL  || *env_list == NULL)
+		return (1);
+	token = token->next;
+	status = check_nm_var(token->value);
+	if (status == 1 || status == 130)
+		return (status);
+	pos = find_chr_pos(token->value, '=');
+	key = ft_substr(token->value, 0, pos);
+	value = ft_substr(token->value, pos + 1, ft_strlen(token->value) - pos - 1);
+	if (check_for_var(key, *env_list) == 0)
+	{
+		update_env(key, value, *env_list);
+		return (0);
+	}
+	else
+	{
+		node = gc_malloc(sizeof(t_env));
+		node->key = key;
+		node->value = value;
+		node->next = NULL;
+		env_add_back(env_list, node);
+		return (0);
+	}
+	return (1);
+}
