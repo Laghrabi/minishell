@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 15:01:47 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/26 16:53:41 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/27 04:37:05 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,9 @@
 
 int	execute_ast(t_ast *node, t_env *env_list)
 {
-    if (!node)
-	{	
+    if (!node)	
        return (EXIT_FAILURE);
-	}
 
-	// printf("%s\n", node->token_list->value);
     if (node->type == NODE_CMD)
         return execute_command(node, env_list);
     // else if (node->type == NODE_PIPE)
@@ -35,6 +32,8 @@ int	execute_ast(t_ast *node, t_env *env_list)
 
 int execute_command(t_ast *node, t_env *env_list)
 {
-	// printf("%s\n", node->token_list->value);
-    return cmd_or_builtin(node->left->token_list, env_list);
+    char **argv;
+
+    argv = token_list_to_argv(node->left->token_list);
+    return cmd_or_builtin(node->left->token_list, env_list, argv);
 }
