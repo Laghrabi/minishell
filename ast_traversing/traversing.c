@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   traversing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 15:01:47 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/28 03:05:57 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/28 14:48:50 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ int	execute_ast(t_ast *node, t_env *env_list)
 
     if (node->type == NODE_CMD)
         return execute_command(node, env_list);
-    // else if (node->type == NODE_PIPE)
-    //     return execute_pipe(node, env_list);
+    else if (node->type == NODE_PIPE)
+        return execute_pipe(node, env_list, 0);
     // else if (node->type == NODE_AND)
     //     return execute_and(node, env_list);
     // else if (node->type == NODE_OR)

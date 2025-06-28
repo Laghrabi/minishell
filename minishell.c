@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:39:50 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/06/27 05:02:46 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/06/28 20:07:55 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,8 +164,8 @@ int main(int ac, char **av, char **envp)
         if (peek())
             ast = parse_compound_command(false);
         test_expansion(ast, env_list);
-        if (ast)
-            print_ast(ast, 0);
+        // if (ast)
+        //     print_ast(ast, 0);
         int c = execute_ast(ast, env_list);
         printf ("STATUS=%d\n", c);
     }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 14:16:51 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/27 03:09:38 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/28 13:55:38 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ int	builtin_echo(t_token *token)
 		i = 0;
 		while (token->value[i] != '\0')
 		{
-			if (token->value[i] != '\'' && token->value[i] != '\"')
-				if (write(1, &token->value[i], 1) == -1)
+			// if (token->value[i] != '\'' && token->value[i] != '\"')
+			if (write(1, &token->value[i], 1) == -1)
 					return (1);
 			i++;
 		}

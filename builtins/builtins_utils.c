@@ -3,15 +3,50 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:20:21 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/27 23:33:14 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/28 19:56:22 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+
+
+int execute_simple_cmd(t_env *env_list, char **argv)
+{
+    pid_t pid;
+    int status;
+    char **envp;
+    char *cmd_path;
+
+	
+    cmd_path = find_cmd_path(argv[0], env_list);
+    if (!cmd_path)
+    {
+        printf("command not found");
+        return (127);
+	}
+	envp = convert_env_to_array(env_list);
+    pid = fork();
+
+    if (pid == 0)
+    {
+        execve(cmd_path, argv, envp);
+        perror("execve failed");
+		//free
+        exit(1);
+    }
+    else if (pid < 0)
+    {
+        perror("fork failed");
+        free(cmd_path);
+        return (1);
+    }
+    waitpid(pid, &status, 0);
+	return (0);
+}
 int	cmd_or_builtin(t_token *token, t_env *env_list, char **argv)
 {
 	int flag;
@@ -21,7 +56,7 @@ int	cmd_or_builtin(t_token *token, t_env *env_list, char **argv)
 	//expansion();
 	flag = if_builtin(token->value);
 	if (flag == 0)
-		return(-1);
+		return(execute_simple_cmd(env_list, argv));
 	else
 		return(which_one(flag, token, env_list));
 	return (-1);

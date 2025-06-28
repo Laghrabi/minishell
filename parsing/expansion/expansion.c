@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/06/28 09:45:06 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/06/28 12:22:01 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,29 +239,6 @@ t_extoken *expanded_token(char *token, t_env *env, int k)
 //     return (ex_token);
 // }
 
-void remove_extra_quote(char *token, int *field)
-{
-    int i;
-    int j;
-
-    i = 0;
-    j = 0;
-    while (token[i])
-    {
-        if ((token[i] == '\'' || token[i] == '\"') && field[i] == 0 )
-        {
-            j = i;
-            while (token[j])
-            {
-                token[j] = token[j + 1];
-                field[j] = field[j + 1];
-                j++;
-            }
-            continue;
-        }
-        i++;
-    }
-}
 
 int *ft_subint(int *field, int start, int len)
 {
@@ -320,48 +297,6 @@ t_token *list_token(t_extoken *extoken)
     return head;
 }
 
-// t_token * list_token(t_extoken *extoken)
-// {
-//     int i, word, l;
-//     char *one_token;
-//     t_token *token;
-//     t_token *head;
-//     char *value;
-//     int *token_field;
-    
-//     head = NULL;
-//     token_field = NULL;
-//     value = extoken->new_token;
-//     i = 0;
-//     word = 0;
-//     l = 0;
-//     while (value[i])
-//     {
-//         if (((value[i] != ' ' && value[i] != '\t') || ((value[i] == ' ' || value[i] == '\t') && extoken->field[i] >= 2)) && word == 0)
-//         {
-//             l = i;
-//             word = 1;
-//         }
-//         else if ((value[i] == ' ' || value[i] == '\t') && word == 1 && (extoken->field[i] == 1 || extoken->field[i] == 0))
-//         {
-//             one_token = ft_substr(value, l, i - l);
-//             token_field = ft_subint(extoken->field, l, i - l);
-//             token = new_token(one_token, T_WORD, token_field);
-//             add_back(&head, token);
-//             word = 0;
-//         }
-//         i++;
-//     }
-//     if (word == 1)
-//     {
-//         one_token = ft_substr(value, l, i - l);
-//         token_field = ft_subint(extoken->field, l, i - l);
-//         token = new_token(one_token, T_WORD, token_field);
-//         add_back(&head, token);
-//     }
-//     return (head);
-// }
-
 void delete_node(t_token **arg_list, t_token **original_arg)
 {
     t_token *pre;
@@ -376,6 +311,33 @@ void delete_node(t_token **arg_list, t_token **original_arg)
     if (*arg_list == *original_arg && (*original_arg)->pre == NULL)
         *original_arg = (*original_arg)->next;
     *arg_list = next;
+}
+
+void remove_extra_quote(char *token, int *field)
+{
+    int i = 0;
+    int j = 0;
+    int in_squote = 0;
+    int in_dquote = 0;
+
+    while (token[i])
+    {
+        if (token[i] == '\'' && !in_dquote)
+        {
+            in_squote = !in_squote;
+            i++;
+            continue;
+        }
+        else if (token[i] == '"' && !in_squote)
+        {
+            in_dquote = !in_dquote;
+            i++;
+            continue;
+        }
+        token[j] = token[i];
+        field[j++] = field[i++];
+    }
+    token[j] = '\0';
 }
 
 void split_expanded_token(t_extoken *extoken, t_token **arg_list, t_token **original_arg, int herdoc)
