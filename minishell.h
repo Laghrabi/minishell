@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/28 02:35:17 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/28 19:55:53 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <readline/history.h>
 # include "libft/libft.h"
 # include <dirent.h>
+#include <sys/wait.h>
 
 #define LONG_LONG_MAX 9223372036854775807LL
 // #define LONG_MAX 9223372036854775807L
@@ -115,7 +116,6 @@ typedef struct s_info {
     int		(*func)(char *input,struct s_info info, int *i, t_token **token);
 } t_info;
 
-
 typedef struct s_gr_cl
 {
     void *pointer;
@@ -123,8 +123,10 @@ typedef struct s_gr_cl
     struct s_gr_cl *prev;
 } t_gr_cl;
 
-
 /* FUNCTIONS */
+char **convert_env_to_array(t_env *env_list);
+char	*find_cmd_path(char *cmd, t_env *env_list);
+int execute_pipe(t_ast *node, t_env *env_list, int input_fd);
 int	setup_redirections(t_ast *redir_list);
 int	check_nm_var(char *str);
 char **token_list_to_argv(t_token *token_list);

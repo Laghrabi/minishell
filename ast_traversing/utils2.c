@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 05:38:25 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/28 06:35:54 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/28 20:07:41 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char **convert_env_to_array(t_env *env_list)
 {
     char **argv;
-    t_token *current;
+    t_env *current;
     int i;
     
     if (env_list == NULL)
@@ -69,7 +69,7 @@ char	*find_cmd_path(char *cmd, t_env *env_list)
 	while (paths[i] != NULL)
 	{
 		with_slash = ft_strjoin(paths[i], "/");
-		full_path = ft_strjoin(paths[i], cmd);
+		full_path = ft_strjoin(with_slash, cmd);
 		if (access(full_path, X_OK) == 0)
 			return (full_path);
 		i++;
@@ -77,24 +77,24 @@ char	*find_cmd_path(char *cmd, t_env *env_list)
 	return (NULL);
 }
 
-int	execute_cmd(t_env *env_list, char **argv)
-{
-	char	*cmd_path;
-	char	**envp;
-	pid_t	pid;
+// int	execute_cmd(t_env *env_list, char **argv)
+// {
+// 	char	*cmd_path;
+// 	char	**envp;
+// 	pid_t	pid;
 	
-	if (env_list == NULL || argv == NULL || *argv == NULL)
-		return (1);
-	cmd_path = find_cmd_path(argv[0], env_list);
-	if (cmd_path == NULL)
-	{
-		printf("%s: command not found\n", argv[0]);
-		return (127);
-	}
-	pid = fork();
-	if (pid == 0)
-	{
-		envp = convert_env_to_array(env_list);
-	}
+// 	if (env_list == NULL || argv == NULL || *argv == NULL)
+// 		return (1);
+// 	cmd_path = find_cmd_path(argv[0], env_list);
+// 	if (cmd_path == NULL)
+// 	{
+// 		printf("%s: command not found\n", argv[0]);
+// 		return (127);
+// 	}
+// 	pid = fork();
+// 	if (pid == 0)
+// 	{
+// 		envp = convert_env_to_array(env_list);
+// 	}
 	
-}
+// }
