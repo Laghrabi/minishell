@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/27 04:02:28 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/28 02:35:17 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 //INCLUDES
 # include <stdio.h>
 # include <stdlib.h>
+# include <fcntl.h>
 # include <unistd.h>
 # include <stdbool.h>
 # include <aio.h>
@@ -124,6 +125,7 @@ typedef struct s_gr_cl
 
 
 /* FUNCTIONS */
+int	setup_redirections(t_ast *redir_list);
 int	check_nm_var(char *str);
 char **token_list_to_argv(t_token *token_list);
 int	check_for_var(char *key, t_env *env_list);

@@ -6,11 +6,20 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 03:44:43 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/27 03:58:46 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/28 05:27:19 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+char	*get_file_name(t_ast *redir_node)
+{
+	if (redir_node == NULL)
+		return (NULL);
+	if (redir_node->token_list != NULL)
+		return (redir_node->token_list->value);
+	return (NULL);
+}
 
 char **token_list_to_argv(t_token *token_list)
 {
@@ -37,4 +46,52 @@ char **token_list_to_argv(t_token *token_list)
     }
     argv[i] = NULL;
     return (argv);
+}
+
+int	heredoc_to_fd(t_ast *heredoc_node)
+{
+	int		pipefd[2];
+	char	*input;
+
+	if (heredoc_node == NULL || heredoc_node->token_list == NULL)
+		return (-1);
+	if (pipe(pipefd) == -1)
+		return (-1);
+	input = heredoc_node->token_list->value;
+	write(pipefd[1], input, ft_strlen(input));
+	close(pipefd[1]);
+	return (pipefd[0]);	
+}
+
+int	setup_redirections(t_ast *redir_list)
+{
+	int		(fd);
+	char	(*filename);
+	if (redir_list == NULL)
+		return (1);
+	while (redir_list != NULL)
+	{
+		filename = get_file_name(redir_list);
+		if (filename == NULL)
+			return (1);
+		if (redir_list->type == NODE_OREDIR)
+			fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		else if (redir_list->type == NODE_IREDIR)
+			fd = open(filename, O_RDONLY);
+		else if (redir_list->type == NODE_APPEND)
+			fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		else if (redir_list->type == NODE_HEREDOC)
+			fd = heredoc_to_fd(redir_list);
+		else
+			return (1);
+		if (fd == -1)
+			return (1);
+		if (redir_list->type == NODE_OREDIR || redir_list->type == NODE_APPEND)
+			dup2(fd, STDOUT_FILENO);
+		else
+			dup2(fd, STDIN_FILENO);
+		close(fd);
+		redir_list = redir_list->right;
+	}
+	return (0);
 }

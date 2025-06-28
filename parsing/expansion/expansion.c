@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:04:58 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/06/26 15:42:38 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/28 03:36:40 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -375,6 +375,8 @@ void split_expanded_token(t_extoken *extoken, t_token **arg_list, t_token **orig
     t_token *last;
     t_token *old;
 
+    if (!extoken)
+        return ;
     (void)original_arg;
     (*arg_list)->field = extoken->field;
     old = *arg_list;
@@ -425,7 +427,7 @@ void expansion(t_token **arg_list, t_env *env)
         if (current->expansion)
         {
             extoken = expanded_token(current->value, env, current->is_herdoc);
-            if (extoken->ambiguous == 1)
+            if (extoken && extoken->ambiguous == 1)
             {
                 current->value = extoken->new_token;
                 current->ambiguous = 1;

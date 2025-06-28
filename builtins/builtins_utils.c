@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:20:21 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/27 04:02:06 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/27 23:33:14 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	cmd_or_builtin(t_token *token, t_env *env_list, char **argv)
 	//expansion();
 	flag = if_builtin(token->value);
 	if (flag == 0)
-		return(exec(argv));
+		return(-1);
 	else
 		return(which_one(flag, token, env_list));
 	return (-1);

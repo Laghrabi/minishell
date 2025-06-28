@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 15:01:47 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/27 04:37:05 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/28 03:05:57 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,32 @@ int	execute_ast(t_ast *node, t_env *env_list)
     return (EXIT_FAILURE);
 }
 
+void	fd_leaks(int fd1, int fd2)
+{
+	dup2(fd1, STDOUT_FILENO);
+	dup2(fd2, STDIN_FILENO);
+	close(fd1);
+	close(fd2);
+}
+
 int execute_command(t_ast *node, t_env *env_list)
 {
-    char **argv;
-
+    char (**argv);
+    int	(saved_stdout), (saved_stdin), (status);
     argv = token_list_to_argv(node->left->token_list);
-    return cmd_or_builtin(node->left->token_list, env_list, argv);
+    if (node->right != NULL && (node->right->type == NODE_APPEND || node->right->type == NODE_OREDIR || node->right->type == NODE_IREDIR))
+    {
+        saved_stdout = dup(STDOUT_FILENO);
+		saved_stdin = dup(STDIN_FILENO);
+    	status = setup_redirections(node->right);
+		if (status == 1)
+		{
+			fd_leaks(saved_stdin, saved_stdout);
+			return (1);
+		}
+		status = cmd_or_builtin(node->left->token_list, env_list, argv);
+		fd_leaks(saved_stdin, saved_stdout);
+		return (status);
+    }
+    return (cmd_or_builtin(node->left->token_list, env_list, argv));
 }

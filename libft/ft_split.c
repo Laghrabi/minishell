@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 22:31:16 by zfarouk           #+#    #+#             */
-/*   Updated: 2024/11/06 21:52:14 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/06/28 05:42:58 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ char	**ft_split(char const *s, char c)
 	if (!s)
 		return (NULL);
 	i = count_word(s, c, &size_s);
-	p = malloc((i + 1) * sizeof(char *));
+	p = gc_malloc((i + 1) * sizeof(char *));
 	if (!p)
 		return (NULL);
 	p = allocation(p, s, c, size_s);
