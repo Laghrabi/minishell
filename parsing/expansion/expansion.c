@@ -3,12 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/26 16:04:58 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/06/28 03:36:40 by claghrab         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2025/06/28 09:45:06 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
+
 
 #include "../../minishell.h"
 
@@ -89,14 +92,20 @@ char *check_var(char *token, t_env *env, int *index)
     char *value;
 
     i = 0;
-    /* should handle $?   
-        if (token[0] == '?')
-        {
-            char *exit_status = ft_itoa(...)
-            *index += 1;
-            return exit_status;
-        }
-    */
+    // //should handle $?   
+    // if (token[0] == '?')
+    // {
+    //     char *exit_status = ft_itoa(g_var()->exit_status);
+    //     *index += 1;
+    //     return exit_status;
+    // }
+    // //should handle $?   
+    // if (token[0] == '?')
+    // {
+    //     char *exit_status = ft_itoa(g_var()->exit_status);
+    //     *index += 1;
+    //     return exit_status;
+    // }
     value = NULL;
     if (ft_isalpha(token[0]) || token[0] == '_')
     {
