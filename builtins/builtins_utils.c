@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:20:21 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/29 22:10:49 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/29 22:50:30 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,9 +129,9 @@ void	update_env(char *key, char *new_value, t_env *env_list)
 	{
 		if (ft_strcmp(key, current->key) == 0)
 		{
-			// if (current->value != NULL)
-			// 	free(current->value);
-			current->value = ft_strdup(new_value);
+			if (current->value != NULL)
+				free(current->value);
+			current->value = new_value;
 			return ;
 		}
 		current = current->next;

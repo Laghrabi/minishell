@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 14:16:51 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/28 13:55:38 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/06/29 22:48:08 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,8 +254,8 @@ int	builtin_export(t_token *token, t_env **env_list)
 	if (status == 1 || status == 130)
 		return (status);
 	pos = find_chr_pos(token->value, '=');
-	key = ft_substr(token->value, 0, pos);
-	value = ft_substr(token->value, pos + 1, ft_strlen(token->value) - pos - 1);
+	key = ft_substr2(token->value, 0, pos);
+	value = ft_substr2(token->value, pos + 1, ft_strlen(token->value) - pos - 1);
 	if (check_for_var(key, *env_list) == 0)
 	{
 		update_env(key, value, *env_list);
@@ -263,7 +263,7 @@ int	builtin_export(t_token *token, t_env **env_list)
 	}
 	else
 	{
-		node = gc_malloc(sizeof(t_env));
+		node = malloc(sizeof(t_env));
 		node->key = key;
 		node->value = value;
 		node->next = NULL;
