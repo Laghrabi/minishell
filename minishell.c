@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:39:50 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/06/29 17:16:30 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/06/29 22:15:56 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void print_env(t_env *env)
 
 
 
-void test_expansion(t_ast *node, t_env *env_list)
+void expand_evrything(t_ast *node, t_env *env_list)
 {
     if (!node || !env_list)
         return;
@@ -122,9 +122,9 @@ void test_expansion(t_ast *node, t_env *env_list)
         wildcard(&(node->token_list));
     }
     if (node->left)
-        test_expansion(node->left, env_list);
+        expand_evrything(node->left, env_list);
     if (node->right)
-        test_expansion(node->right, env_list);
+        expand_evrything(node->right, env_list);
 }
 void memory_management(t_env *env, int free_env)
 {

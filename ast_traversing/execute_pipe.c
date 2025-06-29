@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_pipe.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 10:27:21 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/06/29 19:56:37 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/06/29 22:22:51 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int execute_subshell(t_ast *node, t_env *env_list)
     if (pid == 0)
     {
         if (node->right)
-            setup_redirections(node->right);
+            setup_redirections(node->right, env_list);
         exit(execute_compound_command(node->left, env_list));
     }
     waitpid(pid, &status, 0);
@@ -92,7 +92,7 @@ int execute_simple_command(t_ast *node, t_env *env_list)
     {
         saved_stdout = dup(STDOUT_FILENO);
 		saved_stdin = dup(STDIN_FILENO);
-    	status = setup_redirections(node->right);
+    	status = setup_redirections(node->right, env_list);
 		if (status == 1)
 		{
 			fd_leaks(saved_stdin, saved_stdout);
@@ -123,6 +123,7 @@ int execute_pipe(t_ast *node, t_env *env_list, int input_fd)
     pid_t pid;
     if (!node)
         return (1);
+    expand_evrything(node, env_list);
     if (node->type != NODE_PIPE)
         return(execute_command(node, env_list));
     pipe(pipefd);
@@ -143,7 +144,6 @@ int execute_pipe(t_ast *node, t_env *env_list, int input_fd)
         //nsdo pipe fchild
         close(pipefd[0]);
         close(pipefd[1]);
-        // printf("hello simple command");
         execute_command(node->left, env_list);
         exit(1);
     }

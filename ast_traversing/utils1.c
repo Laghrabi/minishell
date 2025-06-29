@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 03:44:43 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/29 15:07:56 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/06/29 22:10:35 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,14 @@ char	*get_file_name(t_ast *redir_node)
 	if (redir_node == NULL)
 		return (NULL);
 	if (redir_node->token_list != NULL)
+	{
+		if (redir_node->token_list->ambiguous == 1)
+		{
+			printf("bash: ambiguous redirect\n");
+			return (NULL);
+		}
 		return (redir_node->token_list->value);
+	}
 	return (NULL);
 }
 
@@ -63,14 +70,15 @@ int	heredoc_to_fd(t_ast *heredoc_node)
 	return (pipefd[0]);	
 }
 
-int	setup_redirections(t_ast *redir_list)
+int	setup_redirections(t_ast *redir_list, t_env *env_list)
 {
 	int		(fd);
 	char	(*filename);
-	if (redir_list == NULL)
+	if (redir_list == NULL || env_list == NULL)
 		return (1);
 	while (redir_list != NULL)
 	{
+		//printf("here=%d\n", redir_list->token_list->ambiguous);
 		filename = get_file_name(redir_list);
 		if (filename == NULL)
 			return (1);

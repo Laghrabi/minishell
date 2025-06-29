@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:20:21 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/29 16:46:04 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/06/29 22:10:49 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ int	cmd_or_builtin(t_token *token, t_env *env_list, char **argv)
 	
 	if (token == NULL || env_list == NULL || argv == NULL || *argv == NULL)
 		return (-1);
-	//expansion();
 	flag = if_builtin(token->value);
 	if (flag == 0)
 		return(execute_simple_cmd(env_list, argv));
