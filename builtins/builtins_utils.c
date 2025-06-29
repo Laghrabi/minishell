@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:20:21 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/28 19:56:22 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/06/29 16:46:04 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,17 @@ int execute_simple_cmd(t_env *env_list, char **argv)
     int status;
     char **envp;
     char *cmd_path;
-
 	
-    cmd_path = find_cmd_path(argv[0], env_list);
-    if (!cmd_path)
-    {
-        printf("command not found");
-        return (127);
+	if (env_list == NULL || argv == NULL || *argv == NULL)
+		return (1);
+	cmd_path = find_cmd_path(argv[0], env_list);
+	if (cmd_path == NULL)
+	{
+		printf("%s: command not found\n", argv[0]);
+		return (127);
 	}
 	envp = convert_env_to_array(env_list);
     pid = fork();
-
     if (pid == 0)
     {
         execve(cmd_path, argv, envp);

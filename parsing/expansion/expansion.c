@@ -5,16 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/06/28 22:16:09 by claghrab         ###   ########.fr       */
+/*   Created: 2025/05/26 16:04:58 by zfarouk           #+#    #+#             */
+/*   Updated: 2025/06/29 11:31:32 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-
-
 #include "../../minishell.h"
-
 
 int handle_single_quote(int *db_quote, int *sg_quote, int *quote_state)
 {

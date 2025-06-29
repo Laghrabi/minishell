@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/28 19:55:53 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/06/29 15:26:35 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,12 @@ typedef struct s_info {
     int		(*func)(char *input,struct s_info info, int *i, t_token **token);
 } t_info;
 
+typedef struct s_variabls
+{
+    t_env	*env_list;
+    int     exit_status;
+} t_variabls;
+
 typedef struct s_gr_cl
 {
     void *pointer;
@@ -124,6 +130,8 @@ typedef struct s_gr_cl
 } t_gr_cl;
 
 /* FUNCTIONS */
+t_variabls *s_var (void);
+int execute_compound_command(t_ast *node, t_env *env_list);
 char **convert_env_to_array(t_env *env_list);
 char	*find_cmd_path(char *cmd, t_env *env_list);
 int execute_pipe(t_ast *node, t_env *env_list, int input_fd);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_list.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:10:56 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/27 02:41:32 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/29 17:07:43 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,30 @@ void	env_add_back(t_env **lst, t_env *new)
 	current->next = new;
 }
 
+char	*ft_substr2(char const *s, unsigned int start, size_t len)
+{
+	size_t	i;
+	size_t	slen;
+	char	*p;
+
+	if (!s)
+		return (NULL);
+	slen = ft_strlen(s);
+	if (len > slen - start)
+		len = slen - start;
+	p = malloc((len + 1) * sizeof(char));
+	if (!p)
+		return (NULL);
+	i = 0;
+	while (i < len)
+	{
+		p[i] = s[start + i];
+		i++;
+	}
+	p[i] = '\0';
+	return (p);
+}
+
 t_env	*init_env(char **envp)
 {
 	int		i;
@@ -65,10 +89,10 @@ t_env	*init_env(char **envp)
 	head = NULL;
 	while (envp[i] != NULL)
 	{
-		node = gc_malloc(sizeof(t_env));
+		node = malloc(sizeof(t_env));
 		pos = find_chr_pos(envp[i], '=');
-		node->key = ft_substr(envp[i], 0, pos);
-		node->value = ft_substr(envp[i], pos + 1, ft_strlen(envp[i]) - pos - 1);
+		node->key = ft_substr2(envp[i], 0, pos);
+		node->value = ft_substr2(envp[i], pos + 1, ft_strlen(envp[i]) - pos - 1);
 		node->next = NULL;
 		env_add_back(&head, node);
 		i++;

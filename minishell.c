@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:39:50 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/06/28 20:07:55 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/06/29 17:16:30 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,48 +126,49 @@ void test_expansion(t_ast *node, t_env *env_list)
     if (node->right)
         test_expansion(node->right, env_list);
 }
+void memory_management(t_env *env, int free_env)
+{
+    t_env *current;
 
+    garbage_collector(NULL, 1);
+    if (free_env)
+    {
+        if (env)
+        {
+            while (env)
+            {
+                current = env->next;
+                free(env->key);
+                free(env->value);
+                env = current;
+            }
+        }
+    }
+}
 int main(int ac, char **av, char **envp)
 {
     char *input;
     t_ast *ast;
-    //t_token *token;
-    // t_token *test;
 
     (void)ac;
     (void)av;
-    // (void)envp;
 	t_env	*env_list = init_env(envp);
-    //print_env(env_list);
     while (1)
     {
         input = readline("minishell$ ");
         add_history(input);
-        //printf("%s\n", input);
         g_token = tokenization(input);
         if (g_token == NULL)
             continue;
-        // test = g_token;
-        // while (test)
-        // {
-        //     printf("%sbaa3\n", test->value);
-        //     test = test->next;
-        // }
         free(input);
-        //t_token *current = g_token;
-        // while (current)
-        // {
-        //     printf("[%s]  [%d]\n", current->value, current->token);
-        //     current = current->next;
-        //     printf("\n");
-        // }
         if (peek())
             ast = parse_compound_command(false);
-        test_expansion(ast, env_list);
+        // test_expansion(ast, env_list);
         // if (ast)
         //     print_ast(ast, 0);
         int c = execute_ast(ast, env_list);
         printf ("STATUS=%d\n", c);
+        memory_management( NULL, 0);
     }
     return 0;
 }
