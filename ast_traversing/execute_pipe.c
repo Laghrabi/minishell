@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 10:27:21 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/06/29 22:22:51 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/30 18:13:58 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,8 @@ int execute_subshell(t_ast *node, t_env *env_list)
 
 void	fd_leaks(int fd1, int fd2)
 {
-	dup2(fd1, STDOUT_FILENO);
-	dup2(fd2, STDIN_FILENO);
+	dup2(fd1, STDIN_FILENO);
+	dup2(fd2, STDOUT_FILENO);
 	close(fd1);
 	close(fd2);
 }

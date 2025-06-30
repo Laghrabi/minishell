@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 03:44:43 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/29 22:10:35 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/30 18:38:15 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,13 @@ int	heredoc_to_fd(t_ast *heredoc_node)
 	int		pipefd[2];
 	char	*input;
 
+	printf("LOOOOOOOOOOOOOOOL\n");
 	if (heredoc_node == NULL || heredoc_node->token_list == NULL)
 		return (-1);
 	if (pipe(pipefd) == -1)
 		return (-1);
 	input = heredoc_node->token_list->value;
+	printf("HERE= [%s]\n", input);
 	write(pipefd[1], input, ft_strlen(input));
 	close(pipefd[1]);
 	return (pipefd[0]);	
