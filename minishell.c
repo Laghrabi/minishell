@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:39:50 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/06/29 22:15:56 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/30 02:04:47 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,13 +149,23 @@ int main(int ac, char **av, char **envp)
 {
     char *input;
     t_ast *ast;
+    int     c;
 
     (void)ac;
     (void)av;
 	t_env	*env_list = init_env(envp);
+    // int i = 0;
+    // char **array = convert_env_to_array(env_list);
+    // while (array[i] != NULL)
+    // {
+    //     printf("%s\n", array[i]);
+    //     i++;
+    // }
     while (1)
     {
         input = readline("minishell$ ");
+        if (input == NULL)
+            return(printf("exit\n"), 0);
         add_history(input);
         g_token = tokenization(input);
         if (g_token == NULL)
@@ -166,9 +176,9 @@ int main(int ac, char **av, char **envp)
         // test_expansion(ast, env_list);
         // if (ast)
         //     print_ast(ast, 0);
-        int c = execute_ast(ast, env_list);
+        c = execute_ast(ast, env_list);
         printf ("STATUS=%d\n", c);
         memory_management( NULL, 0);
     }
-    return 0;
+    return (s_var()->exit_status);
 }

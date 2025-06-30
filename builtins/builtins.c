@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 14:16:51 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/29 22:48:08 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/06/30 02:07:36 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int	builtin_env(t_token *token, t_env *env_list)
 	current = env_list;
 	while (current != NULL)
 	{
-		if (current->value != NULL)
+		if (current->value != NULL && current->value[0] != '\0')
 			printf("%s=%s\n", current->key, current->value);
 		current = current->next;
 	}
@@ -181,7 +181,7 @@ long long	ft_stoi(const char *str)
 {
 	int		i;
 	int		sign;
-	long long	result;
+	unsigned long	result;
 
 	i = 0;
 	sign = 0;
@@ -197,25 +197,26 @@ long long	ft_stoi(const char *str)
 	while (str[i] <= '9' && str[i] >= '0')
 	{
 		result = result * 10 + (str[i] - '0');
-		if (result > (long long)LONG_MAX + sign)
-			return (LONG_LONG_MAX);
+		if (result > (unsigned long)LONG_MAX + sign)
+			return ((unsigned long)LONG_MAX + 1);
 		i++;
 	}
 	if (sign)
 		result *= -1;
-	return (result);
+	return ((long long)result);
 }
 
 int	builtin_exit(t_token *token)
 {
-	long long	nbr;
+	unsigned long	nbr;
 
 	if (token == NULL)
 		return (1);
 	if (token->next == NULL)
 	{
-		printf("exit\n");
-		exit(0);
+		if (isatty(0))
+			printf("exit\n");
+		//exit(0);
 	}
 	else if (token->next != NULL)
 	{
@@ -223,23 +224,71 @@ int	builtin_exit(t_token *token)
 		if (token->next != NULL)
 		{
 			printf("exit\nbash: exit: too many arguments\n");
+			s_var()->exit_status = 1;
 			return (1);
 		}
 		if (if_all_num(token->value) == 1)
 			return (1);
 		nbr = ft_stoi(token->value);
-		if (nbr == LONG_LONG_MAX)
+		if (nbr == (unsigned long)LONG_MAX + 1)
 		{
 			printf("exit\nbash: exit: %s: numeric argument required\n", token->value);
-			return (1);
+			//exit(2);
+			s_var()->exit_status = 2;
 		}
 		else
 		{
 			printf("exit\n");
-			exit(nbr % 256);
+			s_var()->exit_status = nbr % 256;
+			//exit(nbr % 256);
 		}
 	}
-	return (1);
+	printf("EXIT STATUS: [%d]", s_var()->exit_status);
+	exit(s_var()->exit_status);
+	//return (1);
+}
+
+char	**sort_env_list(t_env *env_list)
+{
+	char	(**array);
+	char	(*tmp);
+	int		(i), (j);
+	if (env_list == NULL)
+		return (NULL);
+	array = convert_env_to_array(env_list);
+	i = 0;
+	j = 0;
+	while (array[i + 1] != NULL)
+	{
+		j = i + 1;
+		while (array[j] != NULL)
+		{
+			if (ft_strcmp(array[i], array[j]) > 0)
+			{
+				tmp = array[i];
+				array[i] = array[j];
+				array[j] = tmp;
+			}
+			j++;
+		}
+		i++;
+	}
+	return (array);
+}
+
+void	only_export(t_env *env_list)
+{
+	char	(**array);
+	int		(i);
+	if (env_list == NULL)
+		return ;
+	array = sort_env_list(env_list);
+	i = 0;
+	while (array[i] != NULL)
+	{
+		printf("declare -x %s\n", array[i]);
+		i++;
+	}
 }
 
 int	builtin_export(t_token *token, t_env **env_list)
@@ -249,6 +298,11 @@ int	builtin_export(t_token *token, t_env **env_list)
 	int		(pos), (status);
 	if (token == NULL || env_list == NULL  || *env_list == NULL)
 		return (1);
+	if (token->next == NULL)
+	{
+		only_export(*env_list);
+		return (0);
+	}
 	token = token->next;
 	status = check_nm_var(token->value);
 	if (status == 1 || status == 130)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 05:38:25 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/28 20:07:41 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/06/30 00:04:05 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,9 @@
 
 char **convert_env_to_array(t_env *env_list)
 {
-    char **argv;
-    t_env *current;
-    int i;
-    
+    char (**argv);
+    t_env (*current);
+    int (i);
     if (env_list == NULL)
         return (NULL);
     i = 0;
@@ -32,7 +31,10 @@ char **convert_env_to_array(t_env *env_list)
     current = env_list;
     while (current != NULL)
     {
-        argv[i++] = ft_strdup(current->value);
+        argv[i] = ft_strdup(current->key);
+        argv[i] = ft_strjoin(argv[i], "=");
+        argv[i] = ft_strjoin(argv[i], current->value);
+        i++;
         current = current->next;
     }
     argv[i] = NULL;

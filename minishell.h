@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/29 22:18:56 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/29 23:29:04 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ typedef struct s_env {
     char			*key;
 	char			*value;
 	struct s_env	*next;
+    struct s_env	*export_next;
 } t_env;
 
 typedef struct double_int {
@@ -130,6 +131,7 @@ typedef struct s_gr_cl
 } t_gr_cl;
 
 /* FUNCTIONS */
+char	*ft_substr2(char const *s, unsigned int start, size_t len);
 void expand_evrything(t_ast *node, t_env *env_list);
 t_variabls *s_var (void);
 int execute_compound_command(t_ast *node, t_env *env_list);

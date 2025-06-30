@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:31:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/28 05:14:18 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/30 02:24:50 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,10 +220,15 @@ char	*parse_herdoc_helper(int *i)
 	char	*buffer;
 	
 	line = readline("> ");
+    if (line == NULL)
+    {
+        printf("here-doc delemited by EOF\n");
+        return (NULL);
+    }    
 	buffer = NULL;
 	str = peek()->value;
     if(is_quote(str))
-        {*i = 0;}
+        *i = 0;
     remove_quote(str);
 	while (ft_strcmp(line, str) != 0)
 	{
@@ -231,9 +236,14 @@ char	*parse_herdoc_helper(int *i)
         buffer = join(buffer, "\n");
 		free(line);
 		line = readline("> ");
+        if (line == NULL)
+        {
+            printf("here-doc delemited by EOF\n");
+            free(line);
+            return (buffer);
+        }  
 	}
     free(line);
-    // printf("here\n");
 	return (buffer);
 }
 
