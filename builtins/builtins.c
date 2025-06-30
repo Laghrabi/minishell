@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 14:16:51 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/30 02:07:36 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/30 22:44:08 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,14 +279,19 @@ char	**sort_env_list(t_env *env_list)
 void	only_export(t_env *env_list)
 {
 	char	(**array);
-	int		(i);
+	char	(*str);
+	int		(i), (pos);
 	if (env_list == NULL)
 		return ;
 	array = sort_env_list(env_list);
 	i = 0;
 	while (array[i] != NULL)
 	{
-		printf("declare -x %s\n", array[i]);
+		pos = find_chr_pos(array[i], '=');
+		str = ft_substr(array[i], 0, pos + 1);
+		printf("declare -x %s\"", str);
+		str = ft_strchr(array[i], '=');
+		printf("%s\"\n", str + 1);
 		i++;
 	}
 }

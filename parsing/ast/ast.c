@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:31:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/30 02:24:50 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/30 22:57:55 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,10 +104,8 @@ t_ast   *parse_subshell(void)
         return (syntax_error());
     consume();
     inner_command = parse_compound_command(true);
-    //printf("here1\n");
     if (peek() == NULL || peek()->token != T_RPAREN)
         return (syntax_error());
-    //printf("here1\n");
     consume();
     if (peek() && is_red_list(peek()->value) == 1)
         red_list = parse_redir_list();

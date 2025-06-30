@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:39:50 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/06/30 18:40:41 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/30 22:37:39 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,22 @@ void memory_management(t_env *env, int free_env)
         }
     }
 }
+
+void	handle_sigint(int signum)
+{
+	(void)signum;
+	rl_replace_line("", 0);
+    write(STDOUT_FILENO, "\n", 1);
+	rl_on_new_line();
+	rl_redisplay();
+}
+
+void	setup_signals(void)
+{
+	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, SIG_IGN);
+}
+
 int main(int ac, char **av, char **envp)
 {
     char *input;
@@ -154,13 +170,7 @@ int main(int ac, char **av, char **envp)
     (void)ac;
     (void)av;
 	t_env	*env_list = init_env(envp);
-    // int i = 0;
-    // char **array = convert_env_to_array(env_list);
-    // while (array[i] != NULL)
-    // {
-    //     printf("%s\n", array[i]);
-    //     i++;
-    // }
+    setup_signals();
     while (1)
     {
         input = readline("minishell$ ");
