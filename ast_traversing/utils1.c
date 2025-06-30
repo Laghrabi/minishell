@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 03:44:43 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/30 20:43:28 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/30 21:26:10 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,20 +55,56 @@ char **token_list_to_argv(t_token *token_list)
     return (argv);
 }
 
-int	heredoc_to_fd(t_ast *heredoc_node)
+char *creat_herdoc_file(char *text)
 {
-	int		pipefd[2];
-	char	*input;
+    char *name;
+    char random[10];
+    int fd_random;
+
+    fd_random = open("/dev/random", O_RDONLY);
+    read(fd_random, random, 9);
+    random[9] = '\0';
+    while (ft_strchr(random, '$') != NULL)
+    {
+        read(fd_random, random, 9);
+        random[9] = '\0';
+    }
+    close(fd_random);
+    name = ft_strjoin("/tmp/herdoc", random);
+    printf("-=-%s\n", name);
+    fd_random = open(name, O_RDWR | O_CREAT | O_TRUNC, 0600);
+    write(fd_random, text, strlen(text));
+    close(fd_random);
+    return (name);
+}
+
+int	heredoc_to_fd(t_ast *heredoc_node, t_env *env_list)
+{
+	char	*file_name;
+	int		fd;
 
 	if (heredoc_node == NULL || heredoc_node->token_list == NULL)
 		return (-1);
-	if (pipe(pipefd) == -1)
-		return (-1);
-	input = heredoc_node->token_list->value;
-	write(pipefd[1], input, ft_strlen(input));
-	close(pipefd[1]);
-	return (pipefd[0]);	
+	expansion(&(heredoc_node->token_list), env_list);
+	file_name = creat_herdoc_file(heredoc_node->token_list->value);
+	fd = open(file_name, O_RDONLY);
+	return (fd);	
 }
+
+// int	heredoc_to_fd(t_ast *heredoc_node)
+// {
+// 	int		pipefd[2];
+// 	char	*input;
+
+// 	if (heredoc_node == NULL || heredoc_node->token_list == NULL)
+// 		return (-1);
+// 	if (pipe(pipefd) == -1)
+// 		return (-1);
+// 	input = heredoc_node->token_list->value;
+// 	write(pipefd[1], input, ft_strlen(input));
+// 	close(pipefd[1]);
+// 	return (pipefd[0]);	
+// }
 
 int	setup_redirections(t_ast *redir_list, t_env *env_list)
 {
@@ -89,7 +125,7 @@ int	setup_redirections(t_ast *redir_list, t_env *env_list)
 		else if (redir_list->type == NODE_APPEND)
 			fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		else if (redir_list->type == NODE_HEREDOC)
-			fd = heredoc_to_fd(redir_list);
+			fd = heredoc_to_fd(redir_list, env_list);
 		else
 			return (1);
 		if (fd == -1)

@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:20:21 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/30 02:08:49 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/30 16:46:34 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-
 
 int execute_simple_cmd(t_env *env_list, char **argv)
 {
@@ -21,8 +19,11 @@ int execute_simple_cmd(t_env *env_list, char **argv)
     char **envp;
     char *cmd_path;
 	
+
+
 	if (env_list == NULL || argv == NULL || *argv == NULL)
 		return (1);
+	//////3ndek chiiii MOCHKIIILE HNA BABE	
 	if (ft_strchr(argv[0], '/') != NULL)
 		cmd_path = argv[0];
 	else
