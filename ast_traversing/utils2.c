@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 05:38:25 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/01 19:13:29 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/01 22:48:07 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ char	*find_cmd_path(char *cmd, t_env *env_list)
 			return (full_path);
 		i++;
 	}
-	return (cmd);
+	return (NULL);
 }
 
 // int	execute_cmd(t_env *env_list, char **argv)
