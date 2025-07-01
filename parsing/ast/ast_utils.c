@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:01:37 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/30 23:00:45 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/01 13:48:37 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ t_token	*consume(void)
 	return (tmp);
 }
 
-void	*syntax_error(long	status)
+void	*syntax_error(void)
 {
 	printf("SYNTAX ERROR\n");
-	s_var()->exit_status = status;
+	// s_var()->exit_status = status;
 	return (NULL);
 }
 

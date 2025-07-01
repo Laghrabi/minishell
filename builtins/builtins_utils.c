@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:20:21 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/30 16:46:34 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/01 15:20:24 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ int execute_simple_cmd(t_env *env_list, char **argv)
     int status;
     char **envp;
     char *cmd_path;
-	
-
 
 	if (env_list == NULL || argv == NULL || *argv == NULL)
 		return (1);

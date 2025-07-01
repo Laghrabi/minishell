@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   garbage_collector.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 15:18:45 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/06/27 02:41:11 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/01 15:09:40 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void garbage_collector(void *new_pointer, int should_free)
     }
     if (should_free == 1)
     {
+        
         free_garbage_collector(garbage);
         garbage = NULL;
         current = NULL;
