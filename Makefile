@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -g # -fsanitize=address
+CFLAGS = -Wall -Werror -Wextra -g  -fsanitize=address
 LDFLAGS = -lreadline
 SRC = minishell.c parsing/tokenization/tokenizer.c \
 		parsing/tokenization/seperators_function.c \
