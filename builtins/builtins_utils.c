@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:20:21 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/30 16:46:34 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/01 00:44:05 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,28 @@ int	if_builtin(char *cmd)
 		return (0);
 }
 
+char	*ft_strdup2(const char *s1)
+{
+	int		j;
+	int		i;
+	char	*p;
+
+	if (s1 == NULL)
+		return (NULL);
+	i = ft_strlen(s1);
+	p = malloc((i + 1) * sizeof(char));
+	if (!p)
+		return (NULL);
+	j = 0;
+	while (j < i)
+	{
+		p[j] = s1[j];
+		j++;
+	}
+	p[j] = '\0';
+	return (p);
+}
+
 char    *get_env_value(char *key, t_env *env_list)
 {
     t_env   *current;
@@ -136,7 +158,7 @@ void	update_env(char *key, char *new_value, t_env *env_list)
 		{
 			if (current->value != NULL)
 				free(current->value);
-			current->value = new_value;
+			current->value = ft_strdup2(new_value);
 			return ;
 		}
 		current = current->next;

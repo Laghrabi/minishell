@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/30 23:01:21 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/06/30 23:26:15 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,7 @@ void *gc_malloc(size_t size);
 int	is_red_list(char *str);
 t_token	*peek(void);
 t_token	*consume(void);
-void	*syntax_error(long	status);
+void	*syntax_error(void);
 t_ast   *parse_simple_command(void);
 t_ast   *parse_subshell(void);
 t_ast   *parse_command(void);
