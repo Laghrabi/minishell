@@ -6,9 +6,10 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 10:27:21 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/01 23:47:09 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/01 23:57:26 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../minishell.h"
 
@@ -81,15 +82,22 @@ void	fd_leaks(int fd1, int fd2)
 // int check_path(t_ast *node, t_env *env_list)
 // {
     
+// int is_path(t_ast *node, t_env *env_list)
+// {
+//     char *path;
+
+//     path = check_for_var("PATH", env_list);
+//     if (path)
+//         execute_simple_command(node, env_list);
 // }
 
 int execute_simple_command(t_ast *node, t_env *env_list)
 {
     char (**argv);
     int	(saved_stdout), (saved_stdin), (status);
-    //ana zdtha
     if (!node || !node->left || !node->left->token_list)
         return (1);
+    
     argv = token_list_to_argv(node->left->token_list);
     if (!argv || !argv[0])
         return (1);

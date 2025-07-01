@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 05:38:25 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/01 23:18:17 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/01 23:21:30 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char	*find_cmd_path(char *cmd, t_env *env_list)
 			return (full_path);
 		i++;
 	}
-	return (cmd);
+	return (NULL);
 }
 
 // int	execute_cmd(t_env *env_list, char **argv)
