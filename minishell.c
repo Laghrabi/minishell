@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:39:50 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/01 00:44:52 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/01 23:14:49 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,7 +186,7 @@ int main(int ac, char **av, char **envp)
         // test_expansion(ast, env_list);
         // if (ast)
         //     print_ast(ast, 0);
-        c = execute_ast(ast, env_list);
+        execute_ast(ast, env_list);
         printf ("STATUS=%d\n", c);
         memory_management( NULL, 0);
     }
