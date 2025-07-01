@@ -5,6 +5,7 @@ SRC = minishell.c parsing/tokenization/tokenizer.c \
 		parsing/tokenization/seperators_function.c \
 		parsing/ast/ast.c parsing/ast/ast_utils.c \
 		parsing/memory_leak/garbage_collector.c \
+		parsing/memory_leak/memory_management.c \
 		parsing/expansion/env_list.c \
 		parsing/expansion/expansion.c \
 		parsing/expansion/expansion_outils.c \

@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 05:38:25 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/01 22:33:50 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/01 23:18:17 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	*find_cmd_path(char *cmd, t_env *env_list)
         return (NULL);
     i = 0;
 	paths = path_splitting(env_list);
-	while (paths[i] != NULL)
+	while (paths && paths[i] != NULL)
 	{
 		with_slash = ft_strjoin(paths[i], "/");
 		full_path = ft_strjoin(with_slash, cmd);
@@ -79,7 +79,7 @@ char	*find_cmd_path(char *cmd, t_env *env_list)
 			return (full_path);
 		i++;
 	}
-	return (NULL);
+	return (cmd);
 }
 
 // int	execute_cmd(t_env *env_list, char **argv)

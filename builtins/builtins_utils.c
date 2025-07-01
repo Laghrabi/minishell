@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:20:21 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/01 00:44:05 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/01 20:02:08 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ int execute_simple_cmd(t_env *env_list, char **argv)
     int status;
     char **envp;
     char *cmd_path;
-	
-
 
 	if (env_list == NULL || argv == NULL || *argv == NULL)
 		return (1);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/30 23:26:15 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/01 20:05:06 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ typedef struct s_gr_cl
 } t_gr_cl;
 
 /* FUNCTIONS */
+void memory_management(t_env *env, int free_env);
 char	*ft_substr2(char const *s, unsigned int start, size_t len);
 void expand_evrything(t_ast *node, t_env *env_list);
 t_variabls *s_var (void);

@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:39:50 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/01 23:14:49 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/01 23:17:53 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,25 +126,6 @@ void expand_evrything(t_ast *node, t_env *env_list)
     if (node->right)
         expand_evrything(node->right, env_list);
 }
-void memory_management(t_env *env, int free_env)
-{
-    t_env *current;
-
-    garbage_collector(NULL, 1);
-    if (free_env)
-    {
-        if (env)
-        {
-            while (env)
-            {
-                current = env->next;
-                free(env->key);
-                free(env->value);
-                env = current;
-            }
-        }
-    }
-}
 
 void	handle_sigint(int signum)
 {
@@ -186,7 +167,7 @@ int main(int ac, char **av, char **envp)
         // test_expansion(ast, env_list);
         // if (ast)
         //     print_ast(ast, 0);
-        execute_ast(ast, env_list);
+        c = execute_ast(ast, env_list);
         printf ("STATUS=%d\n", c);
         memory_management( NULL, 0);
     }

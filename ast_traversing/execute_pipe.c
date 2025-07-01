@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_pipe.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 10:27:21 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/06/30 20:41:38 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/01 19:18:28 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,11 @@ void	fd_leaks(int fd1, int fd2)
 	dup2(fd2, STDOUT_FILENO);
 	close(fd1);
 	close(fd2);
+}
+
+int check_path(t_ast *node, t_env *env_list)
+{
+    
 }
 
 int execute_simple_command(t_ast *node, t_env *env_list)
