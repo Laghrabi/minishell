@@ -83,19 +83,15 @@ void	fd_leaks(int fd1, int fd2)
 	close(fd2);
 }
 
-int is_di_or_builtin(t_ast *node, t_env *env_list)
-{
-    if(if_builtin())
-}
 
-int is_path(t_ast *node, t_env *env_list)
-{
-    char *path;
+// int is_path(t_ast *node, t_env *env_list)
+// {
+//     char *path;
 
-    path = check_for_var("PATH", env_list);
-    if (path)
-        execute_simple_command(node, env_list);
-}
+//     path = check_for_var("PATH", env_list);
+//     if (path)
+//         execute_simple_command(node, env_list);
+// }
 
 int execute_simple_command(t_ast *node, t_env *env_list)
 {
@@ -124,6 +120,19 @@ int execute_simple_command(t_ast *node, t_env *env_list)
     }
     return (cmd_or_builtin(node->left->token_list, env_list, argv));
 }
+
+// int is_dir(t_ast *node, t_env *env_list)
+// {
+
+// }
+
+// int is_di_or_builtin(t_ast *node, t_env *env_list)
+// {
+//     if(if_builtin(node->left->token_list->value))
+//         return (excute_simple_command(node, env_list));
+//     else
+//         return (is_dir(node, env_list));
+// }
 
 int execute_command(t_ast *node, t_env *env_list)
 {
