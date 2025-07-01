@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:01:37 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/01 23:27:38 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/02 00:12:39 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ void	append_token(t_token **head, t_token *new_token)
 	
 	if (head == NULL || new_token == NULL)
 		return ;
-	//printf("new_token: %s\n", new_token->value);
 	new_token->next = NULL;
 	if (*head == NULL)
 	{
