@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:31:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/30 23:22:05 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/02 00:30:22 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,9 @@
 
 t_ast   *parse_compound_command(bool subshell)
 {
-    t_type      op_type;
-    t_node_type node_type;
-
+    t_type      (op_type);
+    t_node_type (node_type);
     t_ast (*left), (*right), (*node);
-    if (peek() == NULL)
-        return (NULL);
     left = parse_pipeline();
     if (left == NULL)
         return (NULL);
@@ -39,10 +36,7 @@ t_ast   *parse_compound_command(bool subshell)
         left = node;
     }
     if (peek() && ((peek()->token == T_RPAREN && subshell == false) || (peek()->token != T_AND && peek()->token != T_OR && subshell == false)))
-    {
-        // printf("here\n");
-        return (syntax_error());
-    }
+        return (syntax_error(2));
     return (left);
 }
 
@@ -53,12 +47,8 @@ t_ast   *parse_pipeline(void)
     t_ast   *node;
 
     left = parse_command();
-    //printf("[%s]  [%d]\n", g_token->value, g_token->token);
     if (left == NULL)
         return (NULL);
-    //printf("current token: %s\n", g_token->value);
-    //printf("%s\n", peek()->value);
-    //printf("[%s]  [%d]\n", g_token->value, g_token->token);
     while (peek() && peek()->token == T_PIPE)
     {
         consume();
@@ -76,21 +66,15 @@ t_ast   *parse_pipeline(void)
 t_ast   *parse_command(void)
 {
     t_ast   *node;
-    // if (peek() == NULL)
-    // {
-    //     printf("here2\n");
-    //     return (syntax_error());
-    // }
     if (peek() && peek()->token == T_LPAREN)
         return (parse_subshell());
     else if (peek() && (peek()->token == T_WORD || peek()->token == T_DOLLAR_S || peek()->token == T_SINGLE_Q || peek()->token == T_DOUBLE_Q || peek()->token == T_WILDCARD || is_red_list(peek()->value) == 1))
     {
         node = parse_simple_command();
-        //printf("[%s]  [%d]\n", g_token->value, g_token->token);
         return (node);
     }
     else
-        return (syntax_error());
+        return (syntax_error(2));
 }
 
 t_ast   *parse_subshell(void)
@@ -101,11 +85,11 @@ t_ast   *parse_subshell(void)
 
     red_list = NULL;
     if (peek() == NULL || peek()->token != T_LPAREN)
-        return (syntax_error());
+        return (syntax_error(2));
     consume();
     inner_command = parse_compound_command(true);
     if (peek() == NULL || peek()->token != T_RPAREN)
-        return (syntax_error());
+        return (syntax_error(2));
     consume();
     if (peek() && is_red_list(peek()->value) == 1)
         red_list = parse_redir_list();
@@ -179,7 +163,7 @@ int is_quote(char *str)
     }
     return (0);
 }
-
+//norm dyal ziad
 void remove_quote(char *token)
 {
     int (i), (j), (sg_quote), (db_quote);
@@ -211,37 +195,70 @@ void remove_quote(char *token)
     }
 }
 
-char	*parse_herdoc_helper(int *i)
+// char	*parse_herdoc_helper(int *i)
+// {
+// 	char (*line), (*str), (*buffer);
+// 	line = readline("> ");
+//     if (line == NULL)
+//     {
+//         printf("here-doc delemited by EOF\n");
+//         return (NULL);
+//     }    
+// 	buffer = NULL;
+// 	str = peek()->value;
+//     if(is_quote(str))
+//         *i = 0;
+//     remove_quote(str);
+// 	while (ft_strcmp(line, str) != 0)
+// 	{
+// 		buffer = join(buffer, line);
+//         buffer = join(buffer, "\n");
+// 		free(line);
+// 		line = readline("> ");
+//         if (line == NULL)
+//         {
+//             printf("here-doc delemited by EOF\n");
+//             free(line);
+//             return (buffer);
+//         }  
+// 	}
+//     free(line);
+// 	return (buffer);
+// }
+
+char	*read_heredoc_lines(char *delimiter)
 {
 	char	*line;
-	char	*str;
 	char	*buffer;
-	
-	line = readline("> ");
-    if (line == NULL)
-    {
-        printf("here-doc delemited by EOF\n");
-        return (NULL);
-    }    
+
 	buffer = NULL;
-	str = peek()->value;
-    if(is_quote(str))
-        *i = 0;
-    remove_quote(str);
-	while (ft_strcmp(line, str) != 0)
+	line = readline("> ");
+	while (line && ft_strcmp(line, delimiter) != 0)
 	{
 		buffer = join(buffer, line);
-        buffer = join(buffer, "\n");
+		buffer = join(buffer, "\n");
 		free(line);
 		line = readline("> ");
-        if (line == NULL)
-        {
-            printf("here-doc delemited by EOF\n");
-            free(line);
-            return (buffer);
-        }  
 	}
-    free(line);
+	if (line == NULL)
+	{
+		printf("here-doc delemited by EOF\n");
+		return (buffer);
+	}
+	free(line);
+	return (buffer);
+}
+
+char	*parse_herdoc_helper(int *i)
+{
+	char	*str;
+	char	*buffer;
+
+	str = peek()->value;
+	if (is_quote(str))
+		*i = 0;
+	remove_quote(str);
+	buffer = read_heredoc_lines(str);
 	return (buffer);
 }
 
@@ -285,13 +302,13 @@ t_ast   *parse_simple_command(void)
 			if (peek()->token == T_HEREDOC)
 				parse_herdoc(&redir_head, &redir_tail);
 			else if (redir_list_helper(&redir_head, &redir_tail) == 1)
-				return (syntax_error());
+				return (syntax_error(2));
 		}
 		else
 			break ;
 	}
     if (!args_node->token_list && !redir_head)
-        return (syntax_error());
+        return (syntax_error(2));
     cmd = create_ast_node(args_node, redir_head, NULL, NODE_CMD);
     return (cmd);
 }
@@ -307,7 +324,7 @@ t_ast   *parse_redir_list(void)
     {
         op_type = consume()->token;
         if (!peek() || (peek()->token != T_WORD && peek()->token != T_DOLLAR_S && peek()->token != T_SINGLE_Q && peek()->token != T_DOUBLE_Q))
-            return (syntax_error());
+            return (syntax_error(2));
         file_name = consume();
         redir = create_ast_node(NULL, NULL, single_token_list(file_name), convert_t_type(op_type));
         if (redir_head == NULL)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/01 20:05:06 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/01 23:27:51 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,7 @@ void *gc_malloc(size_t size);
 int	is_red_list(char *str);
 t_token	*peek(void);
 t_token	*consume(void);
-void	*syntax_error(void);
+void	*syntax_error(int status);
 t_ast   *parse_simple_command(void);
 t_ast   *parse_subshell(void);
 t_ast   *parse_command(void);
