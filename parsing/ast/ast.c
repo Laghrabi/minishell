@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:31:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/30 23:22:05 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/01 23:45:33 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 
 t_ast   *parse_compound_command(bool subshell)
 {
-    t_type      op_type;
-    t_node_type node_type;
-
+    t_type      (op_type);
+    t_node_type (node_type);
     t_ast (*left), (*right), (*node);
     if (peek() == NULL)
         return (NULL);
@@ -39,10 +38,7 @@ t_ast   *parse_compound_command(bool subshell)
         left = node;
     }
     if (peek() && ((peek()->token == T_RPAREN && subshell == false) || (peek()->token != T_AND && peek()->token != T_OR && subshell == false)))
-    {
-        // printf("here\n");
-        return (syntax_error());
-    }
+        return (syntax_error(2));
     return (left);
 }
 
@@ -90,7 +86,7 @@ t_ast   *parse_command(void)
         return (node);
     }
     else
-        return (syntax_error());
+        return (syntax_error(2));
 }
 
 t_ast   *parse_subshell(void)
@@ -101,11 +97,11 @@ t_ast   *parse_subshell(void)
 
     red_list = NULL;
     if (peek() == NULL || peek()->token != T_LPAREN)
-        return (syntax_error());
+        return (syntax_error(2));
     consume();
     inner_command = parse_compound_command(true);
     if (peek() == NULL || peek()->token != T_RPAREN)
-        return (syntax_error());
+        return (syntax_error(2));
     consume();
     if (peek() && is_red_list(peek()->value) == 1)
         red_list = parse_redir_list();
@@ -285,13 +281,13 @@ t_ast   *parse_simple_command(void)
 			if (peek()->token == T_HEREDOC)
 				parse_herdoc(&redir_head, &redir_tail);
 			else if (redir_list_helper(&redir_head, &redir_tail) == 1)
-				return (syntax_error());
+				return (syntax_error(2));
 		}
 		else
 			break ;
 	}
     if (!args_node->token_list && !redir_head)
-        return (syntax_error());
+        return (syntax_error(2));
     cmd = create_ast_node(args_node, redir_head, NULL, NODE_CMD);
     return (cmd);
 }
@@ -307,7 +303,7 @@ t_ast   *parse_redir_list(void)
     {
         op_type = consume()->token;
         if (!peek() || (peek()->token != T_WORD && peek()->token != T_DOLLAR_S && peek()->token != T_SINGLE_Q && peek()->token != T_DOUBLE_Q))
-            return (syntax_error());
+            return (syntax_error(2));
         file_name = consume();
         redir = create_ast_node(NULL, NULL, single_token_list(file_name), convert_t_type(op_type));
         if (redir_head == NULL)
