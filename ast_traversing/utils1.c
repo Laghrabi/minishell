@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 03:44:43 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/30 21:26:10 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/01 21:21:37 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,20 +58,25 @@ char **token_list_to_argv(t_token *token_list)
 char *creat_herdoc_file(char *text)
 {
     char *name;
-    char random[10];
+    char *random;
     int fd_random;
 
+	random = gc_malloc(sizeof(char) * 10);
+	ft_bzero(random, 10);
     fd_random = open("/dev/random", O_RDONLY);
-    read(fd_random, random, 9);
-    random[9] = '\0';
-    while (ft_strchr(random, '$') != NULL)
-    {
-        read(fd_random, random, 9);
-        random[9] = '\0';
-    }
+    if (fd_random != -1)
+	{
+		read(fd_random, random, 9);
+		random[9] = '\0';
+		while (ft_strchr(random, '$') != NULL)
+		{
+			read(fd_random, random, 9);
+			random[9] = '\0';
+		}
+	}
     close(fd_random);
     name = ft_strjoin("/tmp/herdoc", random);
-    printf("-=-%s\n", name);
+    //printf("-=-%s\n", name);
     fd_random = open(name, O_RDWR | O_CREAT | O_TRUNC, 0600);
     write(fd_random, text, strlen(text));
     close(fd_random);

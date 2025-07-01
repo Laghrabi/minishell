@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:39:50 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/01 19:59:21 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/01 23:17:53 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,8 +168,8 @@ int main(int ac, char **av, char **envp)
         // if (ast)
         //     print_ast(ast, 0);
         c = execute_ast(ast, env_list);
-        printf("STATUS=%d\n", c);
-        memory_management(NULL, 0);
+        printf ("STATUS=%d\n", c);
+        memory_management( NULL, 0);
     }
     return (s_var()->exit_status);
 }

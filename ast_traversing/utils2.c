@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 05:38:25 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/01 22:48:07 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/01 23:21:30 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,11 @@ char **convert_env_to_array(t_env *env_list)
     while (current != NULL)
     {
         argv[i] = ft_strdup(current->key);
-        argv[i] = ft_strjoin(argv[i], "=");
-        argv[i] = ft_strjoin(argv[i], current->value);
+        if (current->value != NULL)
+        {
+            argv[i] = ft_strjoin(argv[i], "=");
+            argv[i] = ft_strjoin(argv[i], current->value);    
+        }
         i++;
         current = current->next;
     }

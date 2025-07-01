@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 14:16:51 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/01 19:33:32 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/01 23:12:16 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int	builtin_env(t_token *token, t_env *env_list)
 	current = env_list;
 	while (current != NULL)
 	{
-		if (current->value != NULL && current->value[0] != '\0')
+		if (current->value != NULL) //&& current->value[0] != '\0')
 			printf("%s=%s\n", current->key, current->value);
 		current = current->next;
 	}
@@ -288,10 +288,15 @@ void	only_export(t_env *env_list)
 	while (array[i] != NULL)
 	{
 		pos = find_chr_pos(array[i], '=');
-		str = ft_substr(array[i], 0, pos + 1);
-		printf("declare -x %s\"", str);
-		str = ft_strchr(array[i], '=');
-		printf("%s\"\n", str + 1);
+		if (pos != -1)
+		{
+			str = ft_substr(array[i], 0, pos + 1);
+			printf("declare -x %s\"", str);
+			str = ft_strchr(array[i], '=');
+			printf("%s\"\n", str + 1);
+		}
+		else
+			printf("declare -x %s\n", array[i]);
 		i++;
 	}
 }
@@ -313,14 +318,22 @@ int	builtin_export(t_token *token, t_env **env_list)
 	if (status == 1 || status == 130)
 		return (status);
 	pos = find_chr_pos(token->value, '=');
-	key = ft_substr2(token->value, 0, pos);
-	value = ft_substr2(token->value, pos + 1, ft_strlen(token->value) - pos - 1);
-	if (check_for_var(key, *env_list) == 0)
+	if (pos == -1)
+	{
+		key = token->value;
+		value = NULL;
+	}
+	else
+	{
+		key = ft_substr2(token->value, 0, pos);
+		value = ft_substr2(token->value, pos + 1, ft_strlen(token->value) - pos - 1);
+	}
+	if (check_for_var(key, *env_list) == 0 && value != NULL)
 	{
 		update_env(key, value, *env_list);
 		return (0);
 	}
-	else
+	else if (check_for_var(key, *env_list) == 1)
 	{
 		node = malloc(sizeof(t_env));
 		node->key = key;
