@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:39:50 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/02 16:19:31 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/02 19:57:20 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,8 +172,8 @@ int main(int ac, char **av, char **envp)
         // test_expansion(ast, env_list);
         // if (ast)
         //     print_ast(ast, 0);
-        if (s_var()->exit_status == 0)
-            execute_ast(ast, env_list);
+        // if ()
+        execute_ast(ast, env_list);
         //printf ("STATUS=%d\n", s_var()->exit_status);
         memory_management( NULL, 0);
     }
