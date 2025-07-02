@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_pipe.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 10:27:21 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/02 16:56:39 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/02 17:29:30 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ int handle_simple_command(t_ast *node, t_env *env_list)
 			fd_leaks(saved_stdin, saved_stdout);
 			return (1);
 		}
-		status = cmd_or_builtin(node->left->token_list, env_list, argv);
+        if (node->left != NULL)
+		    status = cmd_or_builtin(node->left->token_list, env_list, argv);
 		fd_leaks(saved_stdin, saved_stdout);
 		return (status);
     }
