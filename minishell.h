@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/01 23:27:51 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/02 15:17:11 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 # include "libft/libft.h"
 # include <dirent.h>
 #include <sys/wait.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #define LONG_LONG_MAX 9223372036854775807LL
 // #define LONG_MAX 9223372036854775807L
@@ -76,7 +78,8 @@ typedef struct s_token {
     int             is_herdoc;
     int             expansion;
     int             *field;
-    int             empty;  
+    int             empty;
+    int             is_already_exec;
 } t_token;
 
 extern t_token	*g_token;
