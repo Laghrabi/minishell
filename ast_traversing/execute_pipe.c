@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_pipe.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 10:27:21 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/02 17:29:30 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/02 19:57:45 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,8 @@ int handle_simple_command(t_ast *node, t_env *env_list)
 {
     char (**argv);
     int	(saved_stdout), (saved_stdin), (status);
-
     if (!node || !node->left || !node->left->token_list)
         return (1);
-    
     argv = token_list_to_argv(node->left->token_list);
     if (!argv || !argv[0])
         return (1);
@@ -63,8 +61,8 @@ int handle_simple_command(t_ast *node, t_env *env_list)
 			fd_leaks(saved_stdin, saved_stdout);
 			return (1);
 		}
-        if (node->left != NULL)
-		    status = cmd_or_builtin(node->left->token_list, env_list, argv);
+        if (node->left != NULL && node->left->token_list->is_already_exec == 0)
+		        status = cmd_or_builtin(node->left->token_list, env_list, argv);
 		fd_leaks(saved_stdin, saved_stdout);
 		return (status);
     }
@@ -78,7 +76,7 @@ int execute_command(t_ast *node, t_env *env_list)
     if (node->type == NODE_SUBSHELL)
         return (execute_subshell(node, env_list));
     else
-        return (handle_simple_command(node , env_list));
+        return (is_path(node , env_list));
 }
 int execute_pipe(t_ast *node, t_env *env_list, int input_fd)
 {
