@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 14:16:51 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/01 23:12:16 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/02 15:51:36 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -290,7 +290,7 @@ void	only_export(t_env *env_list)
 		pos = find_chr_pos(array[i], '=');
 		if (pos != -1)
 		{
-			str = ft_substr(array[i], 0, pos + 1);
+			str = ft_substr2(array[i], 0, pos + 1);
 			printf("declare -x %s\"", str);
 			str = ft_strchr(array[i], '=');
 			printf("%s\"\n", str + 1);
@@ -320,7 +320,7 @@ int	builtin_export(t_token *token, t_env **env_list)
 	pos = find_chr_pos(token->value, '=');
 	if (pos == -1)
 	{
-		key = token->value;
+		key = ft_strdup2(token->value);
 		value = NULL;
 	}
 	else
