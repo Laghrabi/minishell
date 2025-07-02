@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/02 16:35:01 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/02 16:53:11 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,12 @@ typedef struct s_gr_cl
 } t_gr_cl;
 
 /* FUNCTIONS */
+int	check_for_var(char *key, t_env *env_list);
+int is_di_or_builtin(t_ast *node, t_env *env_list);
+int is_absolute_path(t_ast *node, t_env *env_lsit);
+int is_dir(t_ast *node, t_env *env_list);
+int is_executable(t_ast *node, t_env *env_list);
+int is_path(t_ast *node, t_env *env_list);
 char	*ft_strdup2(const char *s1);
 char	*ft_substr2(char const *s, unsigned int start, size_t len);
 void memory_management(t_env *env, int free_env);
@@ -147,6 +153,7 @@ int execute_compound_command(t_ast *node, t_env *env_list);
 char **convert_env_to_array(t_env *env_list);
 char	*find_cmd_path(char *cmd, t_env *env_list);
 int execute_pipe(t_ast *node, t_env *env_list, int input_fd);
+int handle_simple_command(t_ast *node, t_env *env_list);
 int	setup_redirections(t_ast *redir_list, t_env *env_list);
 int	check_nm_var(char *str);
 char **token_list_to_argv(t_token *token_list);

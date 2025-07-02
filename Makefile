@@ -13,6 +13,7 @@ SRC = minishell.c parsing/tokenization/tokenizer.c \
 		builtins/builtins_utils.c ast_traversing/traversing.c \
 		ast_traversing/utils1.c ast_traversing/utils2.c \
 		ast_traversing/execute_pipe.c \
+		ast_traversing/handle_error_messages.c \
 		utils/static.c
  
 LIBFT = libft/libft.a
