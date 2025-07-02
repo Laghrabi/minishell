@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:39:50 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/02 19:57:20 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/02 20:03:27 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,10 +169,15 @@ int main(int ac, char **av, char **envp)
         free(input);
         if (peek())
             ast = parse_compound_command(false);
+        // if (s_var()->exit_status == 130)
+        // {
+        //     memory_management(NULL, 0); // clean tokens and ast if needed
+        //     continue;                   // skip execution, prompt again
+        // }
         // test_expansion(ast, env_list);
         // if (ast)
         //     print_ast(ast, 0);
-        // if ()
+        //printf("status=%d\n", s_var()->exit_status);
         execute_ast(ast, env_list);
         //printf ("STATUS=%d\n", s_var()->exit_status);
         memory_management( NULL, 0);

@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:31:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/02 17:37:05 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/02 19:43:20 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,27 +226,96 @@ void remove_quote(char *token)
 // 	return (buffer);
 // }
 
+// static void sigint_handler_child(int signum)
+// {
+//     // (void)signum;
+//     // exit(130);
+//     (void)signum;
+//     write(STDOUT_FILENO, "\n", 1);
+//     exit(130);
+// }
+
 char	*read_heredoc_lines(char *delimiter)
 {
-	char	*line;
+	char	(*line), (read_buf[1024]);
 	char	*buffer;
+    pid_t   pid;
+    int     pipefd[2];
+    int     status;
+    ssize_t n;
 
-	buffer = NULL;
-	line = readline("> ");
-	while (line && ft_strcmp(line, delimiter) != 0)
-	{
-		buffer = join(buffer, line);
-		buffer = join(buffer, "\n");
-		free(line);
-		line = readline("> ");
-	}
-	if (line == NULL)
-	{
-		printf("here-doc delemited by EOF\n");
-		return (buffer);
-	}
-	free(line);
-	return (buffer);
+    if (pipe(pipefd) == -1)
+        return (NULL);
+    pid = fork();
+    if (pid < 0)
+    {
+        close(pipefd[0]);
+        close(pipefd[1]);
+        return (NULL);
+    }
+    if (pid == 0)
+    {
+        signal(SIGINT, SIG_DFL);
+        //signal(SIGQUIT, SIG_DFL);
+        close(pipefd[0]);
+        while(1)
+        {
+            line = readline("> ");
+            if (line == NULL)
+            {
+                printf("here-doc delemited by EOF\n");
+                break ;
+            }
+            if (line && ft_strcmp(line, delimiter) == 0)
+            {
+                free(line);
+                break ;
+            }
+            write(pipefd[1], line, ft_strlen(line));
+            write(pipefd[1], "\n", 1);
+            free(line);
+        }
+        close(pipefd[1]);
+        exit (0);
+    }
+    else
+    {
+        close(pipefd[1]);
+        waitpid(pid, &status, 0);
+        if (WIFSIGNALED(status))
+        {
+            s_var()->exit_status = 130;
+            close(pipefd[1]);
+            return (NULL);
+        }
+    }
+    buffer = NULL;
+    n = read(pipefd[0], read_buf, sizeof(read_buf) - 1);
+    while (n > 0)
+    {
+        read_buf[n] = '\0';
+        buffer = join(buffer, read_buf);
+        n = read(pipefd[0], read_buf, sizeof(read_buf) - 1);
+    }
+    close(pipefd[0]);
+    //printf("buffer: [%s]\n", buffer);
+    return (buffer);
+	// buffer = NULL;
+	// line = readline("> ");
+	// while (line && ft_strcmp(line, delimiter) != 0)
+	// {
+	// 	buffer = join(buffer, line);
+	// 	buffer = join(buffer, "\n");
+	// 	free(line);
+	// 	line = readline("> ");
+	// }
+	// if (line == NULL)
+	// {
+	// 	printf("here-doc delemited by EOF\n");
+	// 	return (buffer);
+	// }
+	// free(line);
+	// return (buffer);
 }
 
 char	*parse_herdoc_helper(int *i)
@@ -271,7 +340,9 @@ int	parse_herdoc(t_ast **redir_head, t_ast **redir_tail)
     if (!peek() || (peek()->token != T_WORD && peek()->token != T_DOLLAR_S && peek()->token != T_SINGLE_Q && peek()->token != T_DOUBLE_Q))
     	return (1);
     text = parse_herdoc_helper(&(peek()->expansion));
-	peek()->value = text;
+    if (!text)
+        return (0);
+    peek()->value = text;
     peek()->is_herdoc = 7;
     redir = create_ast_node(NULL, NULL, single_token_list(consume()), convert_t_type(op_type));
     if (*redir_head == NULL)
@@ -300,7 +371,10 @@ t_ast   *parse_simple_command(void)
     	else if (peek() && is_red_list(peek()->value) == 1)
         {
 			if (peek()->token == T_HEREDOC)
-				parse_herdoc(&redir_head, &redir_tail);
+            {
+				if (parse_herdoc(&redir_head, &redir_tail) == 1)
+                    return (syntax_error(2));
+            }
 			else if (redir_list_helper(&redir_head, &redir_tail) == 1)
 				return (syntax_error(2));
 		}
