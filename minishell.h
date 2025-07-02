@@ -6,9 +6,10 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/02 15:17:11 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/02 16:35:01 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -125,6 +126,7 @@ typedef struct s_variabls
 {
     t_env	*env_list;
     int     exit_status;
+    int     g_child_running;
 } t_variabls;
 
 typedef struct s_gr_cl
@@ -135,6 +137,8 @@ typedef struct s_gr_cl
 } t_gr_cl;
 
 /* FUNCTIONS */
+char	*ft_strdup2(const char *s1);
+char	*ft_substr2(char const *s, unsigned int start, size_t len);
 void memory_management(t_env *env, int free_env);
 char	*ft_substr2(char const *s, unsigned int start, size_t len);
 void expand_evrything(t_ast *node, t_env *env_list);

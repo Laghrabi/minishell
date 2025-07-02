@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:20:21 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/02 15:26:39 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/02 16:34:32 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int execute_simple_cmd(t_env *env_list, char **argv)
 		return (127);
 	}
 	envp = convert_env_to_array(env_list);
+	s_var()->g_child_running = 1;
     pid = fork();
     if (pid == 0)
     {
@@ -47,6 +48,7 @@ int execute_simple_cmd(t_env *env_list, char **argv)
         return (1);
     }
     waitpid(pid, &status, 0);
+	s_var()->g_child_running = 0;
 	return (0);
 }
 int	cmd_or_builtin(t_token *token, t_env *env_list, char **argv)

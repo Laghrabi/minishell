@@ -3,14 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 05:38:25 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/01 23:21:30 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/02 15:37:20 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+char	*ft_strjoin2(char const *s1, char const *s2)
+{
+	size_t	j;
+	size_t	i;
+	char	*t;
+
+	if (!s1 || !s2)
+		return (NULL);
+	t = (char *)malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
+	if (!t)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (s1[i])
+		t[j++] = s1[i++];
+	i = 0;
+	while (s2[i])
+		t[j++] = s2[i++];
+	t[j] = 0;
+	return (t);
+}
 
 char **convert_env_to_array(t_env *env_list)
 {
@@ -26,16 +48,18 @@ char **convert_env_to_array(t_env *env_list)
         i++;
         current = current->next;
     }
-    argv = gc_malloc(sizeof(char *) * (i + 1));
+    argv = malloc(sizeof(char *) * (i + 1));
     i = 0;
     current = env_list;
+    // printf("convert list to array\n");
     while (current != NULL)
     {
-        argv[i] = ft_strdup(current->key);
+        // printf("k: %s, v: %s\n", current->key, current->value);
+        argv[i] = ft_strdup2(current->key);
         if (current->value != NULL)
         {
-            argv[i] = ft_strjoin(argv[i], "=");
-            argv[i] = ft_strjoin(argv[i], current->value);    
+            argv[i] = ft_strjoin2(argv[i], "=");
+            argv[i] = ft_strjoin2(argv[i], current->value);    
         }
         i++;
         current = current->next;
