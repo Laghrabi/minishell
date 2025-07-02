@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_error_messages.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 14:28:45 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/02 19:58:05 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/02 21:49:30 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int is_executable(t_ast *node, t_env *env_list)
         return (handle_simple_command(node, env_list));
     else
     {
+        printf("hi1\n");
         perror(node->left->token_list->value);
         return(126);
     }
@@ -30,6 +31,7 @@ int is_dir(t_ast *node, t_env *env_list)
 
     if (access(node->left->token_list->value, F_OK) == -1)
     {
+        printf("hi2\n");
         perror(node->left->token_list->value);
         if (node->right)
             handle_simple_command(node, env_list);
@@ -90,7 +92,9 @@ int is_absolute_path(t_ast *node, t_env *env_list)
 
 int is_di_or_builtin(t_ast *node, t_env *env_list)
 {
-    if(if_builtin(node->left->token_list->value))
+    if (!node || !env_list)
+        return (1);
+    if(node->right || (node->left && if_builtin(node->left->token_list->value)))
         return (handle_simple_command(node, env_list));
     else
         return (is_absolute_path(node, env_list));

@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:31:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/02 19:43:20 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/02 22:50:45 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,14 +226,14 @@ void remove_quote(char *token)
 // 	return (buffer);
 // }
 
-// static void sigint_handler_child(int signum)
-// {
-//     // (void)signum;
-//     // exit(130);
-//     (void)signum;
-//     write(STDOUT_FILENO, "\n", 1);
-//     exit(130);
-// }
+static void sigint_handler_child(int signum)
+{
+    // (void)signum;
+    // exit(130);
+    (void)signum;
+    write(STDOUT_FILENO, "\n", 1);
+    exit(130);
+}
 
 char	*read_heredoc_lines(char *delimiter)
 {
@@ -255,8 +255,7 @@ char	*read_heredoc_lines(char *delimiter)
     }
     if (pid == 0)
     {
-        signal(SIGINT, SIG_DFL);
-        //signal(SIGQUIT, SIG_DFL);
+        signal(SIGINT, sigint_handler_child);
         close(pipefd[0]);
         while(1)
         {
@@ -281,11 +280,13 @@ char	*read_heredoc_lines(char *delimiter)
     else
     {
         close(pipefd[1]);
+        signal(SIGINT, SIG_IGN);
         waitpid(pid, &status, 0);
-        if (WIFSIGNALED(status))
+        setup_signals();
+        if (WEXITSTATUS(status))
         {
             s_var()->exit_status = 130;
-            close(pipefd[1]);
+            close(pipefd[0]);
             return (NULL);
         }
     }
@@ -298,24 +299,7 @@ char	*read_heredoc_lines(char *delimiter)
         n = read(pipefd[0], read_buf, sizeof(read_buf) - 1);
     }
     close(pipefd[0]);
-    //printf("buffer: [%s]\n", buffer);
     return (buffer);
-	// buffer = NULL;
-	// line = readline("> ");
-	// while (line && ft_strcmp(line, delimiter) != 0)
-	// {
-	// 	buffer = join(buffer, line);
-	// 	buffer = join(buffer, "\n");
-	// 	free(line);
-	// 	line = readline("> ");
-	// }
-	// if (line == NULL)
-	// {
-	// 	printf("here-doc delemited by EOF\n");
-	// 	return (buffer);
-	// }
-	// free(line);
-	// return (buffer);
 }
 
 char	*parse_herdoc_helper(int *i)
@@ -340,8 +324,8 @@ int	parse_herdoc(t_ast **redir_head, t_ast **redir_tail)
     if (!peek() || (peek()->token != T_WORD && peek()->token != T_DOLLAR_S && peek()->token != T_SINGLE_Q && peek()->token != T_DOUBLE_Q))
     	return (1);
     text = parse_herdoc_helper(&(peek()->expansion));
-    if (!text)
-        return (0);
+    // if (!text)
+    //     return (0);
     peek()->value = text;
     peek()->is_herdoc = 7;
     redir = create_ast_node(NULL, NULL, single_token_list(consume()), convert_t_type(op_type));

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_pipe.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 10:27:21 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/02 19:57:45 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/02 21:57:00 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int handle_simple_command(t_ast *node, t_env *env_list)
 {
     char (**argv);
     int	(saved_stdout), (saved_stdin), (status);
-    if (!node || !node->left || !node->left->token_list)
+    if (!node) //|| !node->left || !node->left->token_list)
         return (1);
     argv = token_list_to_argv(node->left->token_list);
     if (!argv || !argv[0])

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/02 18:52:58 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/02 22:37:04 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ typedef struct s_gr_cl
 } t_gr_cl;
 
 /* FUNCTIONS */
+void	setup_signals(void);
 int	check_for_var(char *key, t_env *env_list);
 int is_di_or_builtin(t_ast *node, t_env *env_list);
 int is_absolute_path(t_ast *node, t_env *env_lsit);
