@@ -3,47 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   execute_pipe.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 10:27:21 by zfarouk           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/07/02 00:31:52 by zfarouk          ###   ########.fr       */
-=======
-/*   Updated: 2025/07/01 23:57:26 by claghrab         ###   ########.fr       */
->>>>>>> refs/remotes/origin/main
+/*   Updated: 2025/07/02 14:37:20 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../minishell.h"
-
-// int execute_compound_command(t_ast *node, t_env *env_list)
-// {
-    // int exit_status;
-    
-    // if (!node || !env_list)
-    //     return (0);
-    // if (node->type == NODE_AND || node->type == NODE_OR)
-    //     exit_status = execute_pipe(node->left, env_list, 0);
-    // if (node->type == NODE_AND)
-    // {
-    //     if (exit_status == 0)
-    //         exit_status = execute_compound_command(node->left, env_list);
-    //     else
-    //         return (exit_status);
-    // }
-    // else if (node->type == NODE_OR)
-    // {
-    //     if (exit_status != 0)
-    //         exit_status = execute_compound_command(node->left, env_list);
-    //     else
-    //         return (exit_status);
-    // }
-    // else
-    //     execute_pipe(node, env_list, 0);
-    // return (exit_status);
-
-
 
 int execute_subshell(t_ast *node, t_env *env_list)
 {
@@ -67,14 +34,6 @@ int execute_subshell(t_ast *node, t_env *env_list)
     return WEXITSTATUS(status);
 }
 
-// int execute_subshell(t_ast *node, t_env *env_list)
-// {
-//     if (node->left)
-//         execute_compound_command(node->left, env_list);
-//     if (node->right)
-//         setup_redirections(node->right);
-// }
-
 void	fd_leaks(int fd1, int fd2)
 {
 	dup2(fd1, STDIN_FILENO);
@@ -83,17 +42,7 @@ void	fd_leaks(int fd1, int fd2)
 	close(fd2);
 }
 
-
-// int is_path(t_ast *node, t_env *env_list)
-// {
-//     char *path;
-
-//     path = check_for_var("PATH", env_list);
-//     if (path)
-//         execute_simple_command(node, env_list);
-// }
-
-int execute_simple_command(t_ast *node, t_env *env_list)
+int handle_simple_command(t_ast *node, t_env *env_list)
 {
     char (**argv);
     int	(saved_stdout), (saved_stdin), (status);
@@ -121,30 +70,14 @@ int execute_simple_command(t_ast *node, t_env *env_list)
     return (cmd_or_builtin(node->left->token_list, env_list, argv));
 }
 
-// int is_dir(t_ast *node, t_env *env_list)
-// {
-
-// }
-
-// int is_di_or_builtin(t_ast *node, t_env *env_list)
-// {
-//     if(if_builtin(node->left->token_list->value))
-//         return (excute_simple_command(node, env_list));
-//     else
-//         return (is_dir(node, env_list));
-// }
-
 int execute_command(t_ast *node, t_env *env_list)
 {
     if (!node)
         return (1);
     if (node->type == NODE_SUBSHELL)
-    {
-        // printf("motherfuccker\n");
         return (execute_subshell(node, env_list));
-    }
     else
-        return (execute_simple_command(node , env_list));
+        return (handle_simple_command(node , env_list));
 }
 int execute_pipe(t_ast *node, t_env *env_list, int input_fd)
 {
