@@ -141,7 +141,7 @@ typedef struct s_gr_cl
 /* FUNCTIONS */
 void	setup_signals(void);
 int	check_for_var(char *key, t_env *env_list);
-int is_di_or_builtin(t_ast *node, t_env *env_list);
+int is_di_or_builtin(t_ast *node, t_env *env_list, int i);
 int is_absolute_path(t_ast *node, t_env *env_lsit);
 int is_dir(t_ast *node, t_env *env_list);
 int is_executable(t_ast *node, t_env *env_list);

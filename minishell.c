@@ -178,8 +178,8 @@ int main(int ac, char **av, char **envp)
         // if (ast)
         //     print_ast(ast, 0);
         //printf("status=%d\n", s_var()->exit_status);
-        execute_ast(ast, env_list);
-        //printf ("STATUS=%d\n", s_var()->exit_status);
+        s_var()->exit_status = execute_ast(ast, env_list);
+        printf ("STATUS=%d\n", s_var()->exit_status);
         memory_management( NULL, 0);
     }
     return (s_var()->exit_status);

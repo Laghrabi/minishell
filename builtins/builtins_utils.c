@@ -38,6 +38,9 @@ int execute_simple_cmd(t_env *env_list, char **argv)
     {
         execve(cmd_path, argv, envp);
         perror("execve");
+		//3NDAAAAAK TNSA TFREE HNA ILA 
+		//KAN FILE EXCUTEBLE WMAFIH WALO GHATFAILI EXECV WKHSEK TFRIYI
+		//  TFKRE MINSHELL/MINISHELL.C
 		//free
         exit(1);
     }
@@ -48,6 +51,7 @@ int execute_simple_cmd(t_env *env_list, char **argv)
         return (1);
     }
     waitpid(pid, &status, 0);
+	//chno wa9e3 hna?????
 	s_var()->g_child_running = 0;
 	return (0);
 }

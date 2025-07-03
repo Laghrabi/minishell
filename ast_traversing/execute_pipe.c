@@ -48,7 +48,8 @@ int handle_simple_command(t_ast *node, t_env *env_list)
     int	(saved_stdout), (saved_stdin), (status);
     if (!node) //|| !node->left || !node->left->token_list)
         return (1);
-    argv = token_list_to_argv(node->left->token_list);
+    if (node->left)
+        argv = token_list_to_argv(node->left->token_list);
     if (!argv || !argv[0])
         return (1);
     if (node->right != NULL && (node->right->type == NODE_APPEND || node->right->type == NODE_OREDIR || node->right->type == NODE_IREDIR || node->right->type == NODE_HEREDOC))
@@ -160,6 +161,6 @@ int execute_compound_command(t_ast *node, t_env *env_list)
         return (exit_status);
     }
     else
-        return execute_pipe(node, env_list, STDIN_FILENO);
+        return (execute_pipe(node, env_list, STDIN_FILENO));
     return (1);
 }
