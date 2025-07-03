@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:39:50 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/03 18:10:31 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/03 22:14:18 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,9 +167,10 @@ int main(int ac, char **av, char **envp)
         if (g_token == NULL)
             continue;
         free(input);
+        // printf("before parsing staatus = %d\n", s_var()->exit_status);
         if (peek())
             ast = parse_compound_command(false);
-        printf("after parsing staatus = %d\n", s_var()->exit_status);
+        // printf("after parsing staatus = %d\n", s_var()->exit_status);
         // if (s_var()->exit_status == 130)
         // {
         //     memory_management(NULL, 0); // clean tokens and ast if needed
@@ -179,9 +180,8 @@ int main(int ac, char **av, char **envp)
         // if (ast)
         //     print_ast(ast, 0);
         //printf("status=%d\n", s_var()->exit_status);
-        
-        s_var()->exit_status = execute_ast(ast, env_list);
-        // printf ("STATUS=%d\n", s_var()->exit_status);
+        if (ast)
+            s_var()->exit_status = execute_ast(ast, env_list);
         memory_management( NULL, 0);
     }
     return (s_var()->exit_status);

@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 10:27:21 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/03 16:29:01 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/03 22:11:36 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,15 @@ int execute_subshell(t_ast *node, t_env *env_list)
     if (pid == -1)
     if (pid == 0)
     {
+        signal(SIGINT, SIG_DFL);
+        signal(SIGQUIT, SIG_DFL);
         if (node->right)
             setup_redirections(node->right, env_list);
         exit(execute_compound_command(node->left, env_list));
     }
+    signal(SIGINT, SIG_IGN);
     waitpid(pid, &status, 0);
+    setup_signals();
     printf("%d--\n", WEXITSTATUS(status));
     return WEXITSTATUS(status);
 }
@@ -86,6 +90,8 @@ int execute_pipe(t_ast *node, t_env *env_list, int input_fd)
 {
     int pipefd[2];
     pid_t pid;
+    int status;
+    
     if (!node)
         return (1);
     expand_evrything(node, env_list);
@@ -97,6 +103,8 @@ int execute_pipe(t_ast *node, t_env *env_list, int input_fd)
         // strerror("failed to fork");
     if (pid == 0)
     {
+        signal(SIGINT, SIG_DFL);
+        signal(SIGQUIT, SIG_DFL);
         //khasni nchof ila kant awal fork
         // ma3ndhach lach dup liya si non 
         //khsni n9ra mn pipe l9dima
@@ -112,7 +120,13 @@ int execute_pipe(t_ast *node, t_env *env_list, int input_fd)
         execute_command(node->left, env_list);
         exit(1);
     }
-    wait(NULL);
+    signal(SIGINT, SIG_IGN);
+    waitpid(pid, &status, 0);
+    setup_signals();
+    if (WTERMSIG(status))
+        s_var()->exit_status = 128 + WSTOPSIG(status);
+    else
+        s_var()->exit_status = WEXITSTATUS(status);
     //maendna mandiro db b write flpipe[1] so ansdoha
     close(pipefd[1]);
     //3lach , 7itach input-fd awal mra ghaykon 0 whta stdin so ila closito ghanclosi hta stdin

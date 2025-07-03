@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:20:21 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/03 18:18:03 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/03 22:26:57 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int execute_simple_cmd(t_env *env_list, char **argv)
     pid = fork();
     if (pid == 0)
     {
+		signal(SIGINT, SIG_DFL);
+        signal(SIGQUIT, SIG_DFL);
         execve(cmd_path, argv, envp);
         perror("execve");
 		//3NDAAAAAK TNSA TFREE HNA ILA 
@@ -51,10 +53,21 @@ int execute_simple_cmd(t_env *env_list, char **argv)
         free(cmd_path);
         return (1);
     }
+    signal(SIGINT, SIG_IGN);
     waitpid(pid, &status, 0);
+	if (WIFSIGNALED(status))
+	{
+        status = 128 + WTERMSIG(status);
+		if (status == 131)
+			write(2, "Quit (core dumped)", 19);
+		write(2, "\n", 1);
+	}
+    else
+        status = WEXITSTATUS(status);
+    setup_signals();
 	//chno wa9e3 hna?????
 	s_var()->g_child_running = 0;
-	return (0);
+	return (status);
 }
 int	cmd_or_builtin(t_token *token, t_env *env_list, char **argv)
 {
