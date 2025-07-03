@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:20:21 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/02 21:54:52 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/03 18:18:03 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ int execute_simple_cmd(t_env *env_list, char **argv)
 		cmd_path = find_cmd_path(argv[0], env_list);
 	if (cmd_path == NULL)
 	{
-		printf("%s: command not found\n", argv[0]);
+		ft_putstr_fd(argv[0], 2);
+		ft_putstr_fd(": command not found\n", 2);
 		s_var()->exit_status = 127;
 		return (127);
 	}

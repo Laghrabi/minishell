@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 03:44:43 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/01 21:21:37 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/03 18:20:24 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ char	*get_file_name(t_ast *redir_node)
 	{
 		if (redir_node->token_list->ambiguous == 1)
 		{
-			printf("bash: ambiguous redirect\n");
+			ft_putstr_fd("minishell: ambiguous redirect\n", 2);
+			// printf("minishell: ambiguous redirect\n");
 			return (NULL);
 		}
 		return (redir_node->token_list->value);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_error_messages.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 14:28:45 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/02 21:49:30 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/03 16:33:02 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,17 @@ int is_executable(t_ast *node, t_env *env_list)
     {
         return (handle_simple_command(node, env_list));
     }
+    else
+    {
+        perror(node->left->token_list->value);
+        if (node->right)
+        {
+            node->left = NULL;
+            handle_simple_command(node, env_list);
+        }
+        return(126);
+    }
+    if (node->right)
     return (2);
 }
 
@@ -40,12 +51,22 @@ int is_dir(t_ast *node, t_env *env_list)
             printf("%s : is a directory\n", node->left->token_list->value);
             node->left->token_list->is_already_exec = 1;
             if (node->right)
-            handle_simple_command(node, env_list);
+                handle_simple_command(node, env_list);
             return (126);
         }
         else
-        return (is_executable(node, env_list));
+            return (is_executable(node, env_list));
     }
+    return (0);
+}
+
+int is_dir1(t_ast *node, t_env *env_list)
+{
+    if (node->left && node->left->token_list)
+        return (is_dir(node, env_list));
+    else
+        if (node->right)
+            return(handle_simple_command(node, env_list));
     return (0);
 }
 
@@ -63,7 +84,7 @@ int is_absolute_path(t_ast *node, t_env *env_list)
     // struct stat info;
     //PROOTECTTIIIII ILA KANT LEFT
 
-    if (node->left && ft_strchr(node->left->token_list->value, '/') != NULL)
+    if (node->left && node->left->token_list && ft_strchr(node->left->token_list->value, '/') != NULL)
     {
         return(is_dir(node, env_list));
     }
@@ -98,12 +119,19 @@ int is_di_or_builtin(t_ast *node, t_env *env_list, int i)
 {
     if (!node || !env_list)
         return (1);
-    if (node->left && if_builtin(node->left->token_list->value))
+    // if (node->left)
+    //     fprintf(stderr, "left kayn\n");
+    // if (node->left && node->left->token_list)
+    //     fprintf(stderr, "token list kayn\n");
+    // else 
+    //     fprintf(stderr, "token makaynch\n");
+    
+    if (node->left && node->left->token_list && if_builtin(node->left->token_list->value))
         return (handle_simple_command(node, env_list));
     else if (i == 1)
         return (is_absolute_path(node, env_list));
     else
-        return (is_dir(node, env_list));
+        return (is_dir1(node, env_list));
     return (1);
 }
 int is_path(t_ast *node, t_env *env_list)

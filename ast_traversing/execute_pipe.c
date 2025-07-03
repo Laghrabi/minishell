@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_pipe.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 10:27:21 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/02 21:57:00 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/03 16:29:01 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,15 @@ int handle_simple_command(t_ast *node, t_env *env_list)
 {
     char (**argv);
     int	(saved_stdout), (saved_stdin), (status);
+    argv = NULL;
     if (!node) //|| !node->left || !node->left->token_list)
         return (1);
-    if (node->left)
+    if (node->left && node->left->token_list)
         argv = token_list_to_argv(node->left->token_list);
-    if (!argv || !argv[0])
-        return (1);
+    //makhashach thaandla hadi cus y9ed ykon left nULL wghaatwli argv NULL but still i need to handle rediractions
+    // if (!argv || !argv[0])
+    //     return (1);
+    //ymklek tbli had lcondition kamla bdik li katchekilek wach raha redi
     if (node->right != NULL && (node->right->type == NODE_APPEND || node->right->type == NODE_OREDIR || node->right->type == NODE_IREDIR || node->right->type == NODE_HEREDOC))
     {
         saved_stdout = dup(STDOUT_FILENO);
@@ -62,7 +65,7 @@ int handle_simple_command(t_ast *node, t_env *env_list)
 			fd_leaks(saved_stdin, saved_stdout);
 			return (1);
 		}
-        if (node->left != NULL && node->left->token_list->is_already_exec == 0)
+        if (node->left != NULL && node->left->token_list && node->left->token_list->is_already_exec == 0)
 		        status = cmd_or_builtin(node->left->token_list, env_list, argv);
 		fd_leaks(saved_stdin, saved_stdout);
 		return (status);

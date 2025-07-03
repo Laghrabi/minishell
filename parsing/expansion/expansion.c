@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:04:58 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/06/29 23:06:15 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/03 18:00:24 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,20 +88,13 @@ char *check_var(char *token, t_env *env, int *index)
     char *value;
 
     i = 0;
-    // //should handle $?   
-    // if (token[0] == '?')
-    // {
-    //     char *exit_status = ft_itoa(g_var()->exit_status);
-    //     *index += 1;
-    //     return exit_status;
-    // }
-    // //should handle $?   
-    // if (token[0] == '?')
-    // {
-    //     char *exit_status = ft_itoa(g_var()->exit_status);
-    //     *index += 1;
-    //     return exit_status;
-    // }
+    //should handle $?   
+    if (token[0] == '?')
+    {
+        char *exit_status = ft_itoa(s_var()->exit_status);
+        *index += 1;
+        return exit_status;
+    }
     value = NULL;
     if (ft_isalpha(token[0]) || token[0] == '_')
     {
@@ -318,13 +311,13 @@ void remove_extra_quote(char *token, int *field)
 
     while (token[i])
     {
-        if (token[i] == '\'' && !in_dquote)
+        if (token[i] == '\'' && !in_dquote && field[i] == 0)
         {
             in_squote = !in_squote;
             i++;
             continue;
         }
-        else if (token[i] == '"' && !in_squote)
+        else if (token[i] == '"' && !in_squote && field[i] == 0)
         {
             in_dquote = !in_dquote;
             i++;
