@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 03:44:43 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/03 18:20:24 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/04 02:06:58 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char *creat_herdoc_file(char *text)
     name = ft_strjoin("/tmp/herdoc", random);
     //printf("-=-%s\n", name);
     fd_random = open(name, O_RDWR | O_CREAT | O_TRUNC, 0600);
-    write(fd_random, text, strlen(text));
+    write(fd_random, text, ft_strlen(text));
     close(fd_random);
     return (name);
 }
@@ -121,9 +121,10 @@ int	setup_redirections(t_ast *redir_list, t_env *env_list)
 	while (redir_list != NULL)
 	{
 		//printf("here=%d\n", redir_list->token_list->ambiguous);
-		filename = get_file_name(redir_list);
-		if (filename == NULL)
-			return (1);
+		if (redir_list->type != NODE_HEREDOC)
+			filename = get_file_name(redir_list);
+		// if (filename == NULL && redir_list->type != NODE_HEREDOC)
+		// 	return (1);
 		if (redir_list->type == NODE_OREDIR)
 			fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		else if (redir_list->type == NODE_IREDIR)
