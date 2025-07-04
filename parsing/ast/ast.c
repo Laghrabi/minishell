@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:31:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/03 16:03:29 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/04 01:42:36 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-t_ast   *parse_compound_command(bool subshell)
+t_ast   *parse_compound_command(bool subshell, int *ctrc)
 {
     t_type      (op_type);
     t_node_type (node_type);
     t_ast (*left), (*right), (*node);
-    left = parse_pipeline();
+    left = parse_pipeline(ctrc);
     if (left == NULL)
         return (NULL);
     while (peek() && (peek()->token == T_AND || peek()->token == T_OR))
@@ -27,7 +27,7 @@ t_ast   *parse_compound_command(bool subshell)
             node_type = NODE_AND;
         else
             node_type = NODE_OR;
-        right = parse_compound_command(subshell);
+        right = parse_compound_command(subshell, ctrc);
         if (right == NULL)
             return (NULL);
         node = create_ast_node(left, right, NULL, node_type);
@@ -40,19 +40,19 @@ t_ast   *parse_compound_command(bool subshell)
     return (left);
 }
 
-t_ast   *parse_pipeline(void)
+t_ast   *parse_pipeline(int *ctrc)
 {
     t_ast   *left;
     t_ast   *right;
     t_ast   *node;
 
-    left = parse_command();
+    left = parse_command(ctrc);
     if (left == NULL)
         return (NULL);
     while (peek() && peek()->token == T_PIPE)
     {
         consume();
-        right = parse_pipeline();
+        right = parse_pipeline(ctrc);
         if (right == NULL)
             return (NULL);
         node = create_ast_node(left, right, NULL, NODE_PIPE);
@@ -63,21 +63,21 @@ t_ast   *parse_pipeline(void)
     return (left);
 }
 
-t_ast   *parse_command(void)
+t_ast   *parse_command(int *ctrc)
 {
     t_ast   *node;
     if (peek() && peek()->token == T_LPAREN)
-        return (parse_subshell());
+        return (parse_subshell(ctrc));
     else if (peek() && (peek()->token == T_WORD || peek()->token == T_DOLLAR_S || peek()->token == T_SINGLE_Q || peek()->token == T_DOUBLE_Q || peek()->token == T_WILDCARD || is_red_list(peek()->value) == 1))
     {
-        node = parse_simple_command();
+        node = parse_simple_command(ctrc);
         return (node);
     }
     else
         return (syntax_error(2));
 }
 
-t_ast   *parse_subshell(void)
+t_ast   *parse_subshell(int *ctrc)
 {
     t_ast   *inner_command;
     t_ast   *red_list;
@@ -87,7 +87,7 @@ t_ast   *parse_subshell(void)
     if (peek() == NULL || peek()->token != T_LPAREN)
         return (syntax_error(2));
     consume();
-    inner_command = parse_compound_command(true);
+    inner_command = parse_compound_command(true, ctrc);
     if (peek() == NULL || peek()->token != T_RPAREN)
         return (syntax_error(2));
     consume();
@@ -195,37 +195,6 @@ void remove_quote(char *token)
     }
 }
 
-// char	*parse_herdoc_helper(int *i)
-// {
-// 	char (*line), (*str), (*buffer);
-// 	line = readline("> ");
-//     if (line == NULL)
-//     {
-//         printf("here-doc delemited by EOF\n");
-//         return (NULL);
-//     }    
-// 	buffer = NULL;
-// 	str = peek()->value;
-//     if(is_quote(str))
-//         *i = 0;
-//     remove_quote(str);
-// 	while (ft_strcmp(line, str) != 0)
-// 	{
-// 		buffer = join(buffer, line);
-//         buffer = join(buffer, "\n");
-// 		free(line);
-// 		line = readline("> ");
-//         if (line == NULL)
-//         {
-//             printf("here-doc delemited by EOF\n");
-//             free(line);
-//             return (buffer);
-//         }  
-// 	}
-//     free(line);
-// 	return (buffer);
-// }
-
 static void sigint_handler_child(int signum)
 {
     // (void)signum;
@@ -235,7 +204,7 @@ static void sigint_handler_child(int signum)
     exit(130);
 }
 
-char	*read_heredoc_lines(char *delimiter)
+char	*read_heredoc_lines(char *delimiter, int *ctrc)
 {
 	char	(*line), (read_buf[1024]);
 	char	*buffer;
@@ -286,6 +255,8 @@ char	*read_heredoc_lines(char *delimiter)
         if (WEXITSTATUS(status))
         {
             s_var()->exit_status = 130;
+            //s_var()->g_child_ctrc = 1;
+            *ctrc = 1;
             close(pipefd[0]);
             return (NULL);
         }
@@ -302,7 +273,7 @@ char	*read_heredoc_lines(char *delimiter)
     return (buffer);
 }
 
-char	*parse_herdoc_helper(int *i)
+char	*parse_herdoc_helper(int *i, int *ctrc)
 {
 	char	*str;
 	char	*buffer;
@@ -311,11 +282,11 @@ char	*parse_herdoc_helper(int *i)
 	if (is_quote(str))
 		*i = 0;
 	remove_quote(str);
-	buffer = read_heredoc_lines(str);
+	buffer = read_heredoc_lines(str, ctrc);
 	return (buffer);
 }
 
-int	parse_herdoc(t_ast **redir_head, t_ast **redir_tail)
+int	parse_herdoc(t_ast **redir_head, t_ast **redir_tail, int *ctrc)
 {
 	t_type  (op_type);
     char	(*text);
@@ -323,12 +294,14 @@ int	parse_herdoc(t_ast **redir_head, t_ast **redir_tail)
 	op_type = consume()->token;
     if (!peek() || (peek()->token != T_WORD && peek()->token != T_DOLLAR_S && peek()->token != T_SINGLE_Q && peek()->token != T_DOUBLE_Q))
     	return (1);
-    text = parse_herdoc_helper(&(peek()->expansion));
+    text = parse_herdoc_helper(&(peek()->expansion), ctrc);
     // if (!text)
     //     return (0);
+    // printf("%s\n", text);
     peek()->value = text;
     peek()->is_herdoc = 7;
     redir = create_ast_node(NULL, NULL, single_token_list(consume()), convert_t_type(op_type));
+    //printf("%p\n", redir);
     if (*redir_head == NULL)
     {
     	*redir_head = redir;
@@ -342,7 +315,7 @@ int	parse_herdoc(t_ast **redir_head, t_ast **redir_tail)
 	return (0);
 }
 
-t_ast   *parse_simple_command(void)
+t_ast   *parse_simple_command(int *ctrc)
 {
     t_ast   (*cmd), (*args_node),(*redir_head), (*redir_tail);
     args_node = create_ast_node(NULL, NULL, NULL, NODE_ARGS_LIST);
@@ -356,17 +329,41 @@ t_ast   *parse_simple_command(void)
         {
 			if (peek()->token == T_HEREDOC)
             {
-				if (parse_herdoc(&redir_head, &redir_tail) == 1)
-                    return (syntax_error(2));
+                //printf("HERE\n");
+                if (*ctrc == 0)
+                {
+				    if (parse_herdoc(&redir_head, &redir_tail, ctrc) == 1)
+                        return (syntax_error(2));
+                    //printf("%p\n", redir_head);
+                    
+                    // printf("---%p---\n", redir_head);
+                    // printf("HERE: [%s]\n", peek()->value);
+                    // printf("HERE: [%d]\n", peek()->token);
+                }
+                else
+                {
+                    consume();
+                    consume();    
+                }
             }
 			else if (redir_list_helper(&redir_head, &redir_tail) == 1)
+            {
+                //printf("HERE1\n");
 				return (syntax_error(2));
+            }
 		}
 		else
 			break ;
 	}
-    if (!args_node->token_list && !redir_head)
+    //printf("---%p---\n", redir_head);
+    //printf("---%p---\n", redir_head);
+    // printf("HERE: [%s]\n", peek()->value);
+    // printf("HERE: [%d]\n", peek()->token);
+    if (!args_node->token_list && !redir_head && *ctrc == 0) //&& *ctrc == 0)
+    {
+        printf("HERE2\n");
         return (syntax_error(2));
+    }
     cmd = create_ast_node(args_node, redir_head, NULL, NODE_CMD);
     return (cmd);
 }

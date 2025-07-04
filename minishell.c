@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:39:50 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/03 22:14:18 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/04 02:26:50 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,15 +130,19 @@ void expand_evrything(t_ast *node, t_env *env_list)
 void	handle_sigint(int signum)
 {
     (void)signum;
-	if (s_var()->g_child_running == 0)
-    {
-        rl_replace_line("", 0);
-        write(STDOUT_FILENO, "\n", 1);
-        rl_on_new_line();
-        rl_redisplay();
-    }
-    else
-        write(STDOUT_FILENO, "\n", 1);
+	// if (s_var()->g_child_running == 0)
+    // {
+    //     rl_replace_line("", 0);
+    //     write(STDOUT_FILENO, "\n", 1);
+    //     rl_on_new_line();
+    //     rl_redisplay();
+    // }
+    // else
+    //     write(STDOUT_FILENO, "\n", 1);
+    rl_replace_line("", 0);
+    write(STDOUT_FILENO, "\n", 1);
+    rl_on_new_line();
+    rl_redisplay();
 }
 
 void	setup_signals(void)
@@ -151,6 +155,7 @@ int main(int ac, char **av, char **envp)
 {
     char *input;
     t_ast *ast;
+    int ctrc;
     //int     c;
 
     (void)ac;
@@ -159,17 +164,19 @@ int main(int ac, char **av, char **envp)
     setup_signals();
     while (1)
     {
+        ctrc = 0;
         input = readline("minishell$ ");
         if (input == NULL)
             return(printf("exit\n"), 0);
-        add_history(input);
+        if (input[0] != '\0')
+            add_history(input);
         g_token = tokenization(input);
         if (g_token == NULL)
             continue;
         free(input);
         // printf("before parsing staatus = %d\n", s_var()->exit_status);
         if (peek())
-            ast = parse_compound_command(false);
+            ast = parse_compound_command(false, &ctrc);
         // printf("after parsing staatus = %d\n", s_var()->exit_status);
         // if (s_var()->exit_status == 130)
         // {
@@ -179,9 +186,9 @@ int main(int ac, char **av, char **envp)
         // // test_expansion(ast, env_list);
         // if (ast)
         //     print_ast(ast, 0);
-        //printf("status=%d\n", s_var()->exit_status);
         if (ast)
             s_var()->exit_status = execute_ast(ast, env_list);
+        printf("status=%d\n", s_var()->exit_status);
         memory_management( NULL, 0);
     }
     return (s_var()->exit_status);

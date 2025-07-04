@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/02 22:37:04 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/04 00:03:33 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ typedef struct s_variabls
 {
     t_env	*env_list;
     int     exit_status;
-    int     g_child_running;
+    int     g_child_ctrc;
 } t_variabls;
 
 typedef struct s_gr_cl
@@ -139,6 +139,9 @@ typedef struct s_gr_cl
 } t_gr_cl;
 
 /* FUNCTIONS */
+char	*read_heredoc_lines(char *delimiter, int *ctrc);
+char	*parse_herdoc_helper(int *i, int *ctrc);
+int	parse_herdoc(t_ast **redir_head, t_ast **redir_tail, int *ctrc);
 void	setup_signals(void);
 int	check_for_var(char *key, t_env *env_list);
 int is_di_or_builtin(t_ast *node, t_env *env_list, int i);
@@ -200,11 +203,11 @@ int	is_red_list(char *str);
 t_token	*peek(void);
 t_token	*consume(void);
 void	*syntax_error(int status);
-t_ast   *parse_simple_command(void);
-t_ast   *parse_subshell(void);
-t_ast   *parse_command(void);
-t_ast   *parse_pipeline(void);
-t_ast   *parse_compound_command(bool subshell);
+t_ast   *parse_simple_command(int *ctrc);
+t_ast   *parse_subshell(int *ctrc);
+t_ast   *parse_command(int *ctrc);
+t_ast   *parse_pipeline(int *ctrc);
+t_ast   *parse_compound_command(bool subshell, int *ctrc);
 t_ast   *parse_redir_list(void);
 t_node_type	convert_t_type(t_type op);
 void	append_token(t_token **head, t_token *new_token);
