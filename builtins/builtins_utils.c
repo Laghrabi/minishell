@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:20:21 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/03 22:49:10 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/04 15:57:40 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,13 @@ int execute_simple_cmd(t_env *env_list, char **argv)
         signal(SIGQUIT, SIG_DFL);
         execve(cmd_path, argv, envp);
         perror("execve");
-		//3NDAAAAAK TNSA TFREE HNA ILA 
-		//KAN FILE EXCUTEBLE WMAFIH WALO GHATFAILI EXECV WKHSEK TFRIYI
-		//  TFKRE MINSHELL/MINISHELL.C
-		//free
-        exit(1);
+		memory_management(env_list, 1);
+		if (errno == EACCES)
+			exit(126);
+		else if (errno == ENOENT)
+			exit(127);
+		else
+			exit(1);
     }
     else if (pid < 0)
     {
