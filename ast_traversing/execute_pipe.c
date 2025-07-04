@@ -6,37 +6,46 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 10:27:21 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/03 22:11:36 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/04 21:51:53 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int execute_subshell(t_ast *node, t_env *env_list)
-{
-    pid_t pid;
-    int status;
+// int execute_subshell(t_ast *node, t_env *env_list)
+// {
+//     pid_t pid;
+//     int (status), (saved_stdout), (saved_stdin);
 
-//     // if (!node)
-//     // {
-//     //     //testi hadi ➜  minishell git:(main) ✗ () && echo hello 
-//     // }
-    pid = fork();
-    if (pid == -1)
-    if (pid == 0)
-    {
-        signal(SIGINT, SIG_DFL);
-        signal(SIGQUIT, SIG_DFL);
-        if (node->right)
-            setup_redirections(node->right, env_list);
-        exit(execute_compound_command(node->left, env_list));
-    }
-    signal(SIGINT, SIG_IGN);
-    waitpid(pid, &status, 0);
-    setup_signals();
-    printf("%d--\n", WEXITSTATUS(status));
-    return WEXITSTATUS(status);
-}
+//     pid = fork();
+//     if (pid == -1)
+//         return(1);
+//     if (pid == 0)
+//     {
+//         signal(SIGINT, SIG_DFL);
+//         signal(SIGQUIT, SIG_DFL);
+//         if (node->right != NULL && (node->right->type == NODE_APPEND || node->right->type == NODE_OREDIR || node->right->type == NODE_IREDIR || node->right->type == NODE_HEREDOC))
+//         {
+//             saved_stdout = dup(STDOUT_FILENO);
+// 		    saved_stdin = dup(STDIN_FILENO);
+//     	    status = setup_redirections(node->right, env_list);
+// 		    if (status == 1)
+// 		    {
+// 			    fd_leaks(saved_stdin, saved_stdout);
+// 			    return (1);
+// 		    }
+//             if (node->left != NULL && node->left->token_list && node->left->token_list->is_already_exec == 0)
+// 		        status = cmd_or_builtin(node->left->token_list, env_list, argv);
+//             fd_leaks(saved_stdin, saved_stdout);
+//             return (status);
+//         }
+//         exit(execute_compound_command(node->left, env_list));
+//     }
+//     signal(SIGINT, SIG_IGN);
+//     waitpid(pid, &status, 0);
+//     setup_signals();
+//     return WEXITSTATUS(status);
+// }
 
 void	fd_leaks(int fd1, int fd2)
 {
@@ -97,63 +106,71 @@ int execute_pipe(t_ast *node, t_env *env_list, int input_fd)
     expand_evrything(node, env_list);
     if (node->type != NODE_PIPE)
         return(execute_command(node, env_list));
-    pipe(pipefd);
+    if (pipe(pipefd) == -1)
+    {
+        perror("pipe");
+        return (1);
+    }
     pid = fork();
-    // if (pid == -1)
-        // strerror("failed to fork");
+    if (pid == -1)
+    {
+        perror("failed to fork");
+        return(1);   
+    }
     if (pid == 0)
     {
-        signal(SIGINT, SIG_DFL);
-        signal(SIGQUIT, SIG_DFL);
-        //khasni nchof ila kant awal fork
-        // ma3ndhach lach dup liya si non 
-        //khsni n9ra mn pipe l9dima
+    	signal(SIGINT, SIG_DFL);
+	    signal(SIGQUIT, SIG_DFL);
         if (input_fd != STDIN_FILENO)
         {
             dup2(input_fd, STDIN_FILENO);
             close(input_fd);
         }
         dup2(pipefd[1], STDOUT_FILENO);
-        //nsdo pipe fchild
         close(pipefd[0]);
         close(pipefd[1]);
-        execute_command(node->left, env_list);
-        exit(1);
+        int exit_code = execute_command(node->left, env_list);
+        memory_management(env_list, 1);
+        exit(exit_code);
     }
     signal(SIGINT, SIG_IGN);
     waitpid(pid, &status, 0);
     setup_signals();
-    if (WTERMSIG(status))
-        s_var()->exit_status = 128 + WSTOPSIG(status);
-    else
+    if (WIFSIGNALED(status))
+        s_var()->exit_status = 128 + WTERMSIG(status);
+    else if (WIFEXITED(status))
         s_var()->exit_status = WEXITSTATUS(status);
-    //maendna mandiro db b write flpipe[1] so ansdoha
     close(pipefd[1]);
-    //3lach , 7itach input-fd awal mra ghaykon 0 whta stdin so ila closito ghanclosi hta stdin
     if (input_fd != STDIN_FILENO)
         close(input_fd);
     if (node->right && node->right->type == NODE_PIPE)
-    {        
-        int status = execute_pipe(node->right, env_list, pipefd[0]);
-        if (status != 0)
-            return status;
-    }
+        return (execute_pipe(node->right, env_list, pipefd[0]));
     else if (node->right && node->right->type == NODE_CMD)
     {
         pid = fork();
+        if (pid == -1)
+        {
+            perror("fork");
+            close(pipefd[0]);
+            return (1);
+        }
         if (pid == 0)
         {
             dup2(pipefd[0], STDIN_FILENO);
             close(pipefd[0]);
-            execute_command(node->right, env_list);
-            exit(1);
+            int exit_code = execute_command(node->right, env_list);
+            memory_management(env_list, 1);
+            exit(exit_code);
         }
         close(pipefd[0]);
-        wait(NULL);
+        waitpid(pid, &status, 0);
+        if (WIFSIGNALED(status))
+            s_var()->exit_status = 128 + WTERMSIG(status);
+        else if (WIFEXITED(status))
+            s_var()->exit_status = WEXITSTATUS(status);
     }
     else
         close(pipefd[0]);
-    wait(NULL);
     return(0);
 }
 
