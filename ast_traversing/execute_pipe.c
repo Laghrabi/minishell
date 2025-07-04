@@ -6,46 +6,46 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 10:27:21 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/04 21:40:00 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/04 21:51:53 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int execute_subshell(t_ast *node, t_env *env_list)
-{
-    pid_t pid;
-    int (status), (saved_stdout), (saved_stdin);
+// int execute_subshell(t_ast *node, t_env *env_list)
+// {
+//     pid_t pid;
+//     int (status), (saved_stdout), (saved_stdin);
 
-    pid = fork();
-    if (pid == -1)
-        return(1);
-    if (pid == 0)
-    {
-        signal(SIGINT, SIG_DFL);
-        signal(SIGQUIT, SIG_DFL);
-        if (node->right != NULL && (node->right->type == NODE_APPEND || node->right->type == NODE_OREDIR || node->right->type == NODE_IREDIR || node->right->type == NODE_HEREDOC))
-        {
-            saved_stdout = dup(STDOUT_FILENO);
-		    saved_stdin = dup(STDIN_FILENO);
-    	    status = setup_redirections(node->right, env_list);
-		    if (status == 1)
-		    {
-			    fd_leaks(saved_stdin, saved_stdout);
-			    return (1);
-		    }
-            if (node->left != NULL && node->left->token_list && node->left->token_list->is_already_exec == 0)
-		        status = cmd_or_builtin(node->left->token_list, env_list, argv);
-            fd_leaks(saved_stdin, saved_stdout);
-            return (status);
-        }
-        exit(execute_compound_command(node->left, env_list));
-    }
-    signal(SIGINT, SIG_IGN);
-    waitpid(pid, &status, 0);
-    setup_signals();
-    return WEXITSTATUS(status);
-}
+//     pid = fork();
+//     if (pid == -1)
+//         return(1);
+//     if (pid == 0)
+//     {
+//         signal(SIGINT, SIG_DFL);
+//         signal(SIGQUIT, SIG_DFL);
+//         if (node->right != NULL && (node->right->type == NODE_APPEND || node->right->type == NODE_OREDIR || node->right->type == NODE_IREDIR || node->right->type == NODE_HEREDOC))
+//         {
+//             saved_stdout = dup(STDOUT_FILENO);
+// 		    saved_stdin = dup(STDIN_FILENO);
+//     	    status = setup_redirections(node->right, env_list);
+// 		    if (status == 1)
+// 		    {
+// 			    fd_leaks(saved_stdin, saved_stdout);
+// 			    return (1);
+// 		    }
+//             if (node->left != NULL && node->left->token_list && node->left->token_list->is_already_exec == 0)
+// 		        status = cmd_or_builtin(node->left->token_list, env_list, argv);
+//             fd_leaks(saved_stdin, saved_stdout);
+//             return (status);
+//         }
+//         exit(execute_compound_command(node->left, env_list));
+//     }
+//     signal(SIGINT, SIG_IGN);
+//     waitpid(pid, &status, 0);
+//     setup_signals();
+//     return WEXITSTATUS(status);
+// }
 
 void	fd_leaks(int fd1, int fd2)
 {
