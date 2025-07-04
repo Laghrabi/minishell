@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:20:21 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/03 22:49:10 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/04 23:20:53 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int execute_simple_cmd(t_env *env_list, char **argv)
         free(cmd_path);
         return (1);
     }
+	update_env("_", cmd_path, env_list);
     signal(SIGINT, SIG_IGN);
     waitpid(pid, &status, 0);
 	if (WIFSIGNALED(status))
@@ -85,7 +86,7 @@ int	which_one(int flag, t_token *token, t_env *env_list)
 	if (flag == 1)
 		return(builtin_cd(token, env_list));
 	else if (flag == 2)
-		return(builtin_echo(token));
+		return(builtin_echo(token, env_list));
 	else if (flag == 3)
 		return(builtin_pwd(token, env_list));
 	else if (flag == 4)

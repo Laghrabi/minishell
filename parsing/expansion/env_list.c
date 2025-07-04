@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_list.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:10:56 by claghrab          #+#    #+#             */
-/*   Updated: 2025/06/29 17:07:43 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/04 21:13:30 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,20 @@ char	*ft_substr2(char const *s, unsigned int start, size_t len)
 	return (p);
 }
 
+void	increment_shelvl_value(t_env *envp)
+{
+	char	*string;
+	int		integer;
+	
+	if (envp == NULL)
+		return ;
+	string = get_env_value("SHLVL", envp);
+	integer = ft_atoi(string);
+	integer++;
+	string = ft_itoa(integer);
+	update_env("SHLVL", string, envp);
+}
+
 t_env	*init_env(char **envp)
 {
 	int		i;
@@ -97,5 +111,6 @@ t_env	*init_env(char **envp)
 		env_add_back(&head, node);
 		i++;
 	}
+	increment_shelvl_value(head);
 	return (head);
 }

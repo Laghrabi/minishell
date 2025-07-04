@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 05:38:25 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/02 15:37:20 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/04 20:15:38 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,20 +48,21 @@ char **convert_env_to_array(t_env *env_list)
         i++;
         current = current->next;
     }
-    argv = malloc(sizeof(char *) * (i + 1));
+    argv = malloc(sizeof(char *) * i);
     i = 0;
     current = env_list;
-    // printf("convert list to array\n");
     while (current != NULL)
     {
-        // printf("k: %s, v: %s\n", current->key, current->value);
-        argv[i] = ft_strdup2(current->key);
-        if (current->value != NULL)
+        if (ft_strcmp(current->key, "_") != 0)
         {
-            argv[i] = ft_strjoin2(argv[i], "=");
-            argv[i] = ft_strjoin2(argv[i], current->value);    
+            argv[i] = ft_strdup2(current->key);
+            if (current->value != NULL)
+            {
+                argv[i] = ft_strjoin2(argv[i], "=");
+                argv[i] = ft_strjoin2(argv[i], current->value);    
+            }
+            i++;
         }
-        i++;
         current = current->next;
     }
     argv[i] = NULL;
