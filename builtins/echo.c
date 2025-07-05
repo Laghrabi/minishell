@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:47:08 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/04 23:21:26 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/05 21:40:04 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ int	builtin_echo(t_token *token, t_env *env_list)
 					return (1);
 			i++;
 		}
-		if (token->next != NULL && write(1, " ", 1) == -1)
-			return (1);
+		if (token->next != NULL && token->ambiguous)
+			write(1, " ", 1);
         if (token->next == NULL)
             update_env("_", token->value, env_list);
 		token = token->next;
