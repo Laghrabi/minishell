@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/04 23:21:59 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/05 22:16:24 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,14 @@ typedef struct s_gr_cl
 } t_gr_cl;
 
 /* FUNCTIONS */
+void	child_process(int pipefd[2], char *delimiter);
+int	parent_process(pid_t pid, int pipefd[2], int *ctrc);
+char	*read_from_pipe(int pipefd);
+char	*join(char *s1, char *s2);
+t_ast *init_command_ast(void);
+int is_word_token(t_type type);
+int	redir_list_helper(t_ast **redir_head, t_ast **redir_tail);
+void    sigint_handler_child(int signum);
 char	*read_heredoc_lines(char *delimiter, int *ctrc);
 char	*parse_herdoc_helper(int *i, int *ctrc);
 int	parse_herdoc(t_ast **redir_head, t_ast **redir_tail, int *ctrc);

@@ -6,11 +6,24 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:20:21 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/05 00:22:49 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/05 22:20:27 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	replace_last_executed_cmd(t_env *env_list, char **argv)
+{
+	int i;
+	
+	if (env_list == NULL || argv == NULL || *argv == NULL)
+		return ;
+	i = 0;
+	while (argv[i + 1] != NULL)
+		i++;
+	printf("HERE: [%s]\n", argv[i]);
+	update_env("_", argv[i], env_list);
+}
 
 int execute_simple_cmd(t_env *env_list, char **argv)
 {
@@ -54,7 +67,7 @@ int execute_simple_cmd(t_env *env_list, char **argv)
         free(cmd_path);
         return (1);
     }
-	update_env("_", cmd_path, env_list);
+	replace_last_executed_cmd(env_list, argv);
     signal(SIGINT, SIG_IGN);
     waitpid(pid, &status, 0);
 	if (WIFSIGNALED(status))
@@ -146,72 +159,72 @@ char	*ft_strdup2(const char *s1)
 	return (p);
 }
 
-char    *get_env_value(char *key, t_env *env_list)
-{
-    t_env   *current;
+// char    *get_env_value(char *key, t_env *env_list)
+// {
+//     t_env   *current;
     
-    if (key == NULL || env_list == NULL)
-        return (NULL);
-    current = env_list;
-    while (current != NULL)
-    {
-		if (ft_strcmp(key, current->key) == 0)
-			return (current->value);
-		current = current->next;
-    }
-	return (NULL);
-}
+//     if (key == NULL || env_list == NULL)
+//         return (NULL);
+//     current = env_list;
+//     while (current != NULL)
+//     {
+// 		if (ft_strcmp(key, current->key) == 0)
+// 			return (current->value);
+// 		current = current->next;
+//     }
+// 	return (NULL);
+// }
 
-void	update_env(char *key, char *new_value, t_env *env_list)
-{
-	t_env	*current;
+// void	update_env(char *key, char *new_value, t_env *env_list)
+// {
+// 	t_env	*current;
 
-	if (key == NULL || new_value == NULL || env_list == NULL)
-		return ;
-	current = env_list;
-	while (current != NULL)
-	{
-		if (ft_strcmp(key, current->key) == 0)
-		{
-			if (current->value != NULL)
-				free(current->value);
-			current->value = ft_strdup2(new_value);
-			return ;
-		}
-		current = current->next;
-	}
-	return ;
-}
+// 	if (key == NULL || new_value == NULL || env_list == NULL)
+// 		return ;
+// 	current = env_list;
+// 	while (current != NULL)
+// 	{
+// 		if (ft_strcmp(key, current->key) == 0)
+// 		{
+// 			if (current->value != NULL)
+// 				free(current->value);
+// 			current->value = ft_strdup2(new_value);
+// 			return ;
+// 		}
+// 		current = current->next;
+// 	}
+// 	return ;
+// }
 
-int	check_nm_var(char *str)
-{
-	if (str == NULL)
-		return (1);
-	if (str[0] == '!')
-	{
-		printf("bash: %s: event not found\n", str);
-		return (130);
-	}
-	else if ((str[0] < 'a' || str[0] > 'z') && (str[0] < 'A' || str[0] > 'Z') && str[0] != '_')
-	{
-		printf ("bash: export: `%s': not a valid identifier\n", str);
-		return (1);
-	}
-	return (0);
-}
+// int	check_nm_var(char *str)
+// {
+// 	if (str == NULL)
+// 		return (1);
+// 	if (str[0] == '!')
+// 	{
+// 		printf("bash: %s: event not found\n", str);
+// 		return (130);
+// 	}
+// 	else if ((str[0] < 'a' || str[0] > 'z') && (str[0] < 'A' || str[0] > 'Z') && str[0] != '_')
+// 	{
+// 		printf ("bash: export: `%s': not a valid identifier\n", str);
+// 		return (1);
+// 	}
+// 	return (0);
+// }
 
-int	check_for_var(char *key, t_env *env_list)
-{
-	t_env	*current;
+// int	check_for_var(char *key, t_env *env_list)
+// {
+// 	t_env	*current;
 	
-	if (key == NULL || env_list == NULL)
-		return (1);
-	current = env_list;
-	while (current != NULL)
-	{
-		if (ft_strcmp(key, current->key) == 0)
-			return (0);
-		current = current->next;
-	}
-	return (1);
-}
+// 	if (key == NULL || env_list == NULL)
+// 		return (1);
+// 	current = env_list;
+// 	while (current != NULL)
+// 	{
+// 		if (ft_strcmp(key, current->key) == 0)
+// 			return (0);
+// 		current = current->next;
+// 	}
+// 	return (1);
+// }
