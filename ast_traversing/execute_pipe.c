@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 10:27:21 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/06 02:39:17 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/06 02:57:18 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int execute_command(t_ast *node, t_env *env_list)
     if (!node)
         return (1);
     if (node->type == NODE_SUBSHELL)
-        return (execute_subshell(node, env_list));
+        return (1);//execute_subshell(node, env_list));
     else
         return (is_path(node , env_list));
 }
