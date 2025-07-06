@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:04:58 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/06 02:43:59 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/06 16:54:49 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,6 +270,15 @@ void remove_extra_quote(char *token, int *field)
     token[j] = '\0';
 }
 
+void set_ambigouse(t_token *current)
+{
+    int i;
+    
+    i = 0;
+    if (current->next)
+        current->ambiguous = 1;
+}
+
 void split_expanded_token(t_extoken *extoken, t_token **arg_list, t_token **original_arg, int herdoc)
 {
     t_token *current;
@@ -292,6 +301,7 @@ void split_expanded_token(t_extoken *extoken, t_token **arg_list, t_token **orig
             (*arg_list)->value = ft_strdup("");
             return;
         }
+        set_ambigouse(current);
         last = current;
         while (last->next)
             last = last->next;
@@ -328,7 +338,7 @@ void expansion(t_token **arg_list, t_env *env)
         if (current->expansion)
         {
             extoken = expanded_token(current->value, env, current->is_herdoc);
-            if (extoken->ambiguous == 1 || extoken->empty == 1)
+            if (extoken  && (extoken->ambiguous == 1 || extoken->empty == 1))
             {
                 current->value = extoken->new_token;
                 current->ambiguous = extoken->ambiguous;

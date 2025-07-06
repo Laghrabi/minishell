@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:20:21 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/06 19:27:59 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/06 20:40:31 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,22 @@ void	replace_last_executed_cmd(t_env *env_list, char **argv)
 	while (argv[i + 1] != NULL)
 		i++;
 	update_env("_", argv[i], env_list);
+}
+
+void free_double_array(char **db_str)
+{
+	// char *current;
+
+	// current = *db_str;
+	int i;
+
+	i = 0;
+	while (db_str[i])
+	{
+		free(db_str[i]);
+		i++;
+	}
+	free(db_str);
 }
 
 int execute_simple_cmd(t_env *env_list, char **argv)
@@ -77,7 +93,8 @@ int execute_simple_cmd(t_env *env_list, char **argv)
 		write(2, "\n", 1);
 	}
     else
-        status = WEXITSTATUS(status);
+		status = WEXITSTATUS(status);
+	free_double_array(envp);
     setup_signals();
 	return (status);
 }

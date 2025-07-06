@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:48:22 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/06 18:55:29 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/06 20:40:52 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,5 +111,5 @@ int	builtin_export(t_token *token, t_env **env_list)
 			update_env("_", token->value, *env_list);
 		token = token->next;
 	}
-	return (1);
+	return (0);
 }
