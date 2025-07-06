@@ -6,10 +6,9 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/05 22:16:24 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/06 01:19:22 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -129,6 +128,7 @@ typedef struct s_variabls
     t_env	*env_list;
     int     exit_status;
     int     g_child_ctrc;
+    int     syntax_error;
 } t_variabls;
 
 typedef struct s_gr_cl

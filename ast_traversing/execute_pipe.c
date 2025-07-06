@@ -6,46 +6,42 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 10:27:21 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/05 18:27:48 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/06 01:19:41 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+    // pid_t pid;
+    // int (status), (saved_stdout), (saved_stdin);
 
-// int execute_subshell(t_ast *node, t_env *env_list)
-// {
-//     pid_t pid;
-//     int (status), (saved_stdout), (saved_stdin);
-
-//     pid = fork();
-//     if (pid == -1)
-//         return(1);
-//     if (pid == 0)
-//     {
-//         signal(SIGINT, SIG_DFL);
-//         signal(SIGQUIT, SIG_DFL);
-//         if (node->right != NULL && (node->right->type == NODE_APPEND || node->right->type == NODE_OREDIR || node->right->type == NODE_IREDIR || node->right->type == NODE_HEREDOC))
-//         {
-//             saved_stdout = dup(STDOUT_FILENO);
-// 		    saved_stdin = dup(STDIN_FILENO);
-//     	    status = setup_redirections(node->right, env_list);
-// 		    if (status == 1)
-// 		    {
-// 			    fd_leaks(saved_stdin, saved_stdout);
-// 			    return (1);
-// 		    }
-//             if (node->left != NULL && node->left->token_list && node->left->token_list->is_already_exec == 0)
-// 		        status = cmd_or_builtin(node->left->token_list, env_list, argv);
-//             fd_leaks(saved_stdin, saved_stdout);
-//             return (status);
-//         }
-//         exit(execute_compound_command(node->left, env_list));
-//     }
-//     signal(SIGINT, SIG_IGN);
-//     waitpid(pid, &status, 0);
-//     setup_signals();
-//     return WEXITSTATUS(status);
-// }
+    // pid = fork();
+    // if (pid == -1)
+    //     return(1);
+    // if (pid == 0)
+    // {
+    //     signal(SIGINT, SIG_DFL);
+    //     signal(SIGQUIT, SIG_DFL);
+    //     if (node->right != NULL && (node->right->type == NODE_APPEND || node->right->type == NODE_OREDIR || node->right->type == NODE_IREDIR || node->right->type == NODE_HEREDOC))
+    //     {
+    //         saved_stdout = dup(STDOUT_FILENO);
+	// 	    saved_stdin = dup(STDIN_FILENO);
+    // 	    status = setup_redirections(node->right, env_list);
+	// 	    if (status == 1)
+	// 	    {
+	// 		    fd_leaks(saved_stdin, saved_stdout);
+	// 		    return (1);
+	// 	    }
+    //         if (node->left != NULL && node->left->token_list && node->left->token_list->is_already_exec == 0)
+	// 	        status = cmd_or_builtin(node->left->token_list, env_list, argv);
+    //         fd_leaks(saved_stdin, saved_stdout);
+    //         return (status);
+    //     }
+    //     exit(execute_compound_command(node->left, env_list));
+    // }
+    // signal(SIGINT, SIG_IGN);
+    // waitpid(pid, &status, 0);
+    // setup_signals();
+    // return WEXITSTATUS(status);
 
 void	fd_leaks(int fd1, int fd2)
 {
@@ -55,24 +51,63 @@ void	fd_leaks(int fd1, int fd2)
 	close(fd2);
 }
 
+int execute_subshell(t_ast *node, t_env *env_list) {
+    pid_t pid;
+    int status;
+    int saved_stdout;
+    int saved_stdin;
+
+    if (!node->left)
+       return (2);
+    if (node->right) {
+        saved_stdout = dup(STDOUT_FILENO);
+        saved_stdin = dup(STDIN_FILENO);
+        if (setup_redirections(node->right, env_list) == 1)
+        {
+            close(saved_stdout);
+            close(saved_stdin);
+            return 1;
+        }
+    }
+    pid = fork();
+    if (pid == -1) {
+        perror("fork");
+        fd_leaks(saved_stdin, saved_stdout);
+        return 1;
+    }
+    else if (pid == 0) {
+        signal(SIGINT, SIG_DFL);
+        signal(SIGQUIT, SIG_DFL);
+        status = execute_compound_command(node->left, env_list);
+        memory_management(env_list, 1);
+        exit(status);
+    }
+    signal(SIGINT, SIG_IGN);
+    waitpid(pid, &status, 0);
+    setup_signals();
+    if (WIFSIGNALED(status))
+        s_var()->exit_status = 128 + WTERMSIG(status);
+    else if (WIFEXITED(status))
+        s_var()->exit_status = WEXITSTATUS(status);
+    fd_leaks(saved_stdin, saved_stdout);
+    return 0;
+}
+
 int handle_simple_command(t_ast *node, t_env *env_list)
 {
     char (**argv);
     int	(saved_stdout), (saved_stdin), (status);
     argv = NULL;
-    if (!node) //|| !node->left || !node->left->token_list)
+    if (!node)
         return (1);
     if (node->left && node->left->token_list)
         argv = token_list_to_argv(node->left->token_list);
-    //makhashach thaandla hadi cus y9ed ykon left nULL wghaatwli argv NULL but still i need to handle rediractions
-    // if (!argv || !argv[0])
-    //     return (1);
     //ymklek tbli had lcondition kamla bdik li katchekilek wach raha redi
     if (node->right != NULL && (node->right->type == NODE_APPEND || node->right->type == NODE_OREDIR || node->right->type == NODE_IREDIR || node->right->type == NODE_HEREDOC))
     {
         saved_stdout = dup(STDOUT_FILENO);
 		saved_stdin = dup(STDIN_FILENO);
-    	status = setup_redirections(node->right, env_list);
+        status = setup_redirections(node->right, env_list);
 		if (status == 1)
 		{
 			fd_leaks(saved_stdin, saved_stdout);

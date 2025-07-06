@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:39:50 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/05 00:21:56 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/05 21:27:17 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,10 @@ int main(int ac, char **av, char **envp)
         ctrc = 0;
         input = readline("minishell$ ");
         if (input == NULL)
+        {
+            memory_management( env_list, 1);
             return(printf("exit\n"), 0);
+        }
         if (input[0] != '\0')
             add_history(input);
         g_token = tokenization(input);
@@ -186,8 +189,10 @@ int main(int ac, char **av, char **envp)
         // // test_expansion(ast, env_list);
         // if (ast)
         //     print_ast(ast, 0);
-        if (ast)
+        if (ast && s_var()->syntax_error != 1)
             s_var()->exit_status = execute_ast(ast, env_list);
+        if (s_var()->syntax_error == 1)
+             s_var()->syntax_error = 0;
         // printf("status=%d\n", s_var()->exit_status);
         memory_management( NULL, 0);
     }
