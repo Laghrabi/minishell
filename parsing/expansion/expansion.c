@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:04:58 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/05 22:10:54 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/06 02:43:59 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ char *check_var(char *token, t_env *env, int *index)
         var_name = ft_substr(token, 0, i);
         value = get_env_value(var_name, env);
         if (value)
-            *index = *index + ft_strlen(var_name);
+        *index = *index + ft_strlen(var_name);
     }
     else 
         return (ft_strdup("$"));
@@ -222,10 +222,8 @@ t_token *list_token(t_extoken *extoken)
         }
         i++;
     }
-
     if (word == 1)
         add_new_token(&head, value, field, l, i);
-
     return head;
 }
 
@@ -278,7 +276,7 @@ void split_expanded_token(t_extoken *extoken, t_token **arg_list, t_token **orig
     t_token *last;
     t_token *old;
 
-    if (!extoken || extoken->empty == 1 || extoken->ambiguous == 1)
+    if (!extoken)
         return ;
     (void)original_arg;
     (*arg_list)->field = extoken->field;
@@ -330,6 +328,14 @@ void expansion(t_token **arg_list, t_env *env)
         if (current->expansion)
         {
             extoken = expanded_token(current->value, env, current->is_herdoc);
+            if (extoken->ambiguous == 1 || extoken->empty == 1)
+            {
+                current->value = extoken->new_token;
+                current->ambiguous = extoken->ambiguous;
+                current->empty = extoken->empty;
+                current = next;
+                continue;
+            }
             split_expanded_token(extoken, &current, arg_list, current->is_herdoc);
             if (current && current->pre == NULL)
                 *arg_list = current;

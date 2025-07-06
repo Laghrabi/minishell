@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:39:50 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/05 21:27:17 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/06 02:44:29 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,9 +107,6 @@ void print_env(t_env *env)
         current = current->next;
     }
 }
-
-
-
 
 void expand_evrything(t_ast *node, t_env *env_list)
 {

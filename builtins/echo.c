@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:47:08 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/05 21:40:04 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/06 00:07:55 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	builtin_echo(t_token *token, t_env *env_list)
 					return (1);
 			i++;
 		}
-		if (token->next != NULL && token->ambiguous)
+		if (token->next != NULL && !token->ambiguous)
 			write(1, " ", 1);
         if (token->next == NULL)
             update_env("_", token->value, env_list);
