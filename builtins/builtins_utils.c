@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:20:21 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/05 22:20:27 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/06 19:27:59 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	replace_last_executed_cmd(t_env *env_list, char **argv)
 	i = 0;
 	while (argv[i + 1] != NULL)
 		i++;
-	printf("HERE: [%s]\n", argv[i]);
 	update_env("_", argv[i], env_list);
 }
 
