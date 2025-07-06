@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 10:27:21 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/06 02:57:18 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/06 19:22:37 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,10 +101,11 @@ int execute_command(t_ast *node, t_env *env_list)
         return (is_path(node , env_list));
 }
 
-void handle_wait_and_status(int pid, int *status)
+void handle_wait_and_status(int pid[2], int *status)
 {
     signal(SIGINT, SIG_IGN);
-    waitpid(pid, status, 0);
+    waitpid(pid[0], NULL, 0);
+    waitpid(pid[1], status, 0);
     setup_signals();
     if (WIFSIGNALED(*status))
         s_var()->exit_status = 128 + WTERMSIG(*status);
@@ -132,7 +133,6 @@ int fork_and_execute_pipe_left(t_ast *node, t_env *env_list, int input_fd, int p
         memory_management(env_list, 1);
         exit(exit_code);
     }
-    
     return (pid);
 }
 
@@ -159,41 +159,79 @@ int handle_right_pipe_cmd(t_ast *node, t_env *env_list, int pipe_read_end)
         exit(exit_code);
     }
     close(pipe_read_end);
-    handle_wait_and_status(pid, &
-    
-    status);
-    return (0);
+    return (pid);
 }
 
 
 
+// int execute_pipe(t_ast *node, t_env *env_list, int input_fd)
+// {
+//     int pipefd[2];
+//     int status;
+//     pid_t pid[2];
+
+//     expand_evrything(node, env_list);
+//     if (!node || node->type != NODE_PIPE)
+//         return execute_command(node, env_list);
+//     if (pipe(pipefd) == -1)
+//     {
+//         perror("pipe");
+//         return (1);
+//     }
+//     pid[0] = fork_and_execute_pipe_left(node, env_list, input_fd, pipefd);
+//     signal(SIGINT, SIG_IGN);
+//     if (pid[0] == -1)
+//         return (1);
+//     close(pipefd[1]);
+//     if (input_fd != STDIN_FILENO)
+//         close(input_fd);
+//     if (node->right && node->right->type == NODE_PIPE)
+//         return execute_pipe(node->right, env_list, pipefd[0]);
+//     else if (node->right && node->right->type == NODE_CMD)
+//         pid[1] = handle_right_pipe_cmd(node->right, env_list, pipefd[0]);
+//     handle_wait_and_status(pid, &status);
+//     close(pipefd[0]);
+//     return (0);
+// }
+
 int execute_pipe(t_ast *node, t_env *env_list, int input_fd)
 {
     int pipefd[2];
-    pid_t pid;
     int status;
+    pid_t pid[2];
 
+    pid[0] = -1;
+    pid[1] = -1;
     expand_evrything(node, env_list);
     if (!node || node->type != NODE_PIPE)
         return execute_command(node, env_list);
     if (pipe(pipefd) == -1) {
         perror("pipe");
+        return 1;
+    }
+    pid[0] = fork_and_execute_pipe_left(node, env_list, input_fd, pipefd);
+    if (pid[0] == -1) {
+        close(pipefd[0]);
+        close(pipefd[1]);
         return (1);
     }
-    pid = fork_and_execute_pipe_left(node, env_list, input_fd, pipefd);
-    if (pid == -1)
-        return (1);
     close(pipefd[1]);
     if (input_fd != STDIN_FILENO)
         close(input_fd);
-    handle_wait_and_status(pid, &status);
-    if (node->right && node->right->type == NODE_PIPE)
-        return execute_pipe(node->right, env_list, pipefd[0]);
-    else if (node->right && node->right->type == NODE_CMD)
-        return handle_right_pipe_cmd(node, env_list, pipefd[0]);
-    close(pipefd[0]);
+    if (node->right && node->right->type == NODE_PIPE) {
+        pid[1] = execute_pipe(node->right, env_list, pipefd[0]);
+    } else if (node->right && node->right->type == NODE_CMD) {
+        pid[1] = handle_right_pipe_cmd(node, env_list, pipefd[0]);
+    }
+    if (pid[1] != -1) {
+        handle_wait_and_status(pid, &status);
+    } else {
+        waitpid(pid[0], NULL, 0);
+        s_var()->exit_status = 1;
+    }
     return (0);
 }
+
 
 // int execute_pipe(t_ast *node, t_env *env_list, int input_fd)
 // {

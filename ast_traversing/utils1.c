@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 03:44:43 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/06 02:45:42 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/06 16:08:44 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ char	*get_file_name(t_ast *redir_node)
 		return (NULL);
 	if (redir_node->token_list != NULL)
 	{
-		fprintf(stderr, "whnaaaa kayn ambigousee kaysawi  %d\n", redir_node->token_list->ambiguous);
 		if (redir_node->token_list->ambiguous == 1)
 		{
 			ft_putstr_fd("minishell: ambiguous redirect\n", 2);

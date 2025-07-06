@@ -1,16 +1,16 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ast.c                                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/13 16:31:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/05 22:03:48 by claghrab         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+// /* ************************************************************************** */
+// /*                                                                            */
+// /*                                                        :::      ::::::::   */
+// /*   ast.c                                              :+:      :+:    :+:   */
+// /*                                                    +:+ +:+         +:+     */
+// /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+// /*                                                +#+#+#+#+#+   +#+           */
+// /*   Created: 2025/05/13 16:31:39 by claghrab          #+#    #+#             */
+// /*   Updated: 2025/07/06 15:54:48 by zfarouk          ###   ########.fr       */
+// /*                                                                            */
+// /* ************************************************************************** */
 
-#include "../../minishell.h"
+// #include "../../minishell.h"
 
 // t_ast   *parse_compound_command(bool subshell, int *ctrc)
 // {
@@ -480,7 +480,7 @@
 // 		{
 //         	new_redir = parse_redir_list();
 // 			if (new_redir == NULL)
-// 				return (syntax_error());
+// 				return (syntax_error(2));
 // 			if (redir_head == NULL)
 // 				redir_head = new_redir;
 // 			else
@@ -490,7 +490,7 @@
 // 		}
 // 	}
 //     if (!args_node->token_list && !redir_head)
-//         return (syntax_error());
+//         return (syntax_error(2));
 //     cmd = create_ast_node(args_node, redir_head, NULL, NODE_CMD);
 //     return (cmd);
 // }

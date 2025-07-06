@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:48:22 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/04 22:56:53 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/06 17:20:09 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,5 +108,5 @@ int	builtin_export(t_token *token, t_env **env_list)
 		}
 		token = token->next;
 	}
-	return (1);
+	return (0);
 }
