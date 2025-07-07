@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/07 19:07:11 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/07 22:40:53 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ typedef struct s_gr_cl
 } t_gr_cl;
 
 /* FUNCTIONS */
+void free_double_array(char **db_str);
 void	child_process(int pipefd[2], char *delimiter);
 int	parent_process(pid_t pid, int pipefd[2], int *ctrc);
 char	*read_from_pipe(int pipefd);

@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:48:22 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/06 20:40:52 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/07 22:50:24 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	only_export(t_env *env_list)
 		{
 			str = ft_substr2(array[i], 0, pos + 1);
 			printf("declare -x %s\"", str);
+			free(str);
 			str = ft_strchr(array[i], '=');
 			printf("%s\"\n", str + 1);
 		}
@@ -63,6 +64,7 @@ void	only_export(t_env *env_list)
 			printf("declare -x %s\n", array[i]);
 		i++;
 	}
+	free_double_array(array);
 }
 
 int	builtin_export(t_token *token, t_env **env_list)
