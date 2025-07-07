@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:20:21 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/06 20:40:31 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/07 22:01:41 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ int execute_simple_cmd(t_env *env_list, char **argv)
         status = 128 + WTERMSIG(status);
 		if (status == 131)
 			write(2, "Quit (core dumped)", 19);
-		write(2, "\n", 1);
 	}
     else
 		status = WEXITSTATUS(status);
@@ -98,6 +97,7 @@ int execute_simple_cmd(t_env *env_list, char **argv)
     setup_signals();
 	return (status);
 }
+
 int	cmd_or_builtin(t_token *token, t_env *env_list, char **argv)
 {
 	int flag;

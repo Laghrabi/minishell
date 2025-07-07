@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 14:31:31 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/01 19:12:23 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/07 21:41:52 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void free_env(t_env *env)
         current = env->next;
         free(env->key);
         free(env->value);
+        free(env);
         env = current;
     }
 }

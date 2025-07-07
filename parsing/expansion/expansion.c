@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:04:58 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/06 16:54:49 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/07 21:28:31 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,7 @@ t_extoken *expanded_token(char *token, t_env *env, int k)
     ex_token->new_token = gc_malloc((ex_token->buffer_size + 1) * sizeof(char));
     ex_token->field = gc_malloc((ex_token->buffer_size + 1) * sizeof(int));
     ex_token->ambiguous = 0;
+    ex_token->empty = 0;
     ex_token->index = 0;
     ft_bzero(ex_token->new_token, ex_token->buffer_size + 1);
     ft_bzero(ex_token->field, ex_token->buffer_size + 1);
