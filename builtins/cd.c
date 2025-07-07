@@ -16,8 +16,7 @@ int	cd_helper(char *new_path, t_env *env_list)
 {
 	char	*old_pwd;
 	char	*new_pwd;
-	
-	printf("HERE: [%s]\n", new_path);
+
 	if (new_path == NULL || env_list == NULL)
 		return (1);
 	old_pwd = getcwd(NULL, 0);
