@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:47:58 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/07 19:26:26 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/07 22:36:08 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,11 @@ int	cd_helper(char *new_path, t_env *env_list, t_token *token)
 	char	*old_pwd;
 	char	*new_pwd;
 	
-	//printf("HERE: [%s]\n", new_path);
 	if (new_path == NULL || env_list == NULL)
 		return (1);
 	old_pwd = getcwd(NULL, 0);
 	if (old_pwd == NULL)
 		return (getcwd_failure(env_list, token));
-	// printf("HERE: [%s]\n", old_pwd);
-	// printf("HERE: [%s]\n", new_path);
 	if (chdir(new_path) == -1)
 	{
 		printf("cd: %s: No such file or directory\n", new_path);

@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:39:50 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/06 02:44:29 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/07 21:37:35 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,6 @@ void print_token_list(t_token *tokens, int depth)
         print_indent(depth);
         printf("TOKEN: [%s]\n", current->value);
         print_indent(depth);
-        printf("is empty: [%d]   ", current->empty);
-        printf("is heredoc: [%d]   ", current->is_herdoc);
-        printf("is ambigeouse: [%d]   ", current->ambiguous);
-        printf("is expansion: [%d]\n", current->expansion);
         print_indent(depth);
         printf("\n");
         current = current->next;
@@ -126,7 +122,6 @@ void expand_evrything(t_ast *node, t_env *env_list)
 
 void	handle_sigint(int signum)
 {
-    (void)signum;
 	// if (s_var()->g_child_running == 0)
     // {
     //     rl_replace_line("", 0);
@@ -140,6 +135,7 @@ void	handle_sigint(int signum)
     write(STDOUT_FILENO, "\n", 1);
     rl_on_new_line();
     rl_redisplay();
+    s_var()->exit_status = 128 + signum;
 }
 
 void	setup_signals(void)
@@ -165,8 +161,8 @@ int main(int ac, char **av, char **envp)
         input = readline("minishell$ ");
         if (input == NULL)
         {
-            memory_management( env_list, 1);
-            return(printf("exit\n"), 0);
+            memory_management(env_list, 1);
+            return(printf("exit\n"), s_var()->exit_status);
         }
         if (input[0] != '\0')
             add_history(input);

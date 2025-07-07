@@ -12,6 +12,22 @@
 
 #include "../minishell.h"
 
+int is_n_flag(char *flag)
+{
+	int i;
+
+	i = 1;
+	if (flag[0] != '-')
+		return (1);
+	while (flag[i])
+	{
+		if (flag[i] != 'n')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 int	builtin_echo(t_token *token, t_env *env_list)
 {
 	int	(i), (nl);
@@ -19,7 +35,7 @@ int	builtin_echo(t_token *token, t_env *env_list)
 	if (token == NULL || env_list == NULL)
 		return (1);
 	token = token->next;
-	if (token != NULL && ft_strcmp(token->value, "-n") == 0)
+	if (token != NULL && is_n_flag(token->value) == 0)
 	{
 		token = token->next;
 		nl = 1;

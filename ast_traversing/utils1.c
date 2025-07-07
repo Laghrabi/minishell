@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 03:44:43 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/06 16:08:44 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/07 18:26:02 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,10 @@ int	setup_redirections(t_ast *redir_list, t_env *env_list)
 		else
 			return (1);
 		if (fd == -1)
+		{
+			// printf mesage dyal redi
 			return (1);
+		}
 		if (redir_list->type == NODE_OREDIR || redir_list->type == NODE_APPEND)
 			dup2(fd, STDOUT_FILENO);
 		else

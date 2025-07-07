@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 05:38:25 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/04 20:15:38 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/07 22:05:59 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	*ft_strjoin2(char const *s1, char const *s2)
 
 char **convert_env_to_array(t_env *env_list)
 {
-    char (**argv);
+    char (**argv), (*tmp);
     t_env (*current);
     int (i);
     if (env_list == NULL)
@@ -58,8 +58,12 @@ char **convert_env_to_array(t_env *env_list)
             argv[i] = ft_strdup2(current->key);
             if (current->value != NULL)
             {
+                tmp = argv[i];
                 argv[i] = ft_strjoin2(argv[i], "=");
-                argv[i] = ft_strjoin2(argv[i], current->value);    
+                free(tmp);
+                tmp = argv[i];
+                argv[i] = ft_strjoin2(argv[i], current->value);  
+                free(tmp);  
             }
             i++;
         }
