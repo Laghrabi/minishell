@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 10:27:21 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/06 20:46:05 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/07 17:20:52 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	fd_leaks(int fd1, int fd2)
 
 int execute_subshell(t_ast *node, t_env *env_list)
 {
-    pid_t pid;
     int status;
     int saved_stdout;
     int saved_stdin;
@@ -42,29 +41,10 @@ int execute_subshell(t_ast *node, t_env *env_list)
             return 1;
         }
     }
-    pid = fork();
-    if (pid == -1) {
-        perror("fork");
-        fd_leaks(saved_stdin, saved_stdout);
-        return 1;
-    }
-    else if (pid == 0) {
-        signal(SIGINT, SIG_DFL);
-        signal(SIGQUIT, SIG_DFL);
-        status = execute_compound_command(node->left, env_list);
-        memory_management(env_list, 1);
-        exit(status);
-    }
-    signal(SIGINT, SIG_IGN);
-    waitpid(pid, &status, 0);
-    setup_signals();
-    if (WIFSIGNALED(status))
-        s_var()->exit_status = 128 + WTERMSIG(status);
-    else if (WIFEXITED(status))
-        s_var()->exit_status = WEXITSTATUS(status);
+    status = execute_compound_command(node->left, env_list);
     if (redirected)
         fd_leaks(saved_stdin, saved_stdout);
-    return (0);
+    return (s_var()->exit_status);
 }
 
 int handle_simple_command(t_ast *node, t_env *env_list)
@@ -100,13 +80,13 @@ int execute_command(t_ast *node, t_env *env_list)
     if (!node)
         return (1);
     if (node->type == NODE_SUBSHELL)
-        execute_subshell(node, env_list);
+        return (execute_subshell(node, env_list));
     else
         return (is_path(node , env_list));
-    return (0);
+    return (1);
 }
 
-void handle_wait_and_status(int pid[2], int *status)
+int handle_wait_and_status(int pid[2], int *status)
 {
     signal(SIGINT, SIG_IGN);
     waitpid(pid[0], NULL, 0);
@@ -116,6 +96,7 @@ void handle_wait_and_status(int pid[2], int *status)
         s_var()->exit_status = 128 + WTERMSIG(*status);
     else if (WIFEXITED(*status))
         s_var()->exit_status = WEXITSTATUS(*status);
+    return (s_var()->exit_status);
 }
 
 int fork_and_execute_pipe_left(t_ast *node, t_env *env_list, int input_fd, int pipefd[2]) {
@@ -175,12 +156,13 @@ int execute_pipe(t_ast *node, t_env *env_list, int input_fd)
 
     pid[0] = -1;
     pid[1] = -1;
+    status = 0;
     expand_evrything(node, env_list);
     if (!node || node->type != NODE_PIPE)
         return execute_command(node, env_list);
     if (pipe(pipefd) == -1) {
         perror("pipe");
-        return 1;
+        return (1);
     }
     pid[0] = fork_and_execute_pipe_left(node, env_list, input_fd, pipefd);
     if (pid[0] == -1) {
@@ -192,19 +174,20 @@ int execute_pipe(t_ast *node, t_env *env_list, int input_fd)
     if (input_fd != STDIN_FILENO)
         close(input_fd);
     if (node->right && node->right->type == NODE_PIPE) {
-        pid[1] = execute_pipe(node->right, env_list, pipefd[0]);
+        status = execute_pipe(node->right, env_list, pipefd[0]);
+        waitpid(pid[0], NULL, 0);
     } else if (node->right && node->right->type == NODE_CMD) {
         pid[1] = handle_right_pipe_cmd(node, env_list, pipefd[0]);
+        status = handle_wait_and_status(pid, &status);
     }
-    if (pid[1] != -1) {
-        handle_wait_and_status(pid, &status);
-    } else {
-        waitpid(pid[0], NULL, 0);
-        s_var()->exit_status = 1;
-    }
-    return (0);
+    return (status);
 }
 
+    // if (pid[1] != -1) {
+    // } else {
+    //     waitpid(pid[0], NULL, 0);
+    //     s_var()->exit_status = 1;
+    // }
 
 
 int execute_compound_command(t_ast *node, t_env *env_list)
@@ -216,8 +199,22 @@ int execute_compound_command(t_ast *node, t_env *env_list)
     if (node->type == NODE_AND)
     {
         exit_status = execute_pipe(node->left, env_list, STDIN_FILENO);
+        
         if (exit_status == 0)
             exit_status = execute_compound_command(node->right, env_list);
+        else
+        {
+            while (node && node->right)
+            {
+                if (node->right->type == NODE_OR)
+                {
+                    if (node->right->right)
+                        execute_compound_command(node->right->right, env_list);
+                    break;
+                }
+                node = node->right;
+            }
+        }
         return (exit_status);
     }
     else if (node->type == NODE_OR)
@@ -225,6 +222,19 @@ int execute_compound_command(t_ast *node, t_env *env_list)
         exit_status = execute_pipe(node->left, env_list, STDIN_FILENO);
         if (exit_status != 0)
             exit_status = execute_compound_command(node->right, env_list);
+        else
+        {
+            while (node && node->right)
+            {
+                if (node->right->type == NODE_AND)
+                {
+                    if (node->right->right)
+                        execute_compound_command(node->right->right, env_list);
+                    break;
+                }
+                node = node->right;
+            }
+        }
         return (exit_status);
     }
     else

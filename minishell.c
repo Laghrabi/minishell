@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:39:50 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/06 02:44:29 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/07 18:27:18 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,6 @@ void print_token_list(t_token *tokens, int depth)
         print_indent(depth);
         printf("TOKEN: [%s]\n", current->value);
         print_indent(depth);
-        printf("is empty: [%d]   ", current->empty);
-        printf("is heredoc: [%d]   ", current->is_herdoc);
-        printf("is ambigeouse: [%d]   ", current->ambiguous);
-        printf("is expansion: [%d]\n", current->expansion);
         print_indent(depth);
         printf("\n");
         current = current->next;
@@ -166,7 +162,7 @@ int main(int ac, char **av, char **envp)
         if (input == NULL)
         {
             memory_management( env_list, 1);
-            return(printf("exit\n"), 0);
+            return(printf("exit\n"), s_var()->exit_status);
         }
         if (input[0] != '\0')
             add_history(input);
