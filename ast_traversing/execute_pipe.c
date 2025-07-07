@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 10:27:21 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/06 19:22:37 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/06 20:46:05 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,15 @@ int execute_subshell(t_ast *node, t_env *env_list)
     int status;
     int saved_stdout;
     int saved_stdin;
+    int redirected;
 
+    redirected = 0;
     if (!node->left)
        return (2);
     if (node->right) {
         saved_stdout = dup(STDOUT_FILENO);
         saved_stdin = dup(STDIN_FILENO);
+        redirected = 1;
         if (setup_redirections(node->right, env_list) == 1)
         {
             close(saved_stdout);
@@ -59,7 +62,8 @@ int execute_subshell(t_ast *node, t_env *env_list)
         s_var()->exit_status = 128 + WTERMSIG(status);
     else if (WIFEXITED(status))
         s_var()->exit_status = WEXITSTATUS(status);
-    fd_leaks(saved_stdin, saved_stdout);
+    if (redirected)
+        fd_leaks(saved_stdin, saved_stdout);
     return (0);
 }
 
