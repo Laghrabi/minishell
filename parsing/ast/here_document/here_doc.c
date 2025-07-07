@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 21:13:04 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/05 21:19:33 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/07 19:34:25 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int	parent_process(pid_t pid, int pipefd[2], int *ctrc)
 	if (WEXITSTATUS(status))
 	{
 		s_var()->exit_status = 130;
+		s_var()->syntax_error = 2;
 		*ctrc = 1;
 		close(pipefd[0]);
 		return (1);

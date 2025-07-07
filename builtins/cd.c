@@ -6,21 +6,48 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:47:58 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/06 20:42:14 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/07 19:26:26 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	cd_helper(char *new_path, t_env *env_list)
+int	getcwd_failure(t_env *env_list, t_token *token)
+{
+	char	*str;
+	char	*joined;
+	
+	if (token->value[0] == '\0')
+	{
+		ft_putstr_fd("minishell: cd: : No such file or directory\n", 2);
+		return (1);
+	}
+	ft_putstr_fd("cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n", 2);
+	if (ft_strcmp(token->value, "..") == 0)
+		str = "..";
+	else if (ft_strcmp(token->value, ".") == 0)
+		str = ".";
+	joined = ft_strjoin(get_env_value("PWD", env_list), "/");
+	joined = ft_strjoin(joined, str);
+	//printf("HERE: [%s]\n", joined);
+	update_env("OLDPWD", get_env_value("PWD", env_list), env_list);
+	update_env("PWD", joined, env_list);
+	return (0);
+}
+
+int	cd_helper(char *new_path, t_env *env_list, t_token *token)
 {
 	char	*old_pwd;
 	char	*new_pwd;
 	
-	printf("HERE: [%s]\n", new_path);
+	//printf("HERE: [%s]\n", new_path);
 	if (new_path == NULL || env_list == NULL)
 		return (1);
 	old_pwd = getcwd(NULL, 0);
+	if (old_pwd == NULL)
+		return (getcwd_failure(env_list, token));
+	// printf("HERE: [%s]\n", old_pwd);
+	// printf("HERE: [%s]\n", new_path);
 	if (chdir(new_path) == -1)
 	{
 		printf("cd: %s: No such file or directory\n", new_path);
@@ -29,6 +56,8 @@ int	cd_helper(char *new_path, t_env *env_list)
 		return (1);
 	}
 	new_pwd = getcwd(NULL, 0);
+	if (new_pwd == NULL)
+		return (getcwd_failure(env_list, token));
 	update_env("OLDPWD", old_pwd, env_list);
 	update_env("PWD", new_pwd, env_list);
 	free(old_pwd);
@@ -89,7 +118,10 @@ static void determine_path(t_token *token, t_env *env_list,
     else
     {
         *flag = 2;
-        *new_path = (token->value[0] == '\0') ? "." : token->value;
+        if (token->value[0] == '\0')
+ 			*new_path = ".";
+ 		else
+ 			*new_path = token->value;
     }
 }
 
@@ -105,7 +137,7 @@ int builtin_cd(t_token *token, t_env *env_list)
         return (1);
     determine_path(token, env_list, &new_path, &flag);
     replace_variable(&flag, env_list, token);
-    if (cd_helper(new_path, env_list) == 1)
+    if (cd_helper(new_path, env_list, token) == 1)
         return (1);
     return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:48:10 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/06 19:00:52 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/07 22:21:07 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,21 @@ void	update_env(char *key, char *new_value, t_env *env_list)
 
 int	check_nm_var(char *str)
 {
+	int	i;
+	
 	if (str == NULL)
 		return (1);
-	if (str[0] == '!')
+	i = 0;
+	while (str[i])
 	{
-		printf("bash: %s: event not found\n", str);
-		return (130);
-	}
-	else if ((str[0] < 'a' || str[0] > 'z') && (str[0] < 'A' || str[0] > 'Z') && str[0] != '_')
-	{
-		printf ("bash: export: `%s': not a valid identifier\n", str);
-		return (1);
+		if (i != 0 && str[i] == '=')
+			break ;
+		if ((str[i] < 'a' || str[i] > 'z') && (str[i] < 'A' || str[i] > 'Z') && str[i] != '_')
+		{
+			printf ("bash: export: `%s': not a valid identifier\n", str);
+			return (1);
+		}
+		i++;
 	}
 	return (0);
 }

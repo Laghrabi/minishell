@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/06 01:19:22 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/07 19:07:11 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,7 @@ int	builtin_unset(t_token *token, t_env **env_list);
 int	builtin_env(t_token *token, t_env *env_list);
 int	builtin_pwd(t_token *token, t_env *env_list);
 int	builtin_cd(t_token *token, t_env *env_list);
-int	cd_helper(char *new_path, t_env *env_list);
+int	cd_helper(char *new_path, t_env *env_list, t_token *token);
 int	builtin_echo(t_token *token, t_env *env_list);
 int execute_command(t_ast *node, t_env *env_list);
 int	execute_ast(t_ast *node, t_env *env_list);
