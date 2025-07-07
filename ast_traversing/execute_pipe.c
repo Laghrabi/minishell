@@ -100,9 +100,10 @@ int execute_command(t_ast *node, t_env *env_list)
     if (!node)
         return (1);
     if (node->type == NODE_SUBSHELL)
-        return (1);//execute_subshell(node, env_list));
+        execute_subshell(node, env_list);
     else
         return (is_path(node , env_list));
+    return (0);
 }
 
 void handle_wait_and_status(int pid[2], int *status)
@@ -158,45 +159,13 @@ int handle_right_pipe_cmd(t_ast *node, t_env *env_list, int pipe_read_end)
         signal(SIGQUIT, SIG_DFL);
         dup2(pipe_read_end, STDIN_FILENO);
         close(pipe_read_end);
-        int exit_code = execute_command(node->right, env_list);
+        status = execute_command(node->right, env_list);
         memory_management(env_list, 1);
-        exit(exit_code);
+        exit(status);
     }
     close(pipe_read_end);
     return (pid);
 }
-
-
-
-// int execute_pipe(t_ast *node, t_env *env_list, int input_fd)
-// {
-//     int pipefd[2];
-//     int status;
-//     pid_t pid[2];
-
-//     expand_evrything(node, env_list);
-//     if (!node || node->type != NODE_PIPE)
-//         return execute_command(node, env_list);
-//     if (pipe(pipefd) == -1)
-//     {
-//         perror("pipe");
-//         return (1);
-//     }
-//     pid[0] = fork_and_execute_pipe_left(node, env_list, input_fd, pipefd);
-//     signal(SIGINT, SIG_IGN);
-//     if (pid[0] == -1)
-//         return (1);
-//     close(pipefd[1]);
-//     if (input_fd != STDIN_FILENO)
-//         close(input_fd);
-//     if (node->right && node->right->type == NODE_PIPE)
-//         return execute_pipe(node->right, env_list, pipefd[0]);
-//     else if (node->right && node->right->type == NODE_CMD)
-//         pid[1] = handle_right_pipe_cmd(node->right, env_list, pipefd[0]);
-//     handle_wait_and_status(pid, &status);
-//     close(pipefd[0]);
-//     return (0);
-// }
 
 int execute_pipe(t_ast *node, t_env *env_list, int input_fd)
 {
@@ -236,6 +205,32 @@ int execute_pipe(t_ast *node, t_env *env_list, int input_fd)
     return (0);
 }
 
+
+
+int execute_compound_command(t_ast *node, t_env *env_list)
+{
+    int exit_status;
+
+    if (!node || !env_list)
+        return (0);
+    if (node->type == NODE_AND)
+    {
+        exit_status = execute_pipe(node->left, env_list, STDIN_FILENO);
+        if (exit_status == 0)
+            exit_status = execute_compound_command(node->right, env_list);
+        return (exit_status);
+    }
+    else if (node->type == NODE_OR)
+    {
+        exit_status = execute_pipe(node->left, env_list, STDIN_FILENO);
+        if (exit_status != 0)
+            exit_status = execute_compound_command(node->right, env_list);
+        return (exit_status);
+    }
+    else
+        return (execute_pipe(node, env_list, STDIN_FILENO));
+    return (1);
+}
 
 // int execute_pipe(t_ast *node, t_env *env_list, int input_fd)
 // {
@@ -317,29 +312,32 @@ int execute_pipe(t_ast *node, t_env *env_list, int input_fd)
 //     else
 //         close(pipefd[0]);
 //     return(0);
+// }// int execute_pipe(t_ast *node, t_env *env_list, int input_fd)
+// {
+//     int pipefd[2];
+//     int status;
+//     pid_t pid[2];
+
+//     expand_evrything(node, env_list);
+//     if (!node || node->type != NODE_PIPE)
+//         return execute_command(node, env_list);
+//     if (pipe(pipefd) == -1)
+//     {
+//         perror("pipe");
+//         return (1);
+//     }
+//     pid[0] = fork_and_execute_pipe_left(node, env_list, input_fd, pipefd);
+//     signal(SIGINT, SIG_IGN);
+//     if (pid[0] == -1)
+//         return (1);
+//     close(pipefd[1]);
+//     if (input_fd != STDIN_FILENO)
+//         close(input_fd);
+//     if (node->right && node->right->type == NODE_PIPE)
+//         return execute_pipe(node->right, env_list, pipefd[0]);
+//     else if (node->right && node->right->type == NODE_CMD)
+//         pid[1] = handle_right_pipe_cmd(node->right, env_list, pipefd[0]);
+//     handle_wait_and_status(pid, &status);
+//     close(pipefd[0]);
+//     return (0);
 // }
-
-int execute_compound_command(t_ast *node, t_env *env_list)
-{
-    int exit_status;
-
-    if (!node || !env_list)
-        return (0);
-    if (node->type == NODE_AND)
-    {
-        exit_status = execute_pipe(node->left, env_list, STDIN_FILENO);
-        if (exit_status == 0)
-            exit_status = execute_compound_command(node->right, env_list);
-        return (exit_status);
-    }
-    else if (node->type == NODE_OR)
-    {
-        exit_status = execute_pipe(node->left, env_list, STDIN_FILENO);
-        if (exit_status != 0)
-            exit_status = execute_compound_command(node->right, env_list);
-        return (exit_status);
-    }
-    else
-        return (execute_pipe(node, env_list, STDIN_FILENO));
-    return (1);
-}

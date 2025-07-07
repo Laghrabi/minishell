@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:48:32 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/04 22:54:54 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/06 18:59:15 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ int	builtin_unset(t_token *token, t_env **env_list)
 			}
 			current = current->next;
 		}
+		if (token->next == NULL)
+			update_env("_", token->value, *env_list);
 		token = token->next;
 	}
 	return (0);

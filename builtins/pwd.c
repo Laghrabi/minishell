@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:48:27 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/04 22:49:48 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/06 18:57:06 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,6 @@ int	builtin_pwd(t_token *token, t_env *env_list)
 	}
 	if (printf("%s\n", pwd) == -1)
 		return (1);
+	update_env("_", "pwd", env_list);
 	return (0);
 }

@@ -272,9 +272,6 @@ void remove_extra_quote(char *token, int *field)
 
 void set_ambigouse(t_token *current)
 {
-    int i;
-    
-    i = 0;
     if (current->next)
         current->ambiguous = 1;
 }

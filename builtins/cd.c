@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:47:58 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/05 23:56:17 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/06 20:42:14 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	cd_helper(char *new_path, t_env *env_list)
 {
 	char	*old_pwd;
 	char	*new_pwd;
-	
+
 	if (new_path == NULL || env_list == NULL)
 		return (1);
 	old_pwd = getcwd(NULL, 0);
@@ -82,6 +82,7 @@ static void determine_path(t_token *token, t_env *env_list,
     else if (ft_strcmp(token->value, "-") == 0)
     {
         *flag = 1;
+		printf("%s\n", get_env_value("OLDPWD", env_list));
         *new_path = get_env_value("OLDPWD", env_list);
     }
     else

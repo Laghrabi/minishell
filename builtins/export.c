@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:48:22 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/06 17:20:09 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/06 20:40:52 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ int	builtin_export(t_token *token, t_env **env_list)
 	if (token->next == NULL)
 	{
 		only_export(*env_list);
+		update_env("_", "export", *env_list);
 		return (0);
 	}
 	token = token->next;
@@ -106,6 +107,8 @@ int	builtin_export(t_token *token, t_env **env_list)
 			node->next = NULL;
 			env_add_back(env_list, node);
 		}
+		if (token->next == NULL)
+			update_env("_", token->value, *env_list);
 		token = token->next;
 	}
 	return (0);
