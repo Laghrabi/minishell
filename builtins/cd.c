@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:47:58 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/07 22:36:08 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/08 10:26:57 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int	getcwd_failure(t_env *env_list, t_token *token)
 		str = ".";
 	joined = ft_strjoin(get_env_value("PWD", env_list), "/");
 	joined = ft_strjoin(joined, str);
-	//printf("HERE: [%s]\n", joined);
 	update_env("OLDPWD", get_env_value("PWD", env_list), env_list);
 	update_env("PWD", joined, env_list);
 	return (0);

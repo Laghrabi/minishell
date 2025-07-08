@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:48:16 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/04 22:56:23 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/08 11:45:32 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,44 +59,80 @@ long long	ft_stoi(const char *str)
 	return ((long long)result);
 }
 
-int	builtin_exit(t_token *token)
+static void	handle_exit_argument(t_token *token)
 {
 	unsigned long	nbr;
 
-	if (token == NULL)
-		return (1);
-	if (token->next == NULL)
+	nbr = ft_stoi(token->value);
+	if (if_all_num(token->value) == 1)
 	{
-		if (isatty(0))
-			printf("exit\n");
-		//exit(0);
+		ft_putstr_fd("minishell: numeric argument required\n", 2);
+		s_var()->exit_status = 2;
 	}
 	else if (token->next != NULL)
 	{
-		token = token->next;
-		if (token->next != NULL)
-		{
-			printf("exit\nbash: exit: too many arguments\n");
-			s_var()->exit_status = 1;
-			return (1);
-		}
-		if (if_all_num(token->value) == 1)
-			return (1);
-		nbr = ft_stoi(token->value);
-		if (nbr == (unsigned long)LONG_MAX + 1)
-		{
-			printf("exit\nbash: exit: %s: numeric argument required\n", token->value);
-			//exit(2);
-			s_var()->exit_status = 2;
-		}
-		else
-		{
-			printf("exit\n");
-			s_var()->exit_status = nbr % 256;
-			//exit(nbr % 256);
-		}
+		ft_putstr_fd("minishell: too many arguments\n", 2);
+		s_var()->exit_status = 1;
 	}
-	printf("EXIT STATUS: [%d]", s_var()->exit_status);
-	exit(s_var()->exit_status);
-	//return (1);
+	else if (nbr == (unsigned long)LONG_MAX + 1)
+	{
+		ft_putstr_fd("minishell: numeric argument required\n", 2);
+		s_var()->exit_status = 2;
+	}
+	else
+		s_var()->exit_status = nbr % 256;
 }
+
+int	builtin_exit(t_token *token)
+{
+	if (token == NULL)
+		return (1);
+	if (isatty(STDIN_FILENO))
+		printf("exit\n");
+	if (token->next != NULL)
+	{
+		token = token->next;
+		handle_exit_argument(token);
+		if (s_var()->exit_status == 1)
+			return (1);
+	}
+	exit(s_var()->exit_status);
+}
+
+
+// int	builtin_exit(t_token *token)
+// {
+// 	unsigned long	nbr;
+
+// 	if (token == NULL)
+// 		return (1);
+// 	if (token->next == NULL)
+// 		ft_putstr_fd("exit\n", 2);
+// 	if (token->next != NULL)
+// 	{
+// 		token = token->next;
+// 		nbr = ft_stoi(token->value);
+// 		if (if_all_num(token->value) == 1)
+// 		{
+// 			ft_putstr_fd("exit\nminishell: numeric argument required\n", 2);
+// 			s_var()->exit_status = 2;
+// 		}
+// 		else if (token->next != NULL)
+// 		{
+// 			ft_putstr_fd("exit\nminishell: too many arguments\n", 2);
+// 			s_var()->exit_status = 1;
+// 			return (1);
+// 		}
+// 		else if (nbr == (unsigned long)LONG_MAX + 1)
+// 		{
+// 			ft_putstr_fd("exit\nminishell: numeric argument required\n", 2);
+// 			s_var()->exit_status = 2;
+// 		}
+// 		else
+// 		{
+// 			printf("exit\n");
+// 			s_var()->exit_status = nbr % 256;
+// 		}
+// 	}
+// 	exit(s_var()->exit_status);
+// }
