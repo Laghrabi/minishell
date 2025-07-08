@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:04:58 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/07 21:28:31 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/08 14:10:22 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,11 @@ char *check_var(char *token, t_env *env, int *index)
         value = get_env_value(var_name, env);
         if (value)
         *index = *index + ft_strlen(var_name);
+    }
+    else if (ft_isdigit(token[0]))
+    {
+        *index += 1;
+        return (ft_strdup(""));
     }
     else 
         return (ft_strdup("$"));
