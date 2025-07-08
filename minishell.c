@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:39:50 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/07 21:37:35 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/08 23:13:27 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,8 @@ void	handle_sigint(int signum)
 	// else
 	//     write(STDOUT_FILENO, "\n", 1);
 	rl_replace_line("", 0);
+	//wach khasha tkteb f stdout wla stderr had ster li lta7t????
+	//!!!!!!!
 	write(STDOUT_FILENO, "\n", 1);
 	rl_on_new_line();
 	rl_redisplay();
@@ -163,7 +165,7 @@ int	main(int ac, char **av, char **envp)
 		}
 		if (input[0] != '\0')
 			add_history(input);
-		g_token = tokenization(input);
+		g_token = tokenization(input, 0, 1, NULL);
 		if (g_token == NULL)
 			continue ;
 		free(input);
@@ -177,10 +179,10 @@ int	main(int ac, char **av, char **envp)
 		//     continue ;                   // skip execution, prompt again
 		// }
 		// // test_expansion(ast, env_list);
-		// if (ast)
-		//     print_ast(ast, 0);
 		if (ast && s_var()->syntax_error != 1)
 			s_var()->exit_status = execute_ast(ast, env_list);
+		// if (ast)
+		//     print_ast(ast, 0);
 		if (s_var()->syntax_error == 1)
 			s_var()->syntax_error = 0;
 		// printf("status=%d\n", s_var()->exit_status);

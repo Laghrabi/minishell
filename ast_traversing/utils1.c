@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 03:44:43 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/07 18:26:02 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/09 00:07:52 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ char **token_list_to_argv(t_token *token_list)
     current = token_list;
     while (current != NULL)
     {
-        argv[i++] = ft_strdup(current->value);
+		if (current->value[0] != '\0')
+        	argv[i++] = ft_strdup(current->value);
         current = current->next;
     }
     argv[i] = NULL;
@@ -117,7 +118,7 @@ int	setup_redirections(t_ast *redir_list, t_env *env_list)
 			return (1);
 		if (fd == -1)
 		{
-			// printf mesage dyal redi
+			perror("minishell");;
 			return (1);
 		}
 		if (redir_list->type == NODE_OREDIR || redir_list->type == NODE_APPEND)

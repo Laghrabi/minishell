@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:48:10 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/07 22:21:07 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/08 18:06:00 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,16 +56,24 @@ int	check_nm_var(char *str)
 	if (str == NULL)
 		return (1);
 	i = 0;
-	while (str[i])
+	if (!ft_isalpha(str[i]) && str[i] != '_')
+	{
+		ft_putstr_fd("bash: export: `", 2);
+		ft_putstr_fd(str , 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
+		return (1);
+	}
+	while (str[++i])
 	{
 		if (i != 0 && str[i] == '=')
 			break ;
-		if ((str[i] < 'a' || str[i] > 'z') && (str[i] < 'A' || str[i] > 'Z') && str[i] != '_')
+		if (!ft_isalnum(str[i]) && str[i] != '_')
 		{
-			printf ("bash: export: `%s': not a valid identifier\n", str);
+			ft_putstr_fd("bash: export: `", 2);
+			ft_putstr_fd(str , 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
 			return (1);
 		}
-		i++;
 	}
 	return (0);
 }

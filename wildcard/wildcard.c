@@ -12,24 +12,25 @@
 
 #include "../minishell.h"
 
-int is_matche(char *str, char *suspect)
+int	is_matche(char *str, char *suspect)
 {
 	if (*str == '\0')
 		return (*suspect == '\0');
 	if (*str == '*')
-	return (is_matche(str + 1, suspect) || (*suspect != '\0' && is_matche(str , suspect +1)));
+		return (is_matche(str + 1, suspect) || (*suspect != '\0'
+				&& is_matche(str, suspect + 1)));
 	if (*suspect != '\0' && *suspect == *str)
 		return (is_matche(str + 1, suspect + 1));
-	return (0);	
+	return (0);
 }
 
-t_token *search_matches(char *str)
+t_token	*search_matches(char *str)
 {
-	DIR *dir;
-	struct dirent *entry;
-	t_token *node;
-	t_token *head;
-	
+	DIR				*dir;
+	struct dirent	*entry;
+	t_token			*node;
+	t_token			*head;
+
 	head = NULL;
 	dir = opendir(".");
 	if (!dir)
@@ -40,7 +41,7 @@ t_token *search_matches(char *str)
 		if (entry->d_name[0] == '.' && str[0] != '.')
 		{
 			entry = readdir(dir);
-			continue;
+			continue ;
 		}
 		if (is_matche(str, entry->d_name))
 		{
@@ -52,11 +53,11 @@ t_token *search_matches(char *str)
 	return (head);
 }
 
-void append_matches(t_token **token, t_token *match)
+void	append_matches(t_token **token, t_token *match)
 {
-	t_token *prev;
-	t_token *next;
-	
+	t_token	*prev;
+	t_token	*next;
+
 	prev = (*token)->pre;
 	next = (*token)->next;
 	match->pre = prev;
@@ -67,46 +68,46 @@ void append_matches(t_token **token, t_token *match)
 	match->next = next;
 	if (next)
 		next->pre = match;
-	*token = match; 
+	*token = match;
 }
 
-void check_wildcard(t_token **token)
+void	check_wildcard(t_token **token)
 {
-    t_token *matches;
+	t_token	*matches;
+	int		i;
 
-    matches = NULL;
-    int i;
-    if (!token)
-        return;
-    i = 0;
-	
-    while ((*token)->value[i])
-    {
-        if ((*token)->value[i] == '*' && ((*token)->field[i] == 0 || (*token)->field[i] == 1))
-        {
-            matches = search_matches((*token)->value);
-            if (matches)
-                append_matches(token, matches);
-            return;
-        }
-        i++; 
-    }
+	matches = NULL;
+	if (!token)
+		return ;
+	i = 0;
+	while ((*token)->value[i])
+	{
+		if ((*token)->value[i] == '*' && ((*token)->field[i] == 0
+				|| (*token)->field[i] == 1))
+		{
+			matches = search_matches((*token)->value);
+			if (matches)
+				append_matches(token, matches);
+			return ;
+		}
+		i++;
+	}
 }
 
-void wildcard(t_token **arg_list)
+void	wildcard(t_token **arg_list)
 {
-	int check;
-	t_token *test;
-	
+	int		check;
+	t_token	*test;
+	t_token	*current;
+
 	check = 0;
-    t_token *current;
-    if (arg_list == NULL || *arg_list == NULL)
-        return;
-    current = *arg_list;
-    while (current)
-    {
+	if (arg_list == NULL || *arg_list == NULL)
+		return ;
+	current = *arg_list;
+	while (current)
+	{
 		if (current->is_herdoc == 0)
-		{        
+		{
 			check_wildcard(&current);
 			if (!check)
 			{
@@ -118,6 +119,6 @@ void wildcard(t_token **arg_list)
 			if (current->pre == NULL)
 				*arg_list = current;
 		}
-        current = current->next;
-    }
+		current = current->next;
+	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 21:13:04 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/07 19:34:25 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/08 15:17:00 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	child_process(int pipefd[2], char *delimiter)
 {
 	char	*line;
 	
+	s_var()->pipe[0] = pipefd[0];
+	s_var()->pipe[1] = pipefd[1];
 	signal(SIGINT, sigint_handler_child);
 	close(pipefd[0]);
 	while(1)

@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 14:28:45 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/03 16:33:02 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/09 00:02:14 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int is_executable(t_ast *node, t_env *env_list)
 {
     if (!access(node->left->token_list->value, X_OK))
     {
+        fprintf(stderr, "ziad\n");
         return (handle_simple_command(node, env_list));
     }
     else
@@ -48,7 +49,8 @@ int is_dir(t_ast *node, t_env *env_list)
     {
         if (stat(node->left->token_list->value, &info) == 0 && S_ISDIR(info.st_mode))
         {
-            printf("%s : is a directory\n", node->left->token_list->value);
+            ft_putstr_fd(node->left->token_list->value, 2);
+            ft_putstr_fd(" : Is a directory\n", 2);
             node->left->token_list->is_already_exec = 1;
             if (node->right)
                 handle_simple_command(node, env_list);
@@ -70,14 +72,14 @@ int is_dir1(t_ast *node, t_env *env_list)
     return (0);
 }
 
-int not_found(t_ast * node, t_env *env_list)
-{
-    printf("%s; command not found\n", node->left->token_list->value);
-    node->left->token_list->is_already_exec = 1;
-    if (node->right)
-    handle_simple_command(node, env_list);
-    return (127);
-}
+// int not_found(t_ast * node, t_env *env_list)
+// {
+//     printf("%s; command not found\n", node->left->token_list->value);
+//     node->left->token_list->is_already_exec = 1;
+//     if (node->right)
+//     handle_simple_command(node, env_list);
+//     return (127);
+// }
 
 int is_absolute_path(t_ast *node, t_env *env_list)
 {
@@ -85,35 +87,11 @@ int is_absolute_path(t_ast *node, t_env *env_list)
     //PROOTECTTIIIII ILA KANT LEFT
 
     if (node->left && node->left->token_list && ft_strchr(node->left->token_list->value, '/') != NULL)
-    {
         return(is_dir(node, env_list));
-    }
     else
-    {
         return (handle_simple_command(node, env_list));
-        // if (!access(node->left->token_list->value, F_OK))
-        // {
-        //     if (stat(node->left->token_list->value, &info) == 0 && S_ISDIR(info.st_mode))
-        //     {
-        //         printf("%s; command not found\n", node->left->token_list->value);
-        //         node->left->token_list->is_already_exec = 1;
-        //         if (node->right)
-        //             handle_simple_command(node, env_list);
-        //         return (127);
-        //     }
-        //     else
-        //         return (handle_simple_command(node, env_list));
-        // }
-        // else
-        //     return (not_found(node , env_list));
-    }
     return (0);
 }
-
-// int no_path(t_ast *node, t_env *env_list)
-// {
-    
-// }
 
 int is_di_or_builtin(t_ast *node, t_env *env_list, int i)
 {
@@ -131,9 +109,13 @@ int is_di_or_builtin(t_ast *node, t_env *env_list, int i)
     else if (i == 1)
         return (is_absolute_path(node, env_list));
     else
+    {
+        fprintf(stderr, "hello1");
         return (is_dir1(node, env_list));
+    }
     return (1);
 }
+
 int is_path(t_ast *node, t_env *env_list)
 {
     int path;

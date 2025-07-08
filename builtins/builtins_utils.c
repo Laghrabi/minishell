@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:20:21 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/07 22:01:41 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/09 00:12:43 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,12 @@ int execute_simple_cmd(t_env *env_list, char **argv)
     char *cmd_path;
 
 	if (env_list == NULL || argv == NULL || *argv == NULL)
-		return (1);
+		return (0);
 	if (ft_strchr(argv[0], '/') != NULL)
 		cmd_path = argv[0];
 	else
 		cmd_path = find_cmd_path(argv[0], env_list);
-	if (cmd_path == NULL)
+	if (cmd_path == NULL && !check_for_var("PATH", env_list))
 	{
 		ft_putstr_fd(argv[0], 2);
 		ft_putstr_fd(": command not found\n", 2);
@@ -103,7 +103,7 @@ int	cmd_or_builtin(t_token *token, t_env *env_list, char **argv)
 	int flag;
 	
 	if (token == NULL || env_list == NULL || argv == NULL || *argv == NULL)
-		return (-1);
+		return (0);
 	flag = if_builtin(token->value);
 	if (flag == 0)
 		return(execute_simple_cmd(env_list, argv));

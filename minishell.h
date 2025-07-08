@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/07 22:40:53 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/08 23:21:09 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ typedef struct s_variabls
     int     exit_status;
     int     g_child_ctrc;
     int     syntax_error;
+    int     pipe[2];
 } t_variabls;
 
 typedef struct s_gr_cl
@@ -139,6 +140,67 @@ typedef struct s_gr_cl
 } t_gr_cl;
 
 /* FUNCTIONS */
+int handle_wait_and_status(int pid[2], int *status);
+int fork_and_execute_pipe_left(t_ast *node, t_env *env_list, int input_fd, int pipefd[2]);
+int handle_right_pipe_cmd(t_ast *node, t_env *env_list, int pipe_read_end);
+int execute_pipe(t_ast *node, t_env *env_list, int input_fd);
+int handle_node_and(t_ast *node, t_env *env_list);
+int handle_node_or(t_ast *node, t_env *env_list);
+int execute_compound_command(t_ast *node, t_env *env_list);
+
+
+/*execution function*/
+
+
+/*memory management*/
+void	free_env(t_env *env);
+void	memory_management(t_env *env, int is_free_env);
+t_gr_cl	*last_node(t_gr_cl *gar);
+t_gr_cl	*new_node(void *ptr);
+void	free_garbage_collector(t_gr_cl *garbage);
+void	garbage_collector(void *new_pointer, int should_free);
+void	*gc_malloc(size_t size);
+
+/*tokenization*/
+t_token	*new_token(char *str, t_type type, int *field);
+t_token	*last_token(t_token *lst);
+void	add_back(t_token **token, t_token *new);
+int	operator_sep(char *input, t_info info, int *i, t_token **token);
+int	word_sep(char *input, t_info info, int *i, t_token **token);
+int	operator(char c);
+void	is_qoute(char c, int *i, int *j);
+void	init_struct(t_info **info);
+t_token	*tokenization(char *input, int i, int check, t_token *token);
+
+/*expansion function*/
+char	*handle_default_dollar(void);
+char	*handle_digit_var(int *index);
+char	*handle_alpha_var(char *token, t_env *env, int *index);
+char	*handle_exit_status(int *index);
+char	*check_var(char *token, t_env *env, int *index);
+int	handle_single_quote(int *db_quote, int *sg_quote, int *quote_state);
+int	handle_double_quote(int *db_quote, int *sg_quote, int *quote_state);
+int	which_type(char c, int *db_quote, int *sg_quote, int *quote_state);
+t_token	*list_token(t_extoken *extoken, int i, int l, int word);
+void	delete_node(t_token **arg_list, t_token **original_arg);
+void	remove_extra_quote(char *token, int *field);
+void	set_ambigouse(t_token *current);
+void	insert_expanded_tokens(t_token *current, t_token **arg_list);
+void	skip_var(char *token, int *i);
+void	write_value(t_extoken *ex_token, char *value);
+int	*ft_subint(int *field, int start, int len);
+void	add_new_token(t_token **head, char *value, int *field, db_int db_int);
+int	i_o(char c);
+void	split_expanded_token(t_extoken *extoken, t_token **arg_list,
+		t_token **original_arg, int herdoc);
+void	fill_extoken_fields(t_extoken *ex_token, char *token, t_env *env, int k);
+t_extoken	*expanded_token(char *token, t_env *env, int k);
+void	process_token_expansion(t_token **current, t_token **next,
+		t_token **arg_list, t_env *env);
+void	expansion(t_token **arg_list, t_env *env);
+
+
+
 void free_double_array(char **db_str);
 void	child_process(int pipefd[2], char *delimiter);
 int	parent_process(pid_t pid, int pipefd[2], int *ctrc);
@@ -189,14 +251,6 @@ int	builtin_echo(t_token *token, t_env *env_list);
 int execute_command(t_ast *node, t_env *env_list);
 int	execute_ast(t_ast *node, t_env *env_list);
 void wildcard(t_token **arg_list);
-void    add_back(t_token **token, t_token *new);
-int *set_field(char *str);
-void skip_var(char *token, int *i);
-int extra_quote(char c, int i);
-char *check_var(char *token, t_env *env, int *index);
-void fix_value(char *value, t_token **arg);
-t_extoken *expanded_token(char *token, t_env *env, int k);
-void expansion(t_token **arg_list, t_env *env);
 void	update_env(char *key, char *new_value, t_env *env_list);
 char    *get_env_value(char *key, t_env *env_list);
 t_env	*init_env(char **envp);
@@ -222,9 +276,6 @@ t_node_type	convert_t_type(t_type op);
 void	append_token(t_token **head, t_token *new_token);
 t_token	*single_token_list(t_token *token);
 t_ast	*create_ast_node(t_ast *left, t_ast *right, t_token	*token_list, t_node_type type);
-t_token    *new_token(char *str, t_type type, int *field);
-t_token *tokenization(char *input);
-int word_sep(char *input, t_info info, int *i, t_token **token);
-int operator_sep(char *input, t_info info, int *i, t_token **token);
+
 
 #endif

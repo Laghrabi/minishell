@@ -6,85 +6,11 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 10:27:21 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/07 22:24:18 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/08 22:59:49 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	fd_leaks(int fd1, int fd2)
-{
-	dup2(fd1, STDIN_FILENO);
-	dup2(fd2, STDOUT_FILENO);
-	close(fd1);
-	close(fd2);
-}
-
-int execute_subshell(t_ast *node, t_env *env_list)
-{
-    int status;
-    int saved_stdout;
-    int saved_stdin;
-    int redirected;
-
-    redirected = 0;
-    if (!node->left)
-       return (2);
-    if (node->right) {
-        saved_stdout = dup(STDOUT_FILENO);
-        saved_stdin = dup(STDIN_FILENO);
-        redirected = 1;
-        if (setup_redirections(node->right, env_list) == 1)
-        {
-            close(saved_stdout);
-            close(saved_stdin);
-            return 1;
-        }
-    }
-    status = execute_compound_command(node->left, env_list);
-    if (redirected)
-        fd_leaks(saved_stdin, saved_stdout);
-    return (s_var()->exit_status);
-}
-
-int handle_simple_command(t_ast *node, t_env *env_list)
-{
-    char (**argv);
-    int	(saved_stdout), (saved_stdin), (status);
-    argv = NULL;
-    if (!node)
-        return (1);
-    if (node->left && node->left->token_list)
-        argv = token_list_to_argv(node->left->token_list);
-    //ymklek tbli had lcondition kamla bdik li katchekilek wach raha redi
-    if (node->right != NULL && (node->right->type == NODE_APPEND || node->right->type == NODE_OREDIR || node->right->type == NODE_IREDIR || node->right->type == NODE_HEREDOC))
-    {
-        saved_stdout = dup(STDOUT_FILENO);
-		saved_stdin = dup(STDIN_FILENO);
-        status = setup_redirections(node->right, env_list);
-		if (status == 1)
-		{
-			fd_leaks(saved_stdin, saved_stdout);
-			return (1);
-		}
-        if (node->left != NULL && node->left->token_list && node->left->token_list->is_already_exec == 0)
-		        status = cmd_or_builtin(node->left->token_list, env_list, argv);
-		fd_leaks(saved_stdin, saved_stdout);
-		return (status);
-    }
-    return (cmd_or_builtin(node->left->token_list, env_list, argv));
-}
-
-int execute_command(t_ast *node, t_env *env_list)
-{
-    if (!node)
-        return (1);
-    if (node->type == NODE_SUBSHELL)
-        return (execute_subshell(node, env_list));
-    else
-        return (is_path(node , env_list));
-    return (1);
-}
 
 int handle_wait_and_status(int pid[2], int *status)
 {
@@ -182,64 +108,4 @@ int execute_pipe(t_ast *node, t_env *env_list, int input_fd)
         status = handle_wait_and_status(pid, &status);
     }
     return (status);
-}
-
-int execute_compound_command(t_ast *node, t_env *env_list)
-{
-    int exit_status;
-
-    if (!node || !env_list)
-        return (0);
-    if (node->type == NODE_AND)
-    {
-        exit_status = execute_pipe(node->left, env_list, STDIN_FILENO);
-        if (exit_status >= 130)
-            write(1, "\n", 1);
-        if (exit_status == 0)
-            exit_status = execute_compound_command(node->right, env_list);
-        else
-        {
-            while (node && node->right)
-            {
-                if (node->right->type == NODE_OR)
-                {
-                    if (node->right->right)
-                        execute_compound_command(node->right->right, env_list);
-                    break;
-                }
-                node = node->right;
-            }
-        }
-        return (exit_status);
-    }
-    else if (node->type == NODE_OR)
-    {
-        exit_status = execute_pipe(node->left, env_list, STDIN_FILENO);
-        if (exit_status >= 130)
-            write(1, "\n", 1);
-        if (exit_status != 0)
-            exit_status = execute_compound_command(node->right, env_list);
-        else
-        {
-            while (node && node->right)
-            {
-                if (node->right->type == NODE_AND)
-                {
-                    if (node->right->right)
-                        execute_compound_command(node->right->right, env_list);
-                    break;
-                }
-                node = node->right;
-            }
-        }
-        return (exit_status);
-    }
-    else
-    {
-        exit_status = execute_pipe(node, env_list, STDIN_FILENO);
-        if (exit_status >= 130)
-            write(1, "\n", 1);
-        return (exit_status);
-    }
-    return (1);
 }

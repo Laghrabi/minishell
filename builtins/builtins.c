@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 14:16:51 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/04 20:07:31 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/09 00:20:53 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int	builtin_echo(t_token *token)
 		i = 0;
 		while (token->value[i] != '\0')
 		{
-			// if (token->value[i] != '\'' && token->value[i] != '\"')
 			if (write(1, &token->value[i], 1) == -1)
 					return (1);
 			i++;
@@ -53,7 +52,9 @@ int	cd_helper(char *new_path, t_env *env_list)
 	old_pwd = getcwd(NULL, 0);
 	if (chdir(new_path) == -1)
 	{
-		printf("cd: %s: No such file or directory\n", new_path);
+		ft_putstr_fd("cd: ", 2);
+		ft_putstr_fd(new_path, 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
 		free(old_pwd);
 		garbage_collector(NULL, 1);
 		return (1);
@@ -94,11 +95,12 @@ int	builtin_pwd(t_token *token, t_env *env_list)
 	
 	if (token == NULL || env_list == NULL)
 		return (1);
-	if (token->next != NULL)
-	{
-		printf("pwd: too many arguments\n");
-		return (1);
-	}
+	// whna testiha flbash ila kano bzaaf arg pwd works anyway
+	// if (token->next != NULL)
+	// {
+	// 	printf("pwd: too many arguments\n");
+	// 	return (1);
+	// }
 	pwd = get_env_value("PWD", env_list);
 	if (pwd == NULL)
 	{
@@ -115,6 +117,7 @@ int	builtin_env(t_token *token, t_env *env_list)
 
 	if (token == NULL || env_list == NULL)
 		return (1);
+	// 3ndek mochkile hna testeha flbash
 	if (token->next != NULL)
 	{
 		printf("env: too many arguments\n");
