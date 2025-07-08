@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_list.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:10:56 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/06 17:11:13 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/08 13:15:03 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ void	increment_shelvl_value(t_env *envp)
 	integer++;
 	string = ft_itoa(integer);
 	update_env("SHLVL", string, envp);
-	free(string);
 }
 
 t_env	*init_env(char **envp)
