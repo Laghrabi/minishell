@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:48:22 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/08 11:54:05 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/08 14:50:09 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,11 @@ void	process_export_variable(char *key, char *value, t_token *token, t_env **env
 	t_env *node;
 
 	if (check_for_var(key, *env_list) == 0 && value != NULL)
+	{
 		update_env(key, value, *env_list);
+		free(key);
+		free(value);
+	}
 	else if (check_for_var(key, *env_list) == 1)
 	{
 		node = malloc(sizeof(t_env));
