@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_error_messages.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 14:28:45 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/09 14:04:14 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/09 17:51:57 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ int	is_path(t_ast *node, t_env *env_list)
 {
 	int	path;
 
+	if (node == NULL || env_list == NULL)
+		return (1);
 	path = check_for_var("PATH", env_list);
 	if (!path)
 		return (is_di_or_builtin(node, env_list, 1));

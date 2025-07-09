@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/09 15:19:36 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/09 21:47:00 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ typedef struct s_env {
     char			*key;
 	char			*value;
 	struct s_env	*next;
-    struct s_env	*export_next;
+    struct s_env	*prev;
 } t_env;
 
 typedef struct double_int {
@@ -130,7 +130,7 @@ typedef struct s_info {
 
 typedef struct s_variabls
 {
-    t_env	*env_list;
+    t_env	**env_list;
     int     exit_status;
     int     g_child_ctrc;
     int     syntax_error;
@@ -263,7 +263,7 @@ void	process_token_expansion(t_token **current, t_token **next,
 void	expansion(t_token **arg_list, t_env *env);
 
 
-
+void	replace_variable(int *flag, t_env *env_list, t_token *token);
 void remove_quote(char *token, int sg_quote, int db_quote);
 void free_double_array(char **db_str);
 void	child_process(int pipefd[2], char *delimiter);
@@ -306,7 +306,7 @@ int	builtin_exit(t_token *token);
 long long	ft_stoi(const char *str);
 int if_all_num(char *str);
 int	builtin_export(t_token *token, t_env **env_list);
-int	builtin_unset(t_token *token, t_env **env_list);
+int	builtin_unset(t_token *token, t_env *env_list);
 int	builtin_env(t_token *token, t_env *env_list);
 int	builtin_pwd(t_token *token, t_env *env_list);
 int	builtin_cd(t_token *token, t_env *env_list);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:47:58 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/09 11:24:24 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/09 21:45:21 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,29 +61,6 @@ int	cd_helper(char *new_path, t_env *env_list, t_token *token)
 	free(old_pwd);
 	free(new_pwd);
 	return (0);
-}
-
-void	replace_variable(int *flag, t_env *env_list, t_token *token)
-{
-	if (env_list == NULL)
-		return ;
-	if (*flag == 0)
-	{
-		if (token == NULL)
-			update_env("_", "cd", env_list);
-		else
-			update_env("_", get_env_value("HOME", env_list), env_list);
-	}
-	else if (*flag == 1)
-		update_env("_", "-", env_list);
-	else
-	{
-		if (token->value[0] == '\0')
-			update_env("_", "", env_list);
-		else
-			update_env("_", token->value, env_list);
-	}
-	return ;
 }
 
 static int handle_too_many_args(t_token *token, t_env *env_list)
