@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:20:21 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/09 19:39:04 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/09 21:27:40 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,29 @@ int execute_simple_cmd(t_env *env_list, char **argv)
 	free_double_array(envp);
     setup_signals();
 	return (status);
+}
+
+void	replace_variable(int *flag, t_env *env_list, t_token *token)
+{
+	if (env_list == NULL)
+		return ;
+	if (*flag == 0)
+	{
+		if (token == NULL)
+			update_env("_", "cd", env_list);
+		else
+			update_env("_", get_env_value("HOME", env_list), env_list);
+	}
+	else if (*flag == 1)
+		update_env("_", "-", env_list);
+	else
+	{
+		if (token->value[0] == '\0')
+			update_env("_", "", env_list);
+		else
+			update_env("_", token->value, env_list);
+	}
+	return ;
 }
 
 int	cmd_or_builtin(t_token *token, t_env *env_list, char **argv)

@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/09 20:01:20 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/09 21:47:00 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,7 +263,7 @@ void	process_token_expansion(t_token **current, t_token **next,
 void	expansion(t_token **arg_list, t_env *env);
 
 
-
+void	replace_variable(int *flag, t_env *env_list, t_token *token);
 void remove_quote(char *token, int sg_quote, int db_quote);
 void free_double_array(char **db_str);
 void	child_process(int pipefd[2], char *delimiter);

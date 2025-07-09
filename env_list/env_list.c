@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:10:56 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/09 20:02:43 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/09 22:49:31 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,27 @@ void	env_add_back(t_env **lst, t_env *new)
 	new->prev = current;
 }
 
+void	update_env2(char *key, char *new_value, t_env *env_list)
+{
+	t_env	*current;
+
+	if (key == NULL || new_value == NULL || env_list == NULL)
+		return ;
+	current = env_list;
+	while (current != NULL)
+	{
+		if (current->key && ft_strcmp(key, current->key) == 0)
+		{
+			if (current->value != NULL)
+				free(current->value);
+			current->value = ft_strdup2(new_value);
+			return ;
+		}
+		current = current->next;
+	}
+	return ;
+}
+
 void	increment_shelvl_value(t_env *envp)
 {
 	char	*string;
@@ -64,7 +85,7 @@ void	increment_shelvl_value(t_env *envp)
 	integer = ft_atoi(string);
 	integer++;
 	string = ft_itoa(integer);
-	update_env("SHLVL", string, envp);
+	update_env2("SHLVL", string, envp);
 }
 
 t_env	*init_env(char **envp)

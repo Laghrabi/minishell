@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:48:10 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/08 18:06:00 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/09 23:03:47 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,11 @@ void	update_env(char *key, char *new_value, t_env *env_list)
 
 	if (key == NULL || new_value == NULL || env_list == NULL)
 		return ;
+	//env_list = *(s_var()->env_list);
 	current = env_list;
 	while (current != NULL)
 	{
-		if (ft_strcmp(key, current->key) == 0)
+		if (current->key && ft_strcmp(key, current->key) == 0)
 		{
 			if (current->value != NULL)
 				free(current->value);
@@ -48,6 +49,27 @@ void	update_env(char *key, char *new_value, t_env *env_list)
 	}
 	return ;
 }
+
+// void	update_env(char *key, char *new_value, t_env *env_list)
+// {
+// 	t_env	*current;
+
+// 	if (key == NULL || new_value == NULL || env_list == NULL)
+// 		return ;
+// 	current = env_list;
+// 	while (current != NULL)
+// 	{
+// 		if (current->key && ft_strcmp(key, current->key) == 0)
+// 		{
+// 			if (current->value != NULL)
+// 				free(current->value);
+// 			current->value = ft_strdup2(new_value);
+// 			return ;
+// 		}
+// 		current = current->next;
+// 	}
+// 	return ;
+// }
 
 int	check_nm_var(char *str)
 {
