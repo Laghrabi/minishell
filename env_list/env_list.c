@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_list.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:10:56 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/09 14:42:10 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/09 20:02:43 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	env_add_back(t_env **lst, t_env *new)
 	}
 	current = find_last(*lst);
 	current->next = new;
+	new->prev = current;
 }
 
 void	increment_shelvl_value(t_env *envp)
@@ -85,6 +86,7 @@ t_env	*init_env(char **envp)
 		node->value = ft_substr2(envp[i], pos + 1, ft_strlen(envp[i]) - pos
 				- 1);
 		node->next = NULL;
+		node->prev = NULL;
 		env_add_back(&head, node);
 		i++;
 	}

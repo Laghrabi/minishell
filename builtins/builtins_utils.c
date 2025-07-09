@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:20:21 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/09 14:50:42 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/09 19:39:04 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ int	which_one(int flag, t_token *token, t_env *env_list)
 	else if (flag == 4)
 		return(builtin_export(token, &env_list));
 	else if (flag == 5)
-		return(builtin_unset(token, &env_list));
+		return(builtin_unset(token, env_list));
 	else if (flag == 6)
 		return(builtin_env(token, env_list));
 	else if (flag == 7)
