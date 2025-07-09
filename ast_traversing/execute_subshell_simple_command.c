@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 22:58:36 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/09 12:48:28 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/09 22:54:20 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	execute_subshell(t_ast *node, t_env *env_list)
 	status = execute_compound_command(node->left, env_list);
 	if (redirected)
 		fd_leaks(saved_stdin, saved_stdout);
-	return (s_var()->exit_status);
+	return (status);
 }
 
 int	handle_simple_command(t_ast *node, t_env *env_list, char **argv)
