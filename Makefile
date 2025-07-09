@@ -17,6 +17,7 @@ SRC = minishell.c parsing/tokenization/tokenizer.c \
 		expansion/expansion_check_var.c \
 		expansion/expansion_handle_quote.c \
 		env_list/env_list.c \
+		env_list/env_list_utils.c \
 		wildcard/wildcard.c \
 		builtins/builtins_utils.c \
 		ast_traversing/utils1.c ast_traversing/utils2.c \
@@ -24,10 +25,11 @@ SRC = minishell.c parsing/tokenization/tokenizer.c \
 		ast_traversing/execute_compound_command.c \
 		ast_traversing/execute_subshell_simple_command.c \
 		ast_traversing/handle_error_messages.c \
-		utils/static.c builtins/echo.c \
+		builtins/echo.c \
 		builtins/cd.c builtins/pwd.c \
 		builtins/unset.c builtins/export.c \
-		builtins/env.c builtins/exit.c 
+		builtins/env.c builtins/exit.c \
+		printf_ast/print_ast.c
  
 LIBFT = libft/libft.a
 NAME = minishell

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 21:15:30 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/05 21:18:59 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/09 15:03:35 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,12 @@ int is_quote(char *str)
     }
     return (0);
 }
-//norm dyal ziad
-void remove_quote(char *token)
+
+void remove_quote(char *token, int sg_quote, int db_quote)
 {
-    int (i), (j), (sg_quote), (db_quote);
+    int (i), (j);
     i = 0;
     j = 0;
-    sg_quote = 0;
-    db_quote = 0;
     while (token[i])
     {
         if (token[i] == '\'' && sg_quote == 0 && db_quote == 0)
@@ -116,7 +114,7 @@ char	*parse_herdoc_helper(int *i, int *ctrc)
 	str = peek()->value;
 	if (is_quote(str))
 		*i = 0;
-	remove_quote(str);
+	remove_quote(str, 0, 0);
 	buffer = read_heredoc_lines(str, ctrc);
 	return (buffer);
 }

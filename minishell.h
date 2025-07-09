@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/09 14:33:07 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/09 15:19:36 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,41 @@ typedef struct s_gr_cl
 /* FUNCTIONS */
 
 
+
+
+/*print ast*/
+void	print_indent(int depth);
+void	print_node_type(t_node_type type);
+void	print_token_list(t_token *tokens, int depth);
+void	print_ast(t_ast *node, int depth);
+
+/*wildcard*/
+void	wildcard(t_token **arg_list);
+void	check_wildcard(t_token **token);
+void	append_matches(t_token **token, t_token *match);
+t_token	*search_matches(char *str);
+int	is_matche(char *str, char *suspect);
+
+/*memory management*/
+void	free_env(t_env *env);
+void	memory_management(t_env *env, int is_free_env);
+t_gr_cl	*last_node(t_gr_cl *gar);
+t_gr_cl	*new_node(void *ptr);
+void	free_garbage_collector(t_gr_cl *garbage);
+void	garbage_collector(void *new_pointer, int should_free);
+void	*gc_malloc(size_t size);
+
+/*envirement list*/
+char	*ft_strdup2(const char *s1);
+int     find_chr_pos(char *str, char c);
+t_env	*find_last(t_env *lst);
+void	env_add_back(t_env **lst, t_env *new);
+void	increment_shelvl_value(t_env *envp);
+t_env	*init_env(char **envp);
+char	*ft_substr2(char const *s, unsigned int start, size_t len);
+void	copy_env_key_value(char **argv, int *i, t_env *env);
+char	**convert_env_to_array(t_env *env_list);
+
 /*execution function*/
 char	**token_list_to_argv(t_token *token_list);
 int	is_dir1(t_ast *node, t_env *env_list);
@@ -173,12 +208,12 @@ int	fork_and_execute_pipe_left(t_ast *node, t_env *env_list, int input_fd,
 int	handle_right_pipe_cmd(t_ast *node, t_env *env_list, int pipe_read_end);
 int	setup_pipe_and_fork_left(db_par par, int input_fd, int pipefd[2],
 		pid_t *left_pid);
+void	expand_evrything(t_ast *node, t_env *env_list);
 int	execute_pipe(t_ast *node, t_env *env_list, int input_fd);
 int	handle_node_and(t_ast *node, t_env *env_list);
 int	handle_node_or(t_ast *node, t_env *env_list);
 int	execute_compound_command(t_ast *node, t_env *env_list);
 int	execute_ast(t_ast *node, t_env *env_list);
-
 
 /*memory management*/
 void	free_env(t_env *env);
@@ -229,6 +264,7 @@ void	expansion(t_token **arg_list, t_env *env);
 
 
 
+void remove_quote(char *token, int sg_quote, int db_quote);
 void free_double_array(char **db_str);
 void	child_process(int pipefd[2], char *delimiter);
 int	parent_process(pid_t pid, int pipefd[2], int *ctrc);

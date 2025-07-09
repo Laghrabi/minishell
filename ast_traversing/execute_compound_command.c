@@ -6,11 +6,26 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 22:48:18 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/09 14:28:44 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/09 15:11:43 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	expand_evrything(t_ast *node, t_env *env_list)
+{
+	if (!node || !env_list)
+		return ;
+	if (node->token_list)
+	{
+		expansion(&(node->token_list), env_list);
+		wildcard(&(node->token_list));
+	}
+	if (node->left)
+		expand_evrything(node->left, env_list);
+	if (node->right)
+		expand_evrything(node->right, env_list);
+}
 
 int	handle_node_and(t_ast *node, t_env *env_list)
 {

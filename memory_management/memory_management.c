@@ -6,11 +6,18 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 14:31:31 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/08 20:56:02 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/09 15:00:10 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+t_variabls *s_var (void)
+{
+    static t_variabls global = {0};
+
+    return (&global);
+}
 
 void	free_env(t_env *env)
 {

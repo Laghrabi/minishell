@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 20:02:07 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/08 21:53:56 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/09 14:55:01 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,10 @@ void	remove_extra_quote(char *token, int *field)
 void	set_ambigouse(t_token *current)
 {
 	if (current->next)
-    {
+	{
 		current->ambiguous = 1;
-        current->empty = 1;
-    }
+		current->empty = 1;
+	}
 }
 
 void	insert_expanded_tokens(t_token *current, t_token **arg_list)

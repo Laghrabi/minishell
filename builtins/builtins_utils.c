@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:20:21 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/09 13:24:04 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/09 14:50:42 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,28 +155,6 @@ int	if_builtin(char *cmd)
 		return (7);
 	else
 		return (0);
-}
-
-char	*ft_strdup2(const char *s1)
-{
-	int		j;
-	int		i;
-	char	*p;
-
-	if (s1 == NULL)
-		return (NULL);
-	i = ft_strlen(s1);
-	p = malloc((i + 1) * sizeof(char));
-	if (!p)
-		return (NULL);
-	j = 0;
-	while (j < i)
-	{
-		p[j] = s1[j];
-		j++;
-	}
-	p[j] = '\0';
-	return (p);
 }
 
 // char    *get_env_value(char *key, t_env *env_list)

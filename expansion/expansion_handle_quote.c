@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 20:46:41 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/08 20:51:00 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/09 15:10:25 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,3 +56,4 @@ int	which_type(char c, int *db_quote, int *sg_quote, int *quote_state)
 		return (handle_double_quote(db_quote, sg_quote, quote_state));
 	return (*quote_state);
 }
+
