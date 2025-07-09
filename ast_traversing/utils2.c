@@ -6,11 +6,48 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 05:38:25 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/07 22:05:59 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/09 14:29:15 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+char	**token_list_to_argv(t_token *token_list)
+{
+	char	**argv;
+	t_token	*current;
+	int		i;
+
+	if (token_list == NULL)
+		return (NULL);
+	i = 0;
+	current = token_list;
+	while (current != NULL)
+	{
+		i++;
+		current = current->next;
+	}
+	argv = gc_malloc(sizeof(char *) * (i + 1));
+	i = 0;
+	current = token_list;
+	while (current != NULL)
+	{
+		if (current->value[0] != '\0' || !current->ambiguous)
+			argv[i++] = ft_strdup(current->value);
+		current = current->next;
+	}
+	argv[i] = NULL;
+	return (argv);
+}
+
+int	is_dir1(t_ast *node, t_env *env_list)
+{
+	if (node->left && node->left->token_list)
+		return (is_dir(node, env_list));
+	else if (node->right)
+		return (handle_simple_command(node, env_list, NULL));
+	return (0);
+}
 
 char	*ft_strjoin2(char const *s1, char const *s2)
 {
@@ -34,71 +71,32 @@ char	*ft_strjoin2(char const *s1, char const *s2)
 	return (t);
 }
 
-char **convert_env_to_array(t_env *env_list)
+char	**path_splitting(t_env *envp)
 {
-    char (**argv), (*tmp);
-    t_env (*current);
-    int (i);
-    if (env_list == NULL)
-        return (NULL);
-    i = 0;
-    current = env_list;
-    while (current != NULL)
-    {
-        i++;
-        current = current->next;
-    }
-    argv = malloc(sizeof(char *) * i);
-    i = 0;
-    current = env_list;
-    while (current != NULL)
-    {
-        if (ft_strcmp(current->key, "_") != 0)
-        {
-            argv[i] = ft_strdup2(current->key);
-            if (current->value != NULL)
-            {
-                tmp = argv[i];
-                argv[i] = ft_strjoin2(argv[i], "=");
-                free(tmp);
-                tmp = argv[i];
-                argv[i] = ft_strjoin2(argv[i], current->value);  
-                free(tmp);  
-            }
-            i++;
-        }
-        current = current->next;
-    }
-    argv[i] = NULL;
-    return (argv);
-}
+	char	**splited_path;
+	char	*path;
 
-char    **path_splitting(t_env *envp)
-{
-    char    **splited_path;
-    char    *path;
-    
-    if (envp == NULL)
-        return (NULL);
-    path = get_env_value("PATH", envp);
-    if (path == NULL)
-        return (NULL);
-    splited_path = ft_split(path, ':');
-    if (splited_path == NULL || *splited_path == NULL)
-        return (NULL);
-    return (splited_path);
+	if (envp == NULL)
+		return (NULL);
+	path = get_env_value("PATH", envp);
+	if (path == NULL)
+		return (NULL);
+	splited_path = ft_split(path, ':');
+	if (splited_path == NULL || *splited_path == NULL)
+		return (NULL);
+	return (splited_path);
 }
 
 char	*find_cmd_path(char *cmd, t_env *env_list)
 {
-    int		i;
+	int		i;
 	char	*full_path;
 	char	*with_slash;
 	char	**paths;
-    
-    if (env_list == NULL || cmd == NULL)
-        return (NULL);
-    i = 0;
+
+	if (env_list == NULL || cmd == NULL)
+		return (NULL);
+	i = 0;
 	paths = path_splitting(env_list);
 	while (paths && paths[i] != NULL)
 	{
@@ -110,25 +108,3 @@ char	*find_cmd_path(char *cmd, t_env *env_list)
 	}
 	return (NULL);
 }
-
-// int	execute_cmd(t_env *env_list, char **argv)
-// {
-// 	char	*cmd_path;
-// 	char	**envp;
-// 	pid_t	pid;
-	
-// 	if (env_list == NULL || argv == NULL || *argv == NULL)
-// 		return (1);
-// 	cmd_path = find_cmd_path(argv[0], env_list);
-// 	if (cmd_path == NULL)
-// 	{
-// 		printf("%s: command not found\n", argv[0]);
-// 		return (127);
-// 	}
-// 	pid = fork();
-// 	if (pid == 0)
-// 	{
-// 		envp = convert_env_to_array(env_list);
-// 	}
-	
-// }

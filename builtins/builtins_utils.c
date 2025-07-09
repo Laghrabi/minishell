@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:20:21 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/09 00:12:43 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/09 13:24:04 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,11 @@ int execute_simple_cmd(t_env *env_list, char **argv)
 	if (ft_strchr(argv[0], '/') != NULL)
 		cmd_path = argv[0];
 	else
+	{	
 		cmd_path = find_cmd_path(argv[0], env_list);
+		if (!cmd_path && check_for_var("PATH", env_list))
+			cmd_path = ft_strjoin("./", argv[0]);
+	}
 	if (cmd_path == NULL && !check_for_var("PATH", env_list))
 	{
 		ft_putstr_fd(argv[0], 2);

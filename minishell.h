@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/08 23:21:09 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/09 14:33:07 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,11 @@ typedef struct double_int {
     int len;
 } db_int;
 
+typedef struct double_par {
+    t_ast *node;
+    t_env *env_list;
+} db_par;
+
 typedef struct expanded_token
 {
     char    *new_token;
@@ -140,16 +145,39 @@ typedef struct s_gr_cl
 } t_gr_cl;
 
 /* FUNCTIONS */
-int handle_wait_and_status(int pid[2], int *status);
-int fork_and_execute_pipe_left(t_ast *node, t_env *env_list, int input_fd, int pipefd[2]);
-int handle_right_pipe_cmd(t_ast *node, t_env *env_list, int pipe_read_end);
-int execute_pipe(t_ast *node, t_env *env_list, int input_fd);
-int handle_node_and(t_ast *node, t_env *env_list);
-int handle_node_or(t_ast *node, t_env *env_list);
-int execute_compound_command(t_ast *node, t_env *env_list);
 
 
 /*execution function*/
+char	**token_list_to_argv(t_token *token_list);
+int	is_dir1(t_ast *node, t_env *env_list);
+char	*ft_strjoin2(char const *s1, char const *s2);
+char	**path_splitting(t_env *envp);
+char	*find_cmd_path(char *cmd, t_env *env_list);
+char	*get_file_name(t_ast *redir_node);
+int	creat_herdoc_file(char *text);
+int	heredoc_to_fd(t_ast *heredoc_node, t_env *env_list);
+int	handle_one_redirection(t_ast *redir, t_env *env_list);
+int	setup_redirections(t_ast *redir_list, t_env *env_list);
+int	is_executable(t_ast *node, t_env *env_list);
+int	is_dir(t_ast *node, t_env *env_list);
+int	is_absolute_path(t_ast *node, t_env *env_list);
+int	is_di_or_builtin(t_ast *node, t_env *env_list, int i);
+int	is_path(t_ast *node, t_env *env_list);
+void	fd_leaks(int fd1, int fd2);
+int	execute_subshell(t_ast *node, t_env *env_list);
+int	handle_simple_command(t_ast *node, t_env *env_list, char **argv);
+int	execute_command(t_ast *node, t_env *env_list);
+int	handle_wait_and_status(int pid[2], int *status);
+int	fork_and_execute_pipe_left(t_ast *node, t_env *env_list, int input_fd,
+		int pipefd[2]);
+int	handle_right_pipe_cmd(t_ast *node, t_env *env_list, int pipe_read_end);
+int	setup_pipe_and_fork_left(db_par par, int input_fd, int pipefd[2],
+		pid_t *left_pid);
+int	execute_pipe(t_ast *node, t_env *env_list, int input_fd);
+int	handle_node_and(t_ast *node, t_env *env_list);
+int	handle_node_or(t_ast *node, t_env *env_list);
+int	execute_compound_command(t_ast *node, t_env *env_list);
+int	execute_ast(t_ast *node, t_env *env_list);
 
 
 /*memory management*/
@@ -230,7 +258,7 @@ int execute_compound_command(t_ast *node, t_env *env_list);
 char **convert_env_to_array(t_env *env_list);
 char	*find_cmd_path(char *cmd, t_env *env_list);
 int execute_pipe(t_ast *node, t_env *env_list, int input_fd);
-int handle_simple_command(t_ast *node, t_env *env_list);
+int handle_simple_command(t_ast *node, t_env *env_list, char **argv);
 int	setup_redirections(t_ast *redir_list, t_env *env_list);
 int	check_nm_var(char *str);
 char **token_list_to_argv(t_token *token_list);

@@ -18,7 +18,7 @@ SRC = minishell.c parsing/tokenization/tokenizer.c \
 		expansion/expansion_handle_quote.c \
 		env_list/env_list.c \
 		wildcard/wildcard.c \
-		builtins/builtins_utils.c ast_traversing/traversing.c \
+		builtins/builtins_utils.c \
 		ast_traversing/utils1.c ast_traversing/utils2.c \
 		ast_traversing/execute_pipe.c \
 		ast_traversing/execute_compound_command.c \

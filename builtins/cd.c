@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:47:58 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/08 10:26:57 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/09 11:24:24 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,9 @@ int	cd_helper(char *new_path, t_env *env_list, t_token *token)
 		return (getcwd_failure(env_list, token));
 	if (chdir(new_path) == -1)
 	{
-		printf("cd: %s: No such file or directory\n", new_path);
+		ft_putstr_fd("cd: ", 2);
+		ft_putstr_fd(new_path, 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
 		free(old_pwd);
 		garbage_collector(NULL, 1);
 		return (1);

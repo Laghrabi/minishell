@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:10:56 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/08 20:47:59 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/09 14:26:16 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,4 +113,48 @@ t_env	*init_env(char **envp)
 	}
 	increment_shelvl_value(head);
 	return (head);
+}
+void	copy_env_key_value(char **argv, int *i, t_env *env)
+{
+	char	*tmp;
+
+	argv[*i] = ft_strdup2(env->key);
+	if (env->value != NULL)
+	{
+		tmp = argv[*i];
+		argv[*i] = ft_strjoin2(argv[*i], "=");
+		free(tmp);
+		tmp = argv[*i];
+		argv[*i] = ft_strjoin2(argv[*i], env->value);
+		free(tmp);
+	}
+	(*i)++;
+}
+
+char	**convert_env_to_array(t_env *env_list)
+{
+	char	**argv;
+	t_env	*current;
+
+	int (i), (size);
+	if (env_list == NULL)
+		return (NULL);
+	size = 0;
+	current = env_list;
+	while (current != NULL)
+	{
+		size++;
+		current = current->next;
+	}
+	argv = malloc(sizeof(char *) * (size + 1));
+	i = 0;
+	current = env_list;
+	while (current != NULL)
+	{
+		if (ft_strcmp(current->key, "_") != 0)
+			copy_env_key_value(argv, &i, current);
+		current = current->next;
+	}
+	argv[i] = NULL;
+	return (argv);
 }
