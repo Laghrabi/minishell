@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   compound_command.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 20:52:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/10 01:29:59 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/10 13:32:03 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ void	*syntax_error(int status)
 		printf("SYNTAX ERROR\n");
 		s_var()->printed = 1;
 	}
-	s_var()->exit_status = status;
+	fprintf(stderr ,"%d\n", status);
+	s_var()->exit_status = 2;
 	return (NULL);
 }
 
