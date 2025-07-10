@@ -6,44 +6,19 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:48:32 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/10 13:16:39 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/10 17:09:07 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-// void	update_env_links(t_env *current)
-// {
-// 	if (!current->prev)
-// 	{
-// 		*s_var()->env_list = current->next;
-// 		if (current->next)
-// 			current->next->prev = NULL;
-// 	}
-// 	else
-// 	{
-// 		current->prev->next = current->next;
-// 		if (current->next)
-// 			current->next->prev = current->prev;
-// 	}
-// }
 
-
-
-// int	builtin_unset(t_token *token, t_env *env_list)
-// {
-// 	if (!token || !env_list)
-// 		return (1);
-// 	token = token->next;
-// 	while (token)
-// 	{
-// 		remove_env_var(token->value, &env_list);
-// 		if (!token->next)
-// 			update_env("_", token->value, env_list);
-// 		token = token->next;
-// 	}
-// 	return (0);
-// }
+void	mini_free(t_env *tmp)
+{
+	free(tmp->key);
+	free(tmp->value);
+	free(tmp);
+}
 
 void	remove_env_var(t_token *token)
 {
@@ -66,9 +41,7 @@ void	remove_env_var(t_token *token)
 				if(current->next)
 					current->next->prev = current->prev;
 			}
-			free(tmp->key);
-			free(tmp->value);
-			free(tmp);
+			mini_free(tmp);
 			break ;
 		}
 		current = current->next;
