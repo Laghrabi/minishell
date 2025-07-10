@@ -14,9 +14,9 @@
 
 void	sigint_handler_child(int signum)
 {
-    (void)signum;
-    write(STDOUT_FILENO, "\n", 1);
-    close(s_var()->pipe[0]);
-    close(s_var()->pipe[1]);
-    exit(130);
+	(void)signum;
+	write(STDOUT_FILENO, "\n", 1);
+	close(s_var()->pipe[0]);
+	close(s_var()->pipe[1]);
+	exit(130);
 }

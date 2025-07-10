@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:39:50 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/09 19:50:29 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/10 01:31:01 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int	main(int ac, char **av, char **envp)
 	while (1)
 	{
 		ctrc = 0;
+		s_var()->printed = 0;
 		input = readline("minishell$ ");
 		if (input == NULL)
 		{

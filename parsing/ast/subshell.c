@@ -15,7 +15,7 @@
 void	append_token(t_token **head, t_token *new_token)
 {
 	t_token	*tmp;
-	
+
 	if (head == NULL || new_token == NULL)
 		return ;
 	new_token->next = NULL;
@@ -32,24 +32,24 @@ void	append_token(t_token **head, t_token *new_token)
 	new_token->next = NULL;
 }
 
-t_ast   *parse_subshell(int *ctrc)
+t_ast	*parse_subshell(int *ctrc)
 {
-    t_ast   *inner_command;
-    t_ast   *red_list;
-    t_ast   *node;
+	t_ast	*inner_command;
+	t_ast	*red_list;
+	t_ast	*node;
 
-    red_list = NULL;
-    if (peek() == NULL || peek()->token != T_LPAREN)
-        return (syntax_error(2));
-    consume();
-    inner_command = parse_compound_command(true, ctrc);
-    if (peek() == NULL || peek()->token != T_RPAREN)
-        return (syntax_error(2));
-    consume();
-    if (peek() && is_red_list(peek()->value) == 1)
-        red_list = parse_redir_list();
-    node = create_ast_node(inner_command, red_list, NULL, NODE_SUBSHELL);
-    if (node == NULL)
-        return (NULL);
-    return (node);
+	red_list = NULL;
+	if (peek() == NULL || peek()->token != T_LPAREN)
+		return (syntax_error(2));
+	consume();
+	inner_command = parse_compound_command(true, ctrc);
+	if (peek() == NULL || peek()->token != T_RPAREN)
+		return (syntax_error(2));
+	consume();
+	if (peek() && is_red_list(peek()->value) == 1)
+		red_list = parse_redir_list();
+	node = create_ast_node(inner_command, red_list, NULL, NODE_SUBSHELL);
+	if (node == NULL)
+		return (NULL);
+	return (node);
 }
