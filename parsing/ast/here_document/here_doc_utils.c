@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 21:15:30 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/09 15:03:35 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/10 00:31:09 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*join(char *s1, char *s2)
 {
 	char	*new;
 
-	int (i), (j);
+	int(i), (j);
 	i = 0;
 	j = 0;
 	if (!s1)
@@ -40,69 +40,67 @@ char	*join(char *s1, char *s2)
 	return (new);
 }
 
-int is_quote(char *str)
+int	is_quote(char *str)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (str[i])
-    {
-        if (str[i] == '\"' || str[i] == '\'')
-            return (1);
-        i++;
-    }
-    return (0);
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\"' || str[i] == '\'')
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
-void remove_quote(char *token, int sg_quote, int db_quote)
+void	remove_quote(char *token, int sg_quote, int db_quote)
 {
-    int (i), (j);
-    i = 0;
-    j = 0;
-    while (token[i])
-    {
-        if (token[i] == '\'' && sg_quote == 0 && db_quote == 0)
-            sg_quote = 1;
-        else if (token[i] == '\'' && sg_quote == 1)
-            sg_quote = 0;
-        else if (token[i] == '\"' && sg_quote == 0 && db_quote == 0)
-            db_quote = 1;
-        else if (token[i] == '\"' && db_quote == 1)
-            db_quote = 0;  
-        if (((token[i] == '\'' && db_quote == 0) || (token[i] == '\"' && sg_quote == 0)))
-        {
-            j = i;
-            while (token[j])
-            {
-                token[j] = token[j + 1];
-                j++;
-            }
-            continue;
-        }
-        i++;
-    }
+	int(i), (j);
+	i = 0;
+	j = 0;
+	while (token[i])
+	{
+		if (token[i] == '\'' && sg_quote == 0 && db_quote == 0)
+			sg_quote = 1;
+		else if (token[i] == '\'' && sg_quote == 1)
+			sg_quote = 0;
+		else if (token[i] == '\"' && sg_quote == 0 && db_quote == 0)
+			db_quote = 1;
+		else if (token[i] == '\"' && db_quote == 1)
+			db_quote = 0;
+		if (((token[i] == '\'' && db_quote == 0) || (token[i] == '\"'
+					&& sg_quote == 0)))
+		{
+			j = i - 1;
+			while (token[++j])
+				token[j] = token[j + 1];
+			continue ;
+		}
+		i++;
+	}
 }
 
 char	*read_heredoc_lines(char *delimiter, int *ctrc)
 {
-    pid_t   (pid);
-    int     (pipefd[2]);
-    if (pipe(pipefd) == -1)
-        return (NULL);
-    pid = fork();
-    if (pid < 0)
-    {
-        close(pipefd[0]);
-        close(pipefd[1]);
-        return (NULL);
-    }
-    if (pid == 0)
+	pid_t(pid);
+	int(pipefd[2]);
+	if (pipe(pipefd) == -1)
+		return (NULL);
+	pid = fork();
+	if (pid < 0)
+	{
+		close(pipefd[0]);
+		close(pipefd[1]);
+		return (NULL);
+	}
+	if (pid == 0)
 		child_process(pipefd, delimiter);
-    else
-    {
-        if (parent_process(pid, pipefd, ctrc) == 1)
+	else
+	{
+		if (parent_process(pid, pipefd, ctrc) == 1)
 			return (NULL);
-    }
+	}
 	return (read_from_pipe(pipefd[0]));
 }
 

@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/09 21:47:00 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/10 01:29:18 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ typedef struct s_variabls
     int     exit_status;
     int     g_child_ctrc;
     int     syntax_error;
+    int		printed;
     int     pipe[2];
 } t_variabls;
 

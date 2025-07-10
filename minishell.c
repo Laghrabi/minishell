@@ -6,9 +6,11 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:39:50 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/10 00:11:27 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/10 13:18:25 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
 
 #include "minishell.h"
 
@@ -50,11 +52,11 @@ int	main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 	env_list = init_env(envp);
-	s_var()->env_list = &env_list;
 	setup_signals();
 	while (1)
 	{
 		ctrc = 0;
+		s_var()->printed = 0;
 		input = readline("minishell$ ");
 		if (input == NULL)
 		{
@@ -71,6 +73,9 @@ int	main(int ac, char **av, char **envp)
 			ast = parse_compound_command(false, &ctrc);
 		// if (ast)
 		// 	print_ast(ast, 0);
+		if (ast && s_var()->syntax_error != 2)
+		if (ast)
+			print_ast(ast, 0);
 		if (ast && s_var()->syntax_error != 2)
 			s_var()->exit_status = execute_ast(ast, env_list);
 		if (s_var()->syntax_error == 1)

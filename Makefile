@@ -44,10 +44,10 @@ $(NAME): $(OBJECT) $(LIBFT)
 	$(CC) $(CFLAGS) $(OBJECT) $(LIBFT) -o $(NAME)  $(LDFLAGS)
 
 
-# bonus: $(NAME_BONUS)
+bonus: $(NAME)
 
-# $(NAME_BONUS) : $(OBJECT_BONUS) 
-# 	$(CC) $(CFLAGS) $(SRC_BONUS) -o $(NAME_BONUS)
+$(NAME_BONUS) : $(OBJECT_BONUS) 
+	$(CC) $(CFLAGS) $(SRC_BONUS) -o $(NAME_BONUS)
 
 clean:
 	rm -f $(OBJECT)

@@ -5,5 +5,5 @@ export q1=10
 
 testi echo $9klsdhf
 
-rani khdam 3la handle error msg 
-wchof ster 42
+ambigouse in wildcard
+handle (false && true) || echo 9lawi
