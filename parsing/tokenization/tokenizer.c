@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:49:21 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/08 21:31:48 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/10 13:19:38 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ t_token	*tokenization(char *input, int i, int check, t_token *token)
 			}
 			if (check == 0)
 			{
-				printf("quote not closed\n");
+				ft_putstr_fd("quote not closed\n", 2);
 				return (NULL);
 			}
 		}

@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:48:32 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/09 23:12:11 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/10 13:16:39 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ int	builtin_unset(t_token *token, t_env *env_list)
 {
 	if (token == NULL || env_list == NULL)
 		return (1);
-	printf("hello\n");
 	token = token->next;
 	while (token != NULL)
 	{

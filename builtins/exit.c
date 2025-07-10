@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:48:16 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/08 11:45:32 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/10 13:25:27 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	builtin_exit(t_token *token)
 	if (token == NULL)
 		return (1);
 	if (isatty(STDIN_FILENO))
-		printf("exit\n");
+		ft_putstr_fd("exit\n", 2);
 	if (token->next != NULL)
 	{
 		token = token->next;

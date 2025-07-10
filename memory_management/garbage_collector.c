@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   garbage_collector.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 15:18:45 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/08 20:56:53 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/10 13:17:04 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	*gc_malloc(size_t size)
 	ptr = malloc(size);
 	if (!ptr)
 	{
-		printf("Malloc Failed\n");
+		ft_putstr_fd("Malloc Failed\n", 2);
 		garbage_collector(NULL, 1);
 		return (NULL);
 	}

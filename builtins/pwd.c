@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:48:27 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/09 16:52:25 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/10 13:16:20 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	builtin_pwd(t_token *token, t_env *env_list)
 	pwd = get_env_value("PWD", env_list);
 	if (pwd == NULL)
 	{
-		printf("pwd: PWD not set\n");
+		ft_putstr_fd("pwd: PWD not set\n", 2);
 		return (1);
 	}
 	if (printf("%s\n", pwd) == -1)

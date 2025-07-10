@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -g  -fsanitize=address
+CFLAGS = -Wall -Werror -Wextra -g  #-fsanitize=address
 LDFLAGS = -lreadline
 SRC = minishell.c parsing/tokenization/tokenizer.c \
 		parsing/tokenization/seperators_function.c \
@@ -42,12 +42,6 @@ $(LIBFT) :
 
 $(NAME): $(OBJECT) $(LIBFT)
 	$(CC) $(CFLAGS) $(OBJECT) $(LIBFT) -o $(NAME)  $(LDFLAGS)
-
-
-# bonus: $(NAME_BONUS)
-
-# $(NAME_BONUS) : $(OBJECT_BONUS) 
-# 	$(CC) $(CFLAGS) $(SRC_BONUS) -o $(NAME_BONUS)
 
 clean:
 	rm -f $(OBJECT)

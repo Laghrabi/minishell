@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:48:10 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/09 23:03:47 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/10 13:12:43 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ int	builtin_env(t_token *token, t_env *env_list)
 		return (1);
 	if (token->next != NULL)
 	{
-		printf("env: too many arguments\n");
+		ft_putstr_fd("env: too many arguments\n", 2);
 		return (1);
 	}
 	update_env("_", "env", env_list);
