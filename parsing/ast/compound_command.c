@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 20:52:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/10 13:32:03 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/10 16:07:02 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	*syntax_error(int status)
 {
 	if (s_var()->printed == 0)
 	{
-		printf("SYNTAX ERROR\n");
+		ft_putstr_fd("SYNTAX ERROR\n", 2);
 		s_var()->printed = 1;
 	}
 	fprintf(stderr ,"%d\n", status);
@@ -55,12 +55,10 @@ t_ast	*parse_compound_command(bool subshell, int *ctrc)
 	t_ast(*left), (*right), (*node);
 	left = parse_pipeline(ctrc);
 	if (left == NULL)
-		return (NULL);
-	//printf("HERE: [%s]\n", peek()->value);
+		return (NULL);;
 	while (peek() && (peek()->token == T_AND || peek()->token == T_OR))
 	{
 		op_type = consume()->token;
-		//printf("HERE: [%d]\n", op_type);
 		if (op_type == T_AND)
 			node_type = NODE_AND;
 		else

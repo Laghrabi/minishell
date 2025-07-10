@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_subshell_simple_command.c                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 22:58:36 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/09 22:54:20 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/10 16:04:28 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

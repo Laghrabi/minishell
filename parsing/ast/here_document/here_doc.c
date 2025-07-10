@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 21:13:04 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/10 00:36:07 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/10 14:03:33 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	child_process(int pipefd[2], char *delimiter)
 		line = readline("> ");
 		if (line == NULL)
 		{
-			printf("here-doc delemited by EOF\n");
+			ft_putstr_fd("here-doc delemited by EOF\n", 2);
 			break ;
 		}
 		if (line && ft_strcmp(line, delimiter) == 0)
