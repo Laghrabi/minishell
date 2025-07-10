@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   compound_command.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 20:52:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/10 16:07:02 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/10 18:56:43 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,6 @@ t_token	*consume(void)
 	return (tmp);
 }
 
-void	*syntax_error(int status)
-{
-	if (s_var()->printed == 0)
-	{
-		ft_putstr_fd("SYNTAX ERROR\n", 2);
-		s_var()->printed = 1;
-	}
-	fprintf(stderr ,"%d\n", status);
-	s_var()->exit_status = 2;
-	return (NULL);
-}
-
 int	long_line(bool subshell)
 {
 	if ((peek()->token == T_RPAREN && subshell == false)
@@ -48,21 +36,28 @@ int	long_line(bool subshell)
 	return (0);
 }
 
+t_node_type	assign_type(t_type op_type)
+{
+	if (op_type == T_AND)
+		return (NODE_AND);
+	else
+		return(NODE_OR);
+}
+
 t_ast	*parse_compound_command(bool subshell, int *ctrc)
 {
-	t_type(op_type);
-	t_node_type(node_type);
-	t_ast(*left), (*right), (*node);
+	t_type (op_type);
+	t_node_type (node_type);
+	t_ast (*right);
+	t_ast (*left);
+	t_ast (*node);
 	left = parse_pipeline(ctrc);
 	if (left == NULL)
-		return (NULL);;
+		return (NULL);
 	while (peek() && (peek()->token == T_AND || peek()->token == T_OR))
 	{
 		op_type = consume()->token;
-		if (op_type == T_AND)
-			node_type = NODE_AND;
-		else
-			node_type = NODE_OR;
+		node_type = assign_type(op_type);
 		right = parse_compound_command(subshell, ctrc);
 		if (right == NULL)
 			return (NULL);

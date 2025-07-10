@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 20:52:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/05 20:56:54 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/10 17:51:41 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,9 @@ static int	validate_command(t_ast *args_node, t_ast *redir_head, int ctrc)
 
 t_ast	*parse_simple_command(int *ctrc)
 {
-	t_ast(*args_node), (*redir_head), (*redir_tail);
+	t_ast (*args_node);
+	t_ast (*redir_tail);
+	t_ast (*redir_head);
 	args_node = init_command_ast();
 	redir_head = NULL;
 	redir_tail = NULL;

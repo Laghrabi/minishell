@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:39:50 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/10 16:52:08 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/10 17:13:53 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,7 @@ t_token	*g_token;
 
 void	handle_sigint(int signum)
 {
-	// if (s_var()->g_child_running == 0)
-	// {
-	//     rl_replace_line("", 0);
-	//     write(STDOUT_FILENO, "\n", 1);
-	//     rl_on_new_line();
-	//     rl_redisplay();
-	// }
-	// else
-	//     write(STDOUT_FILENO, "\n", 1);
 	rl_replace_line("", 0);
-	//wach khasha tkteb f stdout wla stderr had ster li lta7t????
-	//!!!!!!!
 	write(STDOUT_FILENO, "\n", 1);
 	rl_on_new_line();
 	rl_redisplay();
