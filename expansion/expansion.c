@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:04:58 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/08 21:40:50 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/10 00:10:48 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ void	expansion(t_token **arg_list, t_env *env)
 
 	if (!arg_list || !(*arg_list) || !env)
 		return ;
+	env = *(s_var()->env_list);
 	current = *arg_list;
 	while (current)
 	{

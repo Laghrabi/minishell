@@ -43,6 +43,12 @@ $(LIBFT) :
 $(NAME): $(OBJECT) $(LIBFT)
 	$(CC) $(CFLAGS) $(OBJECT) $(LIBFT) -o $(NAME)  $(LDFLAGS)
 
+
+#bonus: $(NAME)
+
+#$(NAME_BONUS) : $(OBJECT_BONUS) 
+#	$(CC) $(CFLAGS) $(SRC_BONUS) -o $(NAME_BONUS)
+
 clean:
 	rm -f $(OBJECT)
 	$(MAKE) clean -C libft

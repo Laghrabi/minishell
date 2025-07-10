@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 18:04:27 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/06/24 21:01:53 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/09 15:46:38 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ t_token	*search_matches(char *str)
 		}
 		entry = readdir(dir);
 	}
+	closedir(dir);
 	return (head);
 }
 
