@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/10 01:29:18 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/10 19:31:57 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,6 +184,8 @@ void	copy_env_key_value(char **argv, int *i, t_env *env);
 char	**convert_env_to_array(t_env *env_list);
 
 /*execution function*/
+int	handle_simple_command(t_ast *node, t_env *env_list, char **argv);
+int execute_simple_cmd(t_env *env_list, char **argv);
 char	**token_list_to_argv(t_token *token_list);
 int	is_dir1(t_ast *node, t_env *env_list);
 char	*ft_strjoin2(char const *s1, char const *s2);
@@ -264,6 +266,10 @@ void	process_token_expansion(t_token **current, t_token **next,
 void	expansion(t_token **arg_list, t_env *env);
 
 
+
+
+
+void	setup_signals(void);
 void	replace_variable(int *flag, t_env *env_list, t_token *token);
 void remove_quote(char *token, int sg_quote, int db_quote);
 void free_double_array(char **db_str);
@@ -337,9 +343,10 @@ t_ast   *parse_command(int *ctrc);
 t_ast   *parse_pipeline(int *ctrc);
 t_ast   *parse_compound_command(bool subshell, int *ctrc);
 t_ast   *parse_redir_list(void);
-t_node_type	convert_t_type(t_type op);
+t_node_type	convert_type(t_type op);
 void	append_token(t_token **head, t_token *new_token);
-t_token	*single_token_list(t_token *token);
+int execute_simple_cmd(t_env *env_list, char **argv);
+t_token	*single_lst(t_token *token);
 t_ast	*create_ast_node(t_ast *left, t_ast *right, t_token	*token_list, t_node_type type);
 
 

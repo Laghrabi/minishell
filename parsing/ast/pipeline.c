@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 20:52:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/10 00:55:22 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/10 19:00:48 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_ast	*parse_pipeline(int *ctrc)
 	t_ast	*right;
 	t_ast	*node;
 
-    left = parse_command(ctrc);
+	left = parse_command(ctrc);
 	if (left == NULL)
 		return (NULL);
 	while (peek() && peek()->token == T_PIPE)

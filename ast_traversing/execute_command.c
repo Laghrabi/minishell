@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 17:40:29 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/10 18:01:28 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/10 19:30:49 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static int handle_exec_failure(t_env *env_list, char *cmd_path, char **argv)
 	return (-1);
 }
 
-static void child_process(char *cmd_path, char **argv, char **envp, t_env *env_list)
+static void child_process_execution(char *cmd_path, char **argv, char **envp, t_env *env_list)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
@@ -109,7 +109,7 @@ int execute_simple_cmd(t_env *env_list, char **argv)
 	envp = convert_env_to_array(env_list);
 	pid = fork();
 	if (pid == 0)
-		child_process(cmd_path, argv, envp, env_list);
+		child_process_execution(cmd_path, argv, envp, env_list);
 	else if (pid < 0)
 	{
 		perror("fork");

@@ -25,6 +25,7 @@ SRC = minishell.c parsing/tokenization/tokenizer.c \
 		ast_traversing/execute_compound_command.c \
 		ast_traversing/execute_subshell_simple_command.c \
 		ast_traversing/handle_error_messages.c \
+		ast_traversing/execute_command.c \
 		builtins/echo.c \
 		builtins/cd.c builtins/pwd.c \
 		builtins/unset.c builtins/export.c \

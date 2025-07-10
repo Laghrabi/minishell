@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 21:13:04 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/10 14:03:33 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/10 19:18:16 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,10 @@ int	parent_process(pid_t pid, int pipefd[2], int *ctrc)
 
 char	*read_from_pipe(int pipefd)
 {
-	char(read_buf[1024]), (*buffer);
-	ssize_t(n);
+	char	read_buf[1024];
+	char	*buffer;
+	ssize_t	n;
+
 	buffer = NULL;
 	n = read(pipefd, read_buf, sizeof(read_buf) - 1);
 	while (n > 0)
@@ -78,17 +80,17 @@ char	*read_from_pipe(int pipefd)
 
 int	parse_herdoc(t_ast **redir_head, t_ast **redir_tail, int *ctrc)
 {
-	t_type(op_type);
-	char(*text);
-	t_ast(*redir);
+	t_type (op_type);
+	char (*text);
+	t_ast (*redir);
 	op_type = consume()->token;
 	if (!peek() || peek()->token != T_WORD)
 		return (1);
 	text = parse_herdoc_helper(&(peek()->expansion), ctrc);
 	peek()->value = text;
 	peek()->is_herdoc = 7;
-	redir = create_ast_node(NULL, NULL, single_token_list(consume()),
-			convert_t_type(op_type));
+	redir = create_ast_node(NULL, NULL, single_lst(consume()),
+			convert_type(op_type));
 	if (*redir_head == NULL)
 	{
 		*redir_head = redir;

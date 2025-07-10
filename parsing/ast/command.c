@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 20:52:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/10 18:56:37 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/10 19:10:21 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	*syntax_error(int status)
 		ft_putstr_fd("SYNTAX ERROR\n", 2);
 		s_var()->printed = 1;
 	}
-	s_var()->exit_status = 2;
+	s_var()->exit_status = status;
 	return (NULL);
 }
 

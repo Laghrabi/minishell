@@ -6,13 +6,11 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:20:21 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/10 18:59:10 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/10 18:59:41 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-
 
 void	replace_variable(int *flag, t_env *env_list, t_token *token)
 {
