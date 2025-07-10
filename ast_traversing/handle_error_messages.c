@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_error_messages.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 14:28:45 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/09 17:51:57 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/10 00:23:52 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,7 @@ int	is_di_or_builtin(t_ast *node, t_env *env_list, int i)
 	else if (i == 1)
 		return (is_absolute_path(node, env_list));
 	else
-	{
 		return (is_dir1(node, env_list));
-	}
 	return (1);
 }
 
