@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:39:50 by zfarouk           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/07/10 16:41:11 by claghrab         ###   ########.fr       */
+=======
+/*   Updated: 2025/07/10 16:07:29 by zfarouk          ###   ########.fr       */
+>>>>>>> refs/remotes/origin/main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +79,8 @@ int	main(int ac, char **av, char **envp)
 		// if (ast)
 		// 	print_ast(ast, 0);
 		if (ast && s_var()->syntax_error != 2)
-		// if (ast)
-		// 	print_ast(ast, 0);
-		if (ast && s_var()->syntax_error != 2)
 			s_var()->exit_status = execute_ast(ast, env_list);
-		if (s_var()->syntax_error == 1)
+		if (s_var()->syntax_error == 2)
 			s_var()->syntax_error = 0;
 		memory_management(NULL, 0);
 	}

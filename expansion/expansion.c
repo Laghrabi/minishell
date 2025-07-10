@@ -6,7 +6,11 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:04:58 by zfarouk           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/07/10 16:37:32 by claghrab         ###   ########.fr       */
+=======
+/*   Updated: 2025/07/10 13:21:40 by zfarouk          ###   ########.fr       */
+>>>>>>> refs/remotes/origin/main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +120,6 @@ void	expansion(t_token **arg_list, t_env *env)
 
 	if (!arg_list || !(*arg_list) || !env)
 		return ;
-	//env = *(s_var()->env_list);
 	current = *arg_list;
 	while (current)
 	{
