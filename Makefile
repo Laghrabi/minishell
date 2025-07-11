@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -g  #-fsanitize=address
+CFLAGS = -Wall -Werror -Wextra -g  -fsanitize=address
 LDFLAGS = -lreadline
 SRC = minishell.c parsing/tokenization/tokenizer.c \
 		parsing/tokenization/seperators_function.c \
@@ -23,6 +23,7 @@ SRC = minishell.c parsing/tokenization/tokenizer.c \
 		builtins/builtins_utils.c \
 		ast_traversing/utils1.c ast_traversing/utils2.c \
 		ast_traversing/execute_pipe.c \
+		ast_traversing/execute_pipe_utils.c \
 		ast_traversing/execute_compound_command.c \
 		ast_traversing/execute_subshell_simple_command.c \
 		ast_traversing/handle_error_messages.c \
@@ -30,7 +31,7 @@ SRC = minishell.c parsing/tokenization/tokenizer.c \
 		builtins/echo.c \
 		builtins/cd.c builtins/pwd.c \
 		builtins/unset.c builtins/export.c \
-		builtins/env.c builtins/exit.c
+		builtins/env.c builtins/exit.c \
  
 LIBFT = libft/libft.a
 NAME = minishell

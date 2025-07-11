@@ -156,6 +156,12 @@ typedef struct s_pipes
 
 
 /* FUNCTIONS */
+void	replace_last_executed_cmd(t_env *env_list, char **argv);
+void	free_double_array(char **db_str);
+int	handle_wait_and_status(int pid[1024], int cmd_count);
+t_pipe	*initialize_pipe(void);
+int	fork_child_for_pipe(t_ast *node, t_env *env_list, int input_fd,
+		int pipefd[2]);
 
 
 
