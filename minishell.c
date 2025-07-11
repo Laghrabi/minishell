@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:39:50 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/10 17:13:53 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/11 22:59:45 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,8 @@ void	setup_signals(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-int	main(int ac, char **av, char **envp)
+int	minishell(int ctrc, char *input, t_env *env_list, t_ast *ast)
 {
-	char	*input;
-	t_ast	*ast;
-	int		ctrc;
-	t_env	*env_list;
-
-	(void)ac;
-	(void)av;
-	env_list = init_env(envp);
-	s_var()->env_list = &env_list;
-	setup_signals();
 	while (1)
 	{
 		ctrc = 0;
@@ -61,13 +51,29 @@ int	main(int ac, char **av, char **envp)
 		free(input);
 		if (peek())
 			ast = parse_compound_command(false, &ctrc);
-		// if (ast)
-		// 	print_ast(ast, 0);
 		if (ast && s_var()->syntax_error != 2)
 			s_var()->exit_status = execute_ast(ast, env_list);
 		if (s_var()->syntax_error == 2)
 			s_var()->syntax_error = 0;
 		memory_management(NULL, 0);
 	}
+	return (0);
+}
+
+int	main(int ac, char **av, char **envp)
+{
+	char *(input);
+	t_ast *(ast);
+	int (ctrc);
+	t_env *(env_list);
+	(void)ac;
+	(void)av;
+	ctrc = 0;
+	input = NULL;
+	ast = NULL;
+	env_list = init_env(envp);
+	s_var()->env_list = &env_list;
+	setup_signals();
+	minishell(ctrc, input, env_list, ast);
 	return (s_var()->exit_status);
 }

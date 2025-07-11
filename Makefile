@@ -30,8 +30,7 @@ SRC = minishell.c parsing/tokenization/tokenizer.c \
 		builtins/echo.c \
 		builtins/cd.c builtins/pwd.c \
 		builtins/unset.c builtins/export.c \
-		builtins/env.c builtins/exit.c \
-		printf_ast/print_ast.c 
+		builtins/env.c builtins/exit.c 
 
  
 LIBFT = libft/libft.a
