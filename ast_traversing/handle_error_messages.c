@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_error_messages.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 14:28:45 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/10 00:23:52 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/11 10:41:29 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	is_absolute_path(t_ast *node, t_env *env_list)
 
 int	is_di_or_builtin(t_ast *node, t_env *env_list, int i)
 {
-	if (!node || !env_list)
+	if (!node)
 		return (1);
 	if (node->left && node->left->token_list
 		&& if_builtin(node->left->token_list->value))
@@ -85,7 +85,7 @@ int	is_path(t_ast *node, t_env *env_list)
 {
 	int	path;
 
-	if (node == NULL || env_list == NULL)
+	if (node == NULL)
 		return (1);
 	path = check_for_var("PATH", env_list);
 	if (!path)

@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:47:58 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/09 21:45:21 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/11 10:50:26 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,14 @@ int	getcwd_failure(t_env *env_list, t_token *token)
 	char	*str;
 	char	*joined;
 	
-	if (token->value[0] == '\0')
+	// if (token->value[0] == '\0')
+	// {
+	// 	ft_putstr_fd("minishell: cd: : No such file or directory\n", 2);
+	// 	return (1);
+	// }
+	if (token == NULL)
 	{
-		ft_putstr_fd("minishell: cd: : No such file or directory\n", 2);
-		return (1);
+		
 	}
 	ft_putstr_fd("cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n", 2);
 	if (ft_strcmp(token->value, "..") == 0)
@@ -39,11 +43,9 @@ int	cd_helper(char *new_path, t_env *env_list, t_token *token)
 	char	*old_pwd;
 	char	*new_pwd;
 	
-	if (new_path == NULL || env_list == NULL)
+	if (new_path == NULL)
 		return (1);
 	old_pwd = getcwd(NULL, 0);
-	if (old_pwd == NULL)
-		return (getcwd_failure(env_list, token));
 	if (chdir(new_path) == -1)
 	{
 		ft_putstr_fd("cd: ", 2);
@@ -105,13 +107,14 @@ int builtin_cd(t_token *token, t_env *env_list)
     char *new_path;
     int flag;
 
-    if (token == NULL || env_list == NULL)
+    if (token == NULL)
  		return (1);
     token = token->next;
     if (handle_too_many_args(token, env_list))
         return (1);
     determine_path(token, env_list, &new_path, &flag);
     replace_variable(&flag, env_list, token);
+	// if (access(new_path, ))
     if (cd_helper(new_path, env_list, token) == 1)
         return (1);
     return (0);

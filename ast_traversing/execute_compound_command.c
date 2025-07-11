@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_compound_command.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 22:48:18 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/09 15:11:43 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/11 10:40:06 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	execute_compound_command(t_ast *node, t_env *env_list)
 {
 	int	exit_status;
 
-	if (!node || !env_list)
+	if (!node)
 		return (0);
 	if (node->type == NODE_AND)
 		return (handle_node_and(node, env_list));

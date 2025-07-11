@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:47:08 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/09 17:08:43 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/11 10:47:10 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int builtin_echo(t_token *token, t_env *env_list)
 {
     int nl_flag;
 
-    if (token == NULL || env_list == NULL)
+    if (token == NULL)
 		return 1;
 	nl_flag = 0;
     token = token->next;
