@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 18:04:27 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/10 17:24:47 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/11 22:27:32 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void	append_matches(t_token **token, t_token *match)
 	while (match->next)
 	{
 		match->ambiguous = 1;
+		match->empty = 1;
 		match = match->next;
 	}
 	match->next = next;
