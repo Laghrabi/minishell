@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:48:16 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/11 15:33:07 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/11 21:29:30 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ int	builtin_exit(t_token *token)
 		if (s_var()->exit_status == 1)
 			return (1);
 	}
+	memory_management(*(s_var()->env_list), 1);
 	exit(s_var()->exit_status);
 }
 
