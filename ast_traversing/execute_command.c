@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 17:40:29 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/11 10:39:51 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/11 14:39:36 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	replace_last_executed_cmd(t_env *env_list, char **argv)
 {
-	int i;
-	
+	int	i;
+
 	if (env_list == NULL || argv == NULL || *argv == NULL)
 		return ;
 	i = 0;
@@ -24,9 +24,9 @@ void	replace_last_executed_cmd(t_env *env_list, char **argv)
 	update_env("_", argv[i], env_list);
 }
 
-void free_double_array(char **db_str)
+void	free_double_array(char **db_str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (db_str[i])
@@ -37,20 +37,19 @@ void free_double_array(char **db_str)
 	free(db_str);
 }
 
-
-static char *get_command_path(char *cmd, t_env *env_list)
+static char	*get_command_path(char *cmd, t_env *env_list)
 {
-	char *cmd_path;
+	char	*cmd_path;
 
 	if (ft_strchr(cmd, '/') != NULL)
-		return cmd;
+		return (cmd);
 	cmd_path = find_cmd_path(cmd, env_list);
 	if (!cmd_path && check_for_var("PATH", env_list))
 		cmd_path = ft_strjoin("./", cmd);
-	return cmd_path;
+	return (cmd_path);
 }
 
-static int handle_exec_failure(t_env *env_list, char *cmd_path, char **argv)
+static int	handle_exec_failure(t_env *env_list, char *cmd_path, char **argv)
 {
 	if (cmd_path == NULL && !check_for_var("PATH", env_list))
 	{
@@ -62,7 +61,8 @@ static int handle_exec_failure(t_env *env_list, char *cmd_path, char **argv)
 	return (-1);
 }
 
-static void child_process_execution(char *cmd_path, char **argv, char **envp, t_env *env_list)
+static void	child_process_execution(char *cmd_path, char **argv, char **envp,
+			t_env *env_list)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
@@ -78,7 +78,7 @@ static void child_process_execution(char *cmd_path, char **argv, char **envp, t_
 		exit(1);
 }
 
-static int handle_parent_process(pid_t pid, int status)
+static int	handle_parent_process(pid_t pid, int status)
 {
 	waitpid(pid, &status, 0);
 	if (WIFSIGNALED(status))
@@ -90,22 +90,21 @@ static int handle_parent_process(pid_t pid, int status)
 	else
 		status = WEXITSTATUS(status);
 	setup_signals();
-	return status;
+	return (status);
 }
 
-int execute_simple_cmd(t_env *env_list, char **argv)
+int	execute_simple_cmd(t_env *env_list, char **argv)
 {
-	pid_t pid;
-	int status;
-	char **envp;
-	char *cmd_path;
+	char	**envp;
+	char	*cmd_path;
 
+	int (status), (pid);
 	if (env_list == NULL || argv == NULL || *argv == NULL)
 		return (0);
 	cmd_path = get_command_path(argv[0], env_list);
 	status = handle_exec_failure(env_list, cmd_path, argv);
 	if (status != -1)
-		return status;
+		return (status);
 	envp = convert_env_to_array(env_list);
 	pid = fork();
 	if (pid == 0)
@@ -120,9 +119,8 @@ int execute_simple_cmd(t_env *env_list, char **argv)
 	signal(SIGINT, SIG_IGN);
 	status = handle_parent_process(pid, status);
 	free_double_array(envp);
-	return status;
+	return (status);
 }
-
 
 // int execute_simple_cmd(t_env *env_list, char **argv)
 // {
