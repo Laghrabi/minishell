@@ -3,14 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   env_list_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 14:41:04 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/09 14:51:49 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/11 17:12:14 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	find_chr_pos(char *str, char c)
+{
+	int	i;
+
+	if (str == NULL)
+		return (-1);
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == c)
+			return (i);
+		i++;
+	}
+	return (-1);
+}
 
 char	*ft_substr2(char const *s, unsigned int start, size_t len)
 {
@@ -79,26 +95,4 @@ char	**convert_env_to_array(t_env *env_list)
 	}
 	argv[i] = NULL;
 	return (argv);
-}
-
-char	*ft_strdup2(const char *s1)
-{
-	int		j;
-	int		i;
-	char	*p;
-
-	if (s1 == NULL)
-		return (NULL);
-	i = ft_strlen(s1);
-	p = malloc((i + 1) * sizeof(char));
-	if (!p)
-		return (NULL);
-	j = 0;
-	while (j < i)
-	{
-		p[j] = s1[j];
-		j++;
-	}
-	p[j] = '\0';
-	return (p);
 }

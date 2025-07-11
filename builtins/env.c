@@ -6,25 +6,25 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:48:10 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/10 13:12:43 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/11 16:51:21 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char    *get_env_value(char *key, t_env *env_list)
+char	*get_env_value(char *key, t_env *env_list)
 {
-    t_env   *current;
-    
-    if (key == NULL || env_list == NULL)
-        return (NULL);
-    current = env_list;
-    while (current != NULL)
-    {
+	t_env	*current;
+
+	if (key == NULL || env_list == NULL)
+		return (NULL);
+	current = env_list;
+	while (current != NULL)
+	{
 		if (ft_strcmp(key, current->key) == 0)
 			return (current->value);
 		current = current->next;
-    }
+	}
 	return (NULL);
 }
 
@@ -34,7 +34,6 @@ void	update_env(char *key, char *new_value, t_env *env_list)
 
 	if (key == NULL || new_value == NULL || env_list == NULL)
 		return ;
-	//env_list = *(s_var()->env_list);
 	current = env_list;
 	while (current != NULL)
 	{
@@ -74,14 +73,14 @@ void	update_env(char *key, char *new_value, t_env *env_list)
 int	check_nm_var(char *str)
 {
 	int	i;
-	
+
 	if (str == NULL)
 		return (1);
 	i = 0;
 	if (!ft_isalpha(str[i]) && str[i] != '_')
 	{
 		ft_putstr_fd("bash: export: `", 2);
-		ft_putstr_fd(str , 2);
+		ft_putstr_fd(str, 2);
 		ft_putstr_fd("': not a valid identifier\n", 2);
 		return (1);
 	}
@@ -92,7 +91,7 @@ int	check_nm_var(char *str)
 		if (!ft_isalnum(str[i]) && str[i] != '_')
 		{
 			ft_putstr_fd("bash: export: `", 2);
-			ft_putstr_fd(str , 2);
+			ft_putstr_fd(str, 2);
 			ft_putstr_fd("': not a valid identifier\n", 2);
 			return (1);
 		}
@@ -103,7 +102,7 @@ int	check_nm_var(char *str)
 int	check_for_var(char *key, t_env *env_list)
 {
 	t_env	*current;
-	
+
 	if (key == NULL || env_list == NULL)
 		return (1);
 	current = env_list;
@@ -118,7 +117,7 @@ int	check_for_var(char *key, t_env *env_list)
 
 int	builtin_env(t_token *token, t_env *env_list)
 {
-	t_env *current;
+	t_env	*current;
 
 	if (token == NULL || env_list == NULL)
 		return (1);

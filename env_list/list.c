@@ -1,37 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   list.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/04 22:48:27 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/11 17:00:08 by claghrab         ###   ########.fr       */
+/*   Created: 2025/07/11 17:10:40 by claghrab          #+#    #+#             */
+/*   Updated: 2025/07/11 17:11:46 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	builtin_pwd(t_token *token, t_env *env_list)
+void	env_add_back(t_env **lst, t_env *new)
 {
-	char	*pwd;
+	t_env	*current;
 
-	if (token == NULL)
-		return (1);
-	pwd = get_env_value("PWD", env_list);
-	if (pwd != NULL)
+	if (lst == NULL || new == NULL)
+		return ;
+	if (*lst == NULL)
 	{
-		printf("%s\n", pwd);
-		update_env("_", "pwd", env_list);
-		return (0);
+		*lst = new;
+		return ;
 	}
-	pwd = getcwd(NULL, 0);
-	if (pwd != NULL)
-	{
-		printf("%s\n", pwd);
-		free(pwd);
-		update_env("_", "pwd", env_list);
-		return (0);
-	}
-	return (0);
+	current = find_last(*lst);
+	current->next = new;
+	new->prev = current;
+}
+
+t_env	*find_last(t_env *lst)
+{
+	if (lst == NULL)
+		return (NULL);
+	while (lst->next != NULL)
+		lst = lst->next;
+	return (lst);
 }

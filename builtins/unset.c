@@ -6,12 +6,11 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:48:32 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/10 17:09:07 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/11 17:03:29 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
 
 void	mini_free(t_env *tmp)
 {
@@ -22,8 +21,8 @@ void	mini_free(t_env *tmp)
 
 void	remove_env_var(t_token *token)
 {
-	t_env (*current), (*tmp);
-	current	= (*s_var()->env_list);
+	t_env *(current), *(tmp);
+	current = (*s_var()->env_list);
 	while (current != NULL)
 	{
 		if (ft_strcmp(token->value, current->key) == 0)
@@ -33,12 +32,12 @@ void	remove_env_var(t_token *token)
 			{
 				(*s_var()->env_list) = current->next;
 				if (current->next)
-					current->next->prev = NULL;	
+					current->next->prev = NULL;
 			}
 			else
 			{
 				current->prev->next = current->next;
-				if(current->next)
+				if (current->next)
 					current->next->prev = current->prev;
 			}
 			mini_free(tmp);
@@ -81,7 +80,7 @@ int	builtin_unset(t_token *token, t_env *env_list)
 // 				{
 // 					(*s_var()->env_list) = current->next;
 // 					if (current->next)
-//     					current->next->prev = NULL;	
+//     					current->next->prev = NULL;
 // 				}
 // 				else
 // 				{

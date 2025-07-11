@@ -6,52 +6,11 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:10:56 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/09 22:49:31 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/11 17:12:00 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int	find_chr_pos(char *str, char c)
-{
-	int	i;
-
-	if (str == NULL)
-		return (-1);
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == c)
-			return (i);
-		i++;
-	}
-	return (-1);
-}
-
-t_env	*find_last(t_env *lst)
-{
-	if (lst == NULL)
-		return (NULL);
-	while (lst->next != NULL)
-		lst = lst->next;
-	return (lst);
-}
-
-void	env_add_back(t_env **lst, t_env *new)
-{
-	t_env	*current;
-
-	if (lst == NULL || new == NULL)
-		return ;
-	if (*lst == NULL)
-	{
-		*lst = new;
-		return ;
-	}
-	current = find_last(*lst);
-	current->next = new;
-	new->prev = current;
-}
 
 void	update_env2(char *key, char *new_value, t_env *env_list)
 {
@@ -72,6 +31,36 @@ void	update_env2(char *key, char *new_value, t_env *env_list)
 		current = current->next;
 	}
 	return ;
+}
+
+void	hardcode_envlist(char *key, char *value, t_env **head)
+{
+	t_env	*node;
+
+	node = malloc(sizeof(t_env));
+	node->key = ft_strdup2(key);
+	node->value = ft_strdup2(value);
+	node->next = NULL;
+	node->prev = NULL;
+	env_add_back(head, node);
+}
+
+t_env	*set_key_value(void)
+{
+	char	*pwd;
+	char	*str;
+	t_env	*head;
+
+	head = NULL;
+	pwd = getcwd(NULL, 0);
+	hardcode_envlist("OLDPWD", NULL, &head);
+	hardcode_envlist("PWD", pwd, &head);
+	hardcode_envlist("SHLVL", "1", &head);
+	str = ft_strjoin2(pwd, "./minishell");
+	hardcode_envlist("_", str, &head);
+	free(pwd);
+	free(str);
+	return (head);
 }
 
 void	increment_shelvl_value(t_env *envp)
@@ -96,7 +85,7 @@ t_env	*init_env(char **envp)
 	t_env	*node;
 
 	if (envp == NULL || *envp == NULL)
-		return (NULL);
+		return (set_key_value());
 	i = 0;
 	head = NULL;
 	while (envp[i] != NULL)

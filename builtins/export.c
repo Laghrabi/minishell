@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:48:22 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/08 14:50:09 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/11 16:59:48 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 char	**sort_env_list(t_env *env_list)
 {
-	char	(**array);
-	char	(*tmp);
-	int		(i), (j);
+	char	**array;
+	char	*tmp;
+
+	int (i), (j);
 	if (env_list == NULL)
 		return (NULL);
 	array = convert_env_to_array(env_list);
@@ -42,9 +43,10 @@ char	**sort_env_list(t_env *env_list)
 
 void	only_export(t_env *env_list)
 {
-	char	(**array);
-	char	(*str);
-	int		(i), (pos);
+	char	**array;
+	char	*str;
+
+	int (i), (pos);
 	if (env_list == NULL)
 		return ;
 	array = sort_env_list(env_list);
@@ -67,9 +69,10 @@ void	only_export(t_env *env_list)
 	free_double_array(array);
 }
 
-void	process_export_variable(char *key, char *value, t_token *token, t_env **env_list)
+void	process_export_variable(char *key, char *value, t_token *token,
+		t_env **env_list)
 {
-	t_env *node;
+	t_env	*node;
 
 	if (check_for_var(key, *env_list) == 0 && value != NULL)
 	{
@@ -91,8 +94,10 @@ void	process_export_variable(char *key, char *value, t_token *token, t_env **env
 
 int	process_export_args(t_token *token, t_env **env_list)
 {
+	char	*value;
+	char	*key;
+
 	int (pos), (status);
-	char (*key), (*value);
 	while (token)
 	{
 		status = check_nm_var(token->value);
@@ -107,7 +112,8 @@ int	process_export_args(t_token *token, t_env **env_list)
 		else
 		{
 			key = ft_substr2(token->value, 0, pos);
-			value = ft_substr2(token->value, pos + 1, ft_strlen(token->value) - pos - 1);
+			value = ft_substr2(token->value, pos + 1, ft_strlen(token->value)
+					- pos - 1);
 		}
 		process_export_variable(key, value, token, env_list);
 		token = token->next;
@@ -156,7 +162,8 @@ int	builtin_export(t_token *token, t_env **env_list)
 // 		else
 // 		{
 // 			key = ft_substr2(token->value, 0, pos);
-// 			value = ft_substr2(token->value, pos + 1, ft_strlen(token->value) - pos - 1);
+// 			value = ft_substr2(token->value, pos + 1, ft_strlen(token->value)
+//- pos - 1);
 // 		}
 // 		if (check_for_var(key, *env_list) == 0 && value != NULL)
 // 		{

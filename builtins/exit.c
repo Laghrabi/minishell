@@ -6,13 +6,13 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:48:16 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/10 16:03:52 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/11 15:33:07 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int if_all_num(char *str)
+int	if_all_num(char *str)
 {
 	int	i;
 
@@ -32,8 +32,8 @@ int if_all_num(char *str)
 
 long long	ft_stoi(const char *str)
 {
-	int		i;
-	int		sign;
+	int				i;
+	int				sign;
 	unsigned long	result;
 
 	i = 0;
@@ -87,7 +87,7 @@ int	builtin_exit(t_token *token)
 {
 	if (token == NULL)
 		return (1);
-	if (isatty(STDIN_FILENO))
+	if (isatty(STDOUT_FILENO) && isatty(STDIN_FILENO))
 		ft_putstr_fd("exit\n", 2);
 	if (token->next != NULL)
 	{
@@ -98,7 +98,6 @@ int	builtin_exit(t_token *token)
 	}
 	exit(s_var()->exit_status);
 }
-
 
 // int	builtin_exit(t_token *token)
 // {
