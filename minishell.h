@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/10 19:31:57 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/11 21:09:15 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,10 @@ typedef struct s_gr_cl
 } t_gr_cl;
 
 /* FUNCTIONS */
+char	**convert_env_to_array(t_env *env_list);
+void	copy_env_key_value(char **argv, int *i, t_env *env);
+int	find_chr_pos(char *str, char c);
+char	*ft_substr2(char const *s, unsigned int start, size_t len);
 
 
 
@@ -205,7 +209,7 @@ void	fd_leaks(int fd1, int fd2);
 int	execute_subshell(t_ast *node, t_env *env_list);
 int	handle_simple_command(t_ast *node, t_env *env_list, char **argv);
 int	execute_command(t_ast *node, t_env *env_list);
-int	handle_wait_and_status(int pid[2], int *status);
+int	handle_wait_and_status(int pid[1024], int cmd_count);
 int	fork_and_execute_pipe_left(t_ast *node, t_env *env_list, int input_fd,
 		int pipefd[2]);
 int	handle_right_pipe_cmd(t_ast *node, t_env *env_list, int pipe_read_end);

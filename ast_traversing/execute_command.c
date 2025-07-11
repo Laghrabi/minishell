@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 17:40:29 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/11 14:39:36 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/11 22:33:45 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	free_double_array(char **db_str)
 	free(db_str);
 }
 
-static char	*get_command_path(char *cmd, t_env *env_list)
+char	*get_command_path(char *cmd, t_env *env_list)
 {
 	char	*cmd_path;
 
@@ -49,7 +49,7 @@ static char	*get_command_path(char *cmd, t_env *env_list)
 	return (cmd_path);
 }
 
-static int	handle_exec_failure(t_env *env_list, char *cmd_path, char **argv)
+int	handle_exec_failure(t_env *env_list, char *cmd_path, char **argv)
 {
 	if (cmd_path == NULL && !check_for_var("PATH", env_list))
 	{
@@ -61,7 +61,7 @@ static int	handle_exec_failure(t_env *env_list, char *cmd_path, char **argv)
 	return (-1);
 }
 
-static void	child_process_execution(char *cmd_path, char **argv, char **envp,
+void	child_process_execution(char *cmd_path, char **argv, char **envp,
 			t_env *env_list)
 {
 	signal(SIGINT, SIG_DFL);
@@ -78,7 +78,7 @@ static void	child_process_execution(char *cmd_path, char **argv, char **envp,
 		exit(1);
 }
 
-static int	handle_parent_process(pid_t pid, int status)
+int	handle_parent_process(pid_t pid, int status)
 {
 	waitpid(pid, &status, 0);
 	if (WIFSIGNALED(status))

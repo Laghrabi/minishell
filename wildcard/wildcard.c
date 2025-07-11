@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 18:04:27 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/11 22:40:39 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/11 22:46:35 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	append_matches(t_token **token, t_token *match)
 	while (match->next)
 	{
 		match->ambiguous = 1;
+		match->empty = 1;
 		match = match->next;
 	}
 	match->next = next;

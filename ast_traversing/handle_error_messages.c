@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_error_messages.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 14:28:45 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/11 10:41:29 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/11 22:37:21 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	is_executable(t_ast *node, t_env *env_list)
 		return (handle_simple_command(node, env_list, NULL));
 	else
 	{
+		fprintf(stderr, "hello3\n");
 		perror(node->left->token_list->value);
 		if (node->right)
 		{
@@ -36,6 +37,7 @@ int	is_dir(t_ast *node, t_env *env_list)
 
 	if (access(node->left->token_list->value, F_OK) == -1)
 	{
+		fprintf(stderr, "hello\n");
 		perror(node->left->token_list->value);
 		node->left = NULL;
 		if (node->right)
@@ -45,6 +47,7 @@ int	is_dir(t_ast *node, t_env *env_list)
 	if (stat(node->left->token_list->value, &info) == 0
 		&& S_ISDIR(info.st_mode))
 	{
+		fprintf(stderr, "hello1\n");
 		ft_putstr_fd(node->left->token_list->value, 2);
 		ft_putstr_fd(" : Is a directory\n", 2);
 		node->left->token_list->is_already_exec = 1;

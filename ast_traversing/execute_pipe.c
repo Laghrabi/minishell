@@ -6,30 +6,54 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 10:27:21 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/09 12:42:27 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/11 22:01:43 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	handle_wait_and_status(int pid[2], int *status)
+int	handle_wait_and_status(int pid[1024], int cmd_count)
 {
+	int i;
+	int status;
+	
 	signal(SIGINT, SIG_IGN);
-	waitpid(pid[0], NULL, 0);
-	waitpid(pid[1], status, 0);
+	i = 0;
+	while (i < cmd_count)
+		waitpid(pid[i++], &status, 0);
 	setup_signals();
-	if (WIFSIGNALED(*status))
-		s_var()->exit_status = 128 + WTERMSIG(*status);
-	else if (WIFEXITED(*status))
-		s_var()->exit_status = WEXITSTATUS(*status);
+	if (WIFSIGNALED(status))
+		s_var()->exit_status = 128 + WTERMSIG(status);
+	else if (WIFEXITED(status))
+		s_var()->exit_status = WEXITSTATUS(status);
 	return (s_var()->exit_status);
 }
 
-int	fork_and_execute_pipe_left(t_ast *node, t_env *env_list, int input_fd,
+typedef struct s_pipes
+{
+	int pipe_a[2];
+	int pipe_b[2];
+	int *cur_pipe;
+	int *prev_pipe;
+	int	*tmp;
+} t_pipe;
+
+t_pipe *initialize_pipe(void)
+{
+	t_pipe *pipe = gc_malloc(sizeof(t_pipe));
+	if (!pipe)
+		return (NULL);
+	pipe->cur_pipe = pipe->pipe_a;
+	pipe->prev_pipe = NULL;
+	pipe->tmp = NULL;
+	return (pipe);
+}
+
+int	fork_child_for_pipe(t_ast *node, t_env *env_list, int input_fd,
 		int pipefd[2])
 {
-	pid_t (pid);
-	int (exit_code);
+	pid_t pid;
+	int exit_code;
 	pid = fork();
 	if (pid == -1)
 	{
@@ -46,27 +70,25 @@ int	fork_and_execute_pipe_left(t_ast *node, t_env *env_list, int input_fd,
 			close(input_fd);
 		}
 		dup2(pipefd[1], STDOUT_FILENO);
-		close(pipefd[0]);
 		close(pipefd[1]);
-		exit_code = execute_command(node->left, env_list);
+		close(pipefd[0]);
+		exit_code = execute_command(node, env_list);
 		memory_management(env_list, 1);
 		exit(exit_code);
 	}
 	return (pid);
 }
 
-int	handle_right_pipe_cmd(t_ast *node, t_env *env_list, int pipe_read_end)
+int	execute_last_command(t_ast *node, t_env *env_list, int pipe_read_end)
 {
-	int		status;
-	pid_t	pid;
-
-	status = 0;
+	pid_t pid;
+	int exit_code;
 	pid = fork();
 	if (pid == -1)
 	{
 		perror("fork");
-		close(pipe_read_end);
-		return (1);
+		// close(pipe_read_end);
+		return (-1);
 	}
 	if (pid == 0)
 	{
@@ -74,60 +96,49 @@ int	handle_right_pipe_cmd(t_ast *node, t_env *env_list, int pipe_read_end)
 		signal(SIGQUIT, SIG_DFL);
 		dup2(pipe_read_end, STDIN_FILENO);
 		close(pipe_read_end);
-		status = execute_command(node->right, env_list);
+		exit_code = execute_command(node, env_list);
 		memory_management(env_list, 1);
-		exit(status);
+		exit(exit_code);
 	}
-	close(pipe_read_end);
 	return (pid);
-}
-
-int	setup_pipe_and_fork_left(db_par par, int input_fd, int pipefd[2],
-		pid_t *left_pid)
-{
-	if (pipe(pipefd) == -1)
-	{
-		perror("pipe");
-		return (1);
-	}
-	*left_pid = fork_and_execute_pipe_left(par.node, par.env_list, input_fd,
-			pipefd);
-	if (*left_pid == -1)
-	{
-		close(pipefd[0]);
-		close(pipefd[1]);
-		return (1);
-	}
-	close(pipefd[1]);
-	if (input_fd != STDIN_FILENO)
-		close(input_fd);
-	return (0);
 }
 
 int	execute_pipe(t_ast *node, t_env *env_list, int input_fd)
 {
-	int		pipefd[2];
-	int		status;
-	pid_t	pid[2];
-
-	pid[0] = -1;
-	pid[1] = -1;
-	status = 0;
+	t_pipe *pip;
+	int pids[1024];
+	int cmd_count;
+	
+	pip = initialize_pipe();
+	cmd_count = 0;
 	expand_evrything(node, env_list);
 	if (!node || node->type != NODE_PIPE)
 		return (execute_command(node, env_list));
-	if (setup_pipe_and_fork_left((db_par){node, env_list}, input_fd, pipefd,
-		&pid[0]) != 0)
-		return (1);
-	if (node->right && node->right->type == NODE_PIPE)
+	while (node && node->type == NODE_PIPE)
 	{
-		status = execute_pipe(node->right, env_list, pipefd[0]);
-		waitpid(pid[0], NULL, 0);
+		if (pipe(pip->cur_pipe) == -1)
+		{
+			perror("pipe");
+			return (1);
+		}
+		pids[cmd_count++] = fork_child_for_pipe(node->left, env_list, input_fd, pip->cur_pipe);
+		close(pip->cur_pipe[1]);
+		if (input_fd != STDIN_FILENO)
+			close(input_fd);
+		input_fd = pip->cur_pipe[0];
+		pip->tmp = pip->prev_pipe;
+		pip->prev_pipe = pip->cur_pipe;
+		if (pip->tmp == pip->pipe_a)
+			pip->cur_pipe = pip->pipe_b;
+		else
+			pip->cur_pipe = pip->pipe_a;
+		node = node->right;
 	}
-	else if (node->right && node->right->type == NODE_CMD)
+	if (node && node->type == NODE_CMD)
 	{
-		pid[1] = handle_right_pipe_cmd(node, env_list, pipefd[0]);
-		status = handle_wait_and_status(pid, &status);
+		pids[cmd_count++] = execute_last_command(node, env_list, input_fd);
+		if (pip->prev_pipe && pip->prev_pipe[0] != STDIN_FILENO)
+			close(pip->prev_pipe[0]);
 	}
-	return (status);
+	return (handle_wait_and_status(pids, cmd_count));
 }
