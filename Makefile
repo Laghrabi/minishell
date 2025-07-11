@@ -31,7 +31,6 @@ SRC = minishell.c parsing/tokenization/tokenizer.c \
 		builtins/cd.c builtins/pwd.c \
 		builtins/unset.c builtins/export.c \
 		builtins/env.c builtins/exit.c 
-
  
 LIBFT = libft/libft.a
 NAME = minishell
@@ -39,17 +38,14 @@ OBJECT = $(SRC:%.c=%.o)
 
 all:  $(NAME)
 
+bonus: $(NAME)
+
 $(LIBFT) :
 	make -C libft
 
 $(NAME): $(OBJECT) $(LIBFT)
 	$(CC) $(CFLAGS) $(OBJECT) $(LIBFT) -o $(NAME)  $(LDFLAGS)
 
-
-#bonus: $(NAME)
-
-#$(NAME_BONUS) : $(OBJECT_BONUS) 
-#	$(CC) $(CFLAGS) $(SRC_BONUS) -o $(NAME_BONUS)
 
 clean:
 	rm -f $(OBJECT)

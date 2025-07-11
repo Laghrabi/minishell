@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/11 21:09:15 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/11 23:14:08 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,11 +145,17 @@ typedef struct s_gr_cl
     struct s_gr_cl *prev;
 } t_gr_cl;
 
+typedef struct s_pipes
+{
+	int pipe_a[2];
+	int pipe_b[2];
+	int *cur_pipe;
+	int *prev_pipe;
+	int	*tmp;
+} t_pipe;
+
+
 /* FUNCTIONS */
-char	**convert_env_to_array(t_env *env_list);
-void	copy_env_key_value(char **argv, int *i, t_env *env);
-int	find_chr_pos(char *str, char c);
-char	*ft_substr2(char const *s, unsigned int start, size_t len);
 
 
 
@@ -210,11 +216,10 @@ int	execute_subshell(t_ast *node, t_env *env_list);
 int	handle_simple_command(t_ast *node, t_env *env_list, char **argv);
 int	execute_command(t_ast *node, t_env *env_list);
 int	handle_wait_and_status(int pid[1024], int cmd_count);
-int	fork_and_execute_pipe_left(t_ast *node, t_env *env_list, int input_fd,
+t_pipe *initialize_pipe(void);
+int	fork_child_for_pipe(t_ast *node, t_env *env_list, int input_fd,
 		int pipefd[2]);
-int	handle_right_pipe_cmd(t_ast *node, t_env *env_list, int pipe_read_end);
-int	setup_pipe_and_fork_left(db_par par, int input_fd, int pipefd[2],
-		pid_t *left_pid);
+int	execute_last_command(t_ast *node, t_env *env_list, int pipe_read_end);
 void	expand_evrything(t_ast *node, t_env *env_list);
 int	execute_pipe(t_ast *node, t_env *env_list, int input_fd);
 int	handle_node_and(t_ast *node, t_env *env_list);

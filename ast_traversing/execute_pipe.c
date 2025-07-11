@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 10:27:21 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/11 22:01:43 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/11 23:12:37 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,6 @@ int	handle_wait_and_status(int pid[1024], int cmd_count)
 		s_var()->exit_status = WEXITSTATUS(status);
 	return (s_var()->exit_status);
 }
-
-typedef struct s_pipes
-{
-	int pipe_a[2];
-	int pipe_b[2];
-	int *cur_pipe;
-	int *prev_pipe;
-	int	*tmp;
-} t_pipe;
 
 t_pipe *initialize_pipe(void)
 {
@@ -87,7 +78,6 @@ int	execute_last_command(t_ast *node, t_env *env_list, int pipe_read_end)
 	if (pid == -1)
 	{
 		perror("fork");
-		// close(pipe_read_end);
 		return (-1);
 	}
 	if (pid == 0)
@@ -109,6 +99,8 @@ int	execute_pipe(t_ast *node, t_env *env_list, int input_fd)
 	int pids[1024];
 	int cmd_count;
 	
+	if (!node)
+        return (1);
 	pip = initialize_pipe();
 	cmd_count = 0;
 	expand_evrything(node, env_list);
