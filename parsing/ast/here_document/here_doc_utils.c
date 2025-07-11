@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 21:15:30 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/10 00:31:09 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/11 22:31:58 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*join(char *s1, char *s2)
 {
 	char	*new;
 
-	int(i), (j);
+	int (i), (j);
 	i = 0;
 	j = 0;
 	if (!s1)
@@ -56,7 +56,7 @@ int	is_quote(char *str)
 
 void	remove_quote(char *token, int sg_quote, int db_quote)
 {
-	int(i), (j);
+	int (i), (j);
 	i = 0;
 	j = 0;
 	while (token[i])
@@ -83,8 +83,9 @@ void	remove_quote(char *token, int sg_quote, int db_quote)
 
 char	*read_heredoc_lines(char *delimiter, int *ctrc)
 {
-	pid_t(pid);
-	int(pipefd[2]);
+	pid_t	pid;
+	int		pipefd[2];
+
 	if (pipe(pipefd) == -1)
 		return (NULL);
 	pid = fork();

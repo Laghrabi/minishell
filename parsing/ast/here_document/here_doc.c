@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 21:13:04 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/10 19:18:16 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/11 22:28:50 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,8 @@ char	*read_from_pipe(int pipefd)
 int	parse_herdoc(t_ast **redir_head, t_ast **redir_tail, int *ctrc)
 {
 	t_type (op_type);
-	char (*text);
-	t_ast (*redir);
+	char *(text);
+	t_ast *(redir);
 	op_type = consume()->token;
 	if (!peek() || peek()->token != T_WORD)
 		return (1);

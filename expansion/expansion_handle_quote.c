@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_handle_quote.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 20:46:41 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/09 15:10:25 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/11 22:36:01 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,3 @@ int	which_type(char c, int *db_quote, int *sg_quote, int *quote_state)
 		return (handle_double_quote(db_quote, sg_quote, quote_state));
 	return (*quote_state);
 }
-

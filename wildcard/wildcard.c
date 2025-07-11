@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 18:04:27 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/10 17:24:47 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/11 22:40:39 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,8 @@ t_token	*search_matches(char *str)
 {
 	DIR				*dir;
 	struct dirent	*entry;
-	t_token			*node;
-	t_token			*head;
 
+	t_token *(node), *(head);
 	head = NULL;
 	dir = opendir(".");
 	if (!dir)
