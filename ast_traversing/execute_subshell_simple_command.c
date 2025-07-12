@@ -3,14 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   execute_subshell_simple_command.c                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 22:58:36 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/10 16:04:28 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/12 01:19:28 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	num_of_pipes(t_ast *node)
+{
+	int	count;
+
+	count = 0;
+	while (node && node->type == NODE_PIPE)
+	{
+		count++;
+		node = node->right;
+	}
+	return (count);
+}
 
 void	fd_leaks(int fd1, int fd2)
 {
