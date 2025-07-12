@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 21:15:30 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/12 17:31:05 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/12 19:45:51 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ char	*read_heredoc_lines(char *delimiter, int *ctrc)
 	char	*file_name;
 
 	file_name = creat_herdoc_file();
-	
+
 	fd = open(file_name, O_RDWR);
 	s_var()->fd = fd;
 	pid = fork();
