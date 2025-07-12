@@ -3,14 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 14:39:50 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/11 22:59:45 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/12 17:43:49 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #include "minishell.h"
 
@@ -73,6 +71,7 @@ int	main(int ac, char **av, char **envp)
 	ast = NULL;
 	env_list = init_env(envp);
 	s_var()->env_list = &env_list;
+	s_var()->unlinked = NULL;
 	setup_signals();
 	minishell(ctrc, input, env_list, ast);
 	return (s_var()->exit_status);

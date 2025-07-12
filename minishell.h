@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/12 15:15:26 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/12 17:41:22 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,10 +128,17 @@ typedef struct s_info {
     int		(*func)(char *input,struct s_info info, int *i, t_token **token);
 } t_info;
 
+typedef struct s_unliked
+{
+    char *file_name;
+    struct s_unliked *next;
+} t_unliked;
+
 typedef struct s_variabls
 {
     t_env	**env_list;
     int     fd;
+    t_unliked *unlinked;
     int     exit_status;
     int     g_child_ctrc;
     int     syntax_error;

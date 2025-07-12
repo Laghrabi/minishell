@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_pipe.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 10:27:21 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/12 01:27:45 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/12 17:20:38 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ int	prepare_pipe_execution(t_ast *node, t_env *env_list, t_pipe **pip)
 	*pip = initialize_pipe();
 	if (!*pip)
 		return (1);
-	expand_evrything(node, env_list);
 	if (!node || node->type != NODE_PIPE)
 		return (execute_command(node, env_list));
 	return (0);
@@ -103,9 +102,11 @@ int	execute_pipe(t_ast *node, t_env *env_list, int input_fd)
 		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
 		return (2);
 	}
+	expand_evrything(node, env_list);
 	cmd_count = 0;
 	if (!node || node->type != NODE_PIPE)
 		return (prepare_pipe_execution(node, env_list, &pip));
+	pip = initialize_pipe();
 	if (handle_pipe_sequence(&node, pip, env_list, (t_mul){pids, &cmd_count,
 			&input_fd}) != 0)
 		return (1);

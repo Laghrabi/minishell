@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_compound_command.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 22:48:18 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/11 10:40:06 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/12 17:11:07 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	handle_node_and(t_ast *node, t_env *env_list)
 	int	exit_status;
 
 	exit_status = execute_pipe(node->left, env_list, STDIN_FILENO);
+	// hna mse7 herdoc ila kan 
 	if (exit_status >= 130)
 		write(1, "\n", 1);
 	if (exit_status == 0)
@@ -54,6 +55,7 @@ int	handle_node_or(t_ast *node, t_env *env_list)
 	int	exit_status;
 
 	exit_status = execute_pipe(node->left, env_list, STDIN_FILENO);
+	// hna mse7 herdoc ila kan 
 	if (exit_status >= 130)
 		write(1, "\n", 1);
 	if (exit_status != 0)

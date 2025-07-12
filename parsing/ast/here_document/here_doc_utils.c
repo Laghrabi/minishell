@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 21:15:30 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/12 01:39:52 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/12 17:31:05 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,18 +87,14 @@ char	*read_heredoc_lines(char *delimiter, int *ctrc)
 	int		fd;
 	char	*file_name;
 
-	// 	return (NULL);
 	file_name = creat_herdoc_file();
-	//printf("HERE: [%s]\n", file_name);
+	
 	fd = open(file_name, O_RDWR);
 	s_var()->fd = fd;
-	//printf("HERE: [%d]\n", fd);
 	pid = fork();
 	if (pid < 0)
 	{
 		close(fd);
-		// close(pipefd[0]);
-		// close(pipefd[1]);
 		return (NULL);
 	}
 	if (pid == 0)
@@ -108,7 +104,6 @@ char	*read_heredoc_lines(char *delimiter, int *ctrc)
 		if (parent_process(pid, fd, ctrc) == 1)
 			return (NULL);
 	}
-	//return (read_from_pipe(fd));
 	return (file_name);
 }
 

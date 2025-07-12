@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 21:13:04 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/12 01:39:35 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/12 15:29:53 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,7 @@ char	*creat_herdoc_file(void)
 	close(fd_random);
 	name = ft_strjoin("/tmp/herdoc", random);
 	fd_random = open(name, O_CREAT | O_RDWR, 0644);
-	//write(fd_random, text, ft_strlen(text));
 	close(fd_random);
-	//fd_random = open(name, O_RDONLY);
 	return (name);
 }
 
@@ -45,7 +43,7 @@ void	child_process(int fd, char *delimiter)
 	char	*line;
 
 	signal(SIGINT, sigint_handler_child);
-		while (1)
+	while (1)
 	{
 		line = readline("> ");
 		if (line == NULL)
