@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/12 01:37:27 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/12 15:15:26 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ typedef struct s_info {
 typedef struct s_variabls
 {
     t_env	**env_list;
+    int     fd;
     int     exit_status;
     int     g_child_ctrc;
     int     syntax_error;
@@ -216,7 +217,8 @@ char	*ft_strjoin2(char const *s1, char const *s2);
 char	**path_splitting(t_env *envp);
 char	*find_cmd_path(char *cmd, t_env *env_list);
 char	*get_file_name(t_ast *redir_node);
-int	creat_herdoc_file(char *text);
+int	open_herdoc_file(char *text);
+char	*creat_herdoc_file(void);
 int	heredoc_to_fd(t_ast *heredoc_node, t_env *env_list);
 int	handle_one_redirection(t_ast *redir, t_env *env_list);
 int	setup_redirections(t_ast *redir_list, t_env *env_list);
@@ -296,8 +298,8 @@ void	setup_signals(void);
 void	replace_variable(int *flag, t_env *env_list, t_token *token);
 void remove_quote(char *token, int sg_quote, int db_quote);
 void free_double_array(char **db_str);
-void	child_process(int pipefd[2], char *delimiter);
-int	parent_process(pid_t pid, int pipefd[2], int *ctrc);
+void	child_process(int fd, char *delimiter);
+int	parent_process(pid_t pid, int fd, int *ctrc);
 char	*read_from_pipe(int pipefd);
 char	*join(char *s1, char *s2);
 t_ast *init_command_ast(void);

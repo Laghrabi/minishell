@@ -6,27 +6,51 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 21:13:04 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/11 22:47:07 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/12 01:39:35 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 
-void	child_process(int pipefd[2], char *delimiter)
+char	*creat_herdoc_file(void)
+{
+	char	*name;
+	char	*random;
+	int		fd_random;
+
+	random = gc_malloc(sizeof(char) * 10);
+	ft_bzero(random, 10);
+	fd_random = open("/dev/random", O_RDONLY);
+	if (fd_random != -1)
+	{
+		read(fd_random, random, 9);
+		random[9] = '\0';
+		while (ft_strchr(random, '$') != NULL)
+		{
+			read(fd_random, random, 9);
+			random[9] = '\0';
+		}
+	}
+	close(fd_random);
+	name = ft_strjoin("/tmp/herdoc", random);
+	fd_random = open(name, O_CREAT | O_RDWR, 0644);
+	//write(fd_random, text, ft_strlen(text));
+	close(fd_random);
+	//fd_random = open(name, O_RDONLY);
+	return (name);
+}
+
+void	child_process(int fd, char *delimiter)
 {
 	char	*line;
 
-	s_var()->pipe[0] = pipefd[0];
-	s_var()->pipe[1] = pipefd[1];
 	signal(SIGINT, sigint_handler_child);
-	close(pipefd[0]);
 		while (1)
 	{
 		line = readline("> ");
 		if (line == NULL)
 		{
 			ft_putstr_fd("here-doc delemited by EOF\n", 2);
-			memory_management(*(s_var()->env_list), 1);
 			break ;
 		}
 		if (line && ft_strcmp(line, delimiter) == 0)
@@ -34,20 +58,20 @@ void	child_process(int pipefd[2], char *delimiter)
 			free(line);
 			break ;
 		}
-		write(pipefd[1], line, ft_strlen(line));
-		write(pipefd[1], "\n", 1);
+		write(fd, line, ft_strlen(line));
+		write(fd, "\n", 1);
 		free(line);
 	}
-	close(pipefd[1]);
+	close(fd);
 	memory_management(*(s_var()->env_list), 1);
 	exit(0);
 }
 
-int	parent_process(pid_t pid, int pipefd[2], int *ctrc)
+int	parent_process(pid_t pid, int fd, int *ctrc)
 {
 	int	status;
 
-	close(pipefd[1]);
+	close(fd);
 	signal(SIGINT, SIG_IGN);
 	waitpid(pid, &status, 0);
 	setup_signals();
@@ -56,27 +80,27 @@ int	parent_process(pid_t pid, int pipefd[2], int *ctrc)
 		s_var()->exit_status = 130;
 		s_var()->syntax_error = 2;
 		*ctrc = 1;
-		close(pipefd[0]);
+		close(fd);
 		return (1);
 	}
 	return (0);
 }
 
-char	*read_from_pipe(int pipefd)
+char	*read_from_pipe(int fd)
 {
 	char	read_buf[1024];
 	char	*buffer;
 	ssize_t	n;
 
 	buffer = NULL;
-	n = read(pipefd, read_buf, sizeof(read_buf) - 1);
+	n = read(fd, read_buf, sizeof(read_buf) - 1);
 	while (n > 0)
 	{
 		read_buf[n] = '\0';
 		buffer = join(buffer, read_buf);
-		n = read(pipefd, read_buf, sizeof(read_buf) - 1);
+		n = read(fd, read_buf, sizeof(read_buf) - 1);
 	}
-	close(pipefd);
+	close(fd);
 	return (buffer);
 }
 
