@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 10:27:21 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/12 00:09:03 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/12 01:19:23 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	execute_last_command(t_ast *node, t_env *env_list, int pipe_read_end)
 	return (pid);
 }
 
-int	prepare_pipe_execution(t_ast *node, t_env *env_list, t_pipe **pip, int *input_fd)
+int	prepare_pipe_execution(t_ast *node, t_env *env_list, t_pipe **pip)
 {
 	if (!node)
 		return (1);
@@ -49,9 +49,8 @@ int	prepare_pipe_execution(t_ast *node, t_env *env_list, t_pipe **pip, int *inpu
 	return (0);
 }
 
-
 int	handle_pipe_sequence(t_ast **node, t_pipe *pip, t_env *env_list,
-		int *pids, int *cmd_count, int *input_fd)
+		t_mul var)
 {
 	while (*node && (*node)->type == NODE_PIPE)
 	{
@@ -60,12 +59,12 @@ int	handle_pipe_sequence(t_ast **node, t_pipe *pip, t_env *env_list,
 			perror("pipe");
 			return (1);
 		}
-		pids[(*cmd_count)++] = fork_child_for_pipe((*node)->left, env_list,
-				*input_fd, pip->cur_pipe);
+		var.pids[(*var.cmd_count)++] = fork_child_for_pipe((*node)->left,
+				env_list, *var.input_fd, pip->cur_pipe);
 		close(pip->cur_pipe[1]);
-		if (*input_fd != STDIN_FILENO)
-			close(*input_fd);
-		*input_fd = pip->cur_pipe[0];
+		if (*var.input_fd != STDIN_FILENO)
+			close(*var.input_fd);
+		*var.input_fd = pip->cur_pipe[0];
 		pip->tmp = pip->prev_pipe;
 		pip->prev_pipe = pip->cur_pipe;
 		if (pip->tmp == pip->pipe_a)
@@ -77,17 +76,17 @@ int	handle_pipe_sequence(t_ast **node, t_pipe *pip, t_env *env_list,
 	return (0);
 }
 
-
 int	handle_last_pipe_command(t_ast *node, t_pipe *pip, t_env *env_list,
-		int input_fd, int *pids, int *cmd_count)
+		t_mul var)
 {
 	if (node && node->type == NODE_CMD)
 	{
-		pids[(*cmd_count)++] = execute_last_command(node, env_list, input_fd);
+		var.pids[(*(var.cmd_count))++] = execute_last_command(node, env_list,
+				*(var.input_fd));
 		if (pip->prev_pipe && pip->prev_pipe[0] != STDIN_FILENO)
 			close(pip->prev_pipe[0]);
 	}
-	return (*cmd_count);
+	return (*(var.cmd_count));
 }
 
 int	execute_pipe(t_ast *node, t_env *env_list, int input_fd)
@@ -95,57 +94,22 @@ int	execute_pipe(t_ast *node, t_env *env_list, int input_fd)
 	t_pipe	*pip;
 	int		pids[1024];
 	int		cmd_count;
-	int		ret;
 
+	pip = NULL;
 	cmd_count = 0;
-	ret = prepare_pipe_execution(node, env_list, &pip, &input_fd);
-	if (ret != 0)
-		return (ret);
-	if (handle_pipe_sequence(&node, pip, env_list, pids, &cmd_count,
-			&input_fd) != 0)
+	cmd_count = num_of_pipes(node);
+	if (cmd_count >= 1000)
+	{
+		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
+		return (2);
+	}
+	cmd_count = 0;
+	if (!node || node->type != NODE_PIPE)
+		return (prepare_pipe_execution(node, env_list, &pip));
+	if (handle_pipe_sequence(&node, pip, env_list, (t_mul){pids, &cmd_count,
+			&input_fd}) != 0)
 		return (1);
-	handle_last_pipe_command(node, pip, env_list, input_fd, pids, &cmd_count);
+	handle_last_pipe_command(node, pip, env_list,
+		(t_mul){pids, &cmd_count, &input_fd});
 	return (handle_wait_and_status(pids, cmd_count));
 }
-
-// int	execute_pipe(t_ast *node, t_env *env_list, int input_fd)
-// {
-// 	t_pipe	*pip;
-// 	int		pids[1024];
-// 	int		cmd_count;
-
-// 	if (!node)
-// 		return (1);
-// 	pip = initialize_pipe();
-// 	cmd_count = 0;
-// 	expand_evrything(node, env_list);
-// 	if (!node || node->type != NODE_PIPE)
-// 		return (execute_command(node, env_list));
-// 	while (node && node->type == NODE_PIPE)
-// 	{
-// 		if (pipe(pip->cur_pipe) == -1)
-// 		{
-// 			perror("pipe");
-// 			return (1);
-// 		}
-// 		pids[cmd_count++] = fork_child_for_pipe(node->left, env_list, input_fd, pip->cur_pipe);
-// 		close(pip->cur_pipe[1]);
-// 		if (input_fd != STDIN_FILENO)
-// 			close(input_fd);
-// 		input_fd = pip->cur_pipe[0];
-// 		pip->tmp = pip->prev_pipe;
-// 		pip->prev_pipe = pip->cur_pipe;
-// 		if (pip->tmp == pip->pipe_a)
-// 			pip->cur_pipe = pip->pipe_b;
-// 		else
-// 			pip->cur_pipe = pip->pipe_a;
-// 		node = node->right;
-// 	}
-// 	if (node && node->type == NODE_CMD)
-// 	{
-// 		pids[cmd_count++] = execute_last_command(node, env_list, input_fd);
-// 		if (pip->prev_pipe && pip->prev_pipe[0] != STDIN_FILENO)
-// 			close(pip->prev_pipe[0]);
-// 	}
-// 	return (handle_wait_and_status(pids, cmd_count));
-// }

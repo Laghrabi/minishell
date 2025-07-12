@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/11 23:14:08 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/12 01:20:11 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,14 +154,15 @@ typedef struct s_pipes
 	int	*tmp;
 } t_pipe;
 
+typedef struct s_mul
+{
+	int *pids;
+	int *cmd_count;
+	int *input_fd;
+}	t_mul;
+
 
 /* FUNCTIONS */
-void	replace_last_executed_cmd(t_env *env_list, char **argv);
-void	free_double_array(char **db_str);
-int	handle_wait_and_status(int pid[1024], int cmd_count);
-t_pipe	*initialize_pipe(void);
-int	fork_child_for_pipe(t_ast *node, t_env *env_list, int input_fd,
-		int pipefd[2]);
 
 
 
@@ -200,6 +201,13 @@ void	copy_env_key_value(char **argv, int *i, t_env *env);
 char	**convert_env_to_array(t_env *env_list);
 
 /*execution function*/
+int	num_of_pipes(t_ast *node);
+void	replace_last_executed_cmd(t_env *env_list, char **argv);
+void	free_double_array(char **db_str);
+int	handle_wait_and_status(int pid[1024], int cmd_count);
+t_pipe	*initialize_pipe(void);
+int	fork_child_for_pipe(t_ast *node, t_env *env_list, int input_fd,
+		int pipefd[2]);
 int	handle_simple_command(t_ast *node, t_env *env_list, char **argv);
 int execute_simple_cmd(t_env *env_list, char **argv);
 char	**token_list_to_argv(t_token *token_list);
@@ -358,8 +366,8 @@ t_ast   *parse_command(int *ctrc);
 t_ast   *parse_pipeline(int *ctrc);
 t_ast   *parse_compound_command(bool subshell, int *ctrc);
 t_ast   *parse_redir_list(void);
-t_node_type	convert_type(t_type op);
 void	append_token(t_token **head, t_token *new_token);
+t_node_type	convert_type(t_type op);
 int execute_simple_cmd(t_env *env_list, char **argv);
 t_token	*single_lst(t_token *token);
 t_ast	*create_ast_node(t_ast *left, t_ast *right, t_token	*token_list, t_node_type type);

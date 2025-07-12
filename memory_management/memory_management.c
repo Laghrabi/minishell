@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   memory_management.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 14:31:31 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/10 01:29:31 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/12 01:23:41 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_variabls *s_var (void)
+t_variabls	*s_var(void)
 {
-    static t_variabls global = {0};
+	static t_variabls	global={0};
 
-    return (&global);
+	return (&global);
 }
 
 void	free_env(t_env *env)
