@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:04:58 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/10 16:52:35 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/12 22:28:55 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ void	split_expanded_token(t_extoken *extoken, t_token **arg_list,
 		return ;
 	(void)original_arg;
 	(*arg_list)->field = extoken->field;
-	remove_extra_quote(extoken->new_token, extoken->field);
 	if (herdoc)
 	{
 		(*arg_list)->value = extoken->new_token;
 		return ;
 	}
+	remove_extra_quote(extoken->new_token, extoken->field);
 	current = list_token(extoken, 0, 0, 0);
 	if (!current)
 	{

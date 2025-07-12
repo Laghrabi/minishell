@@ -27,11 +27,14 @@ SRC = minishell.c parsing/tokenization/tokenizer.c \
 		ast_traversing/execute_compound_command.c \
 		ast_traversing/execute_subshell_simple_command.c \
 		ast_traversing/handle_error_messages.c \
+		ast_traversing/unlink.c \
 		ast_traversing/execute_command.c \
 		builtins/echo.c \
 		builtins/cd.c builtins/pwd.c \
 		builtins/unset.c builtins/export.c \
-		builtins/env.c builtins/exit.c
+		builtins/env.c builtins/exit.c \
+		get_next_line/get_next_line_utils.c \
+		get_next_line/get_next_line.c
  
 LIBFT = libft/libft.a
 NAME = minishell
@@ -45,7 +48,7 @@ $(LIBFT) :
 	make -C libft
 
 $(NAME): $(OBJECT) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJECT) $(LIBFT) -o $(NAME)  $(LDFLAGS)
+	$(CC) $(CFLAGS) $(OBJECT) $(LIBFT) -o $(NAME)  $(LDFLAGS) 
 
 
 clean:

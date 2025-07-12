@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:48:16 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/11 21:29:30 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/12 22:37:43 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,40 +99,3 @@ int	builtin_exit(t_token *token)
 	memory_management(*(s_var()->env_list), 1);
 	exit(s_var()->exit_status);
 }
-
-// int	builtin_exit(t_token *token)
-// {
-// 	unsigned long	nbr;
-
-// 	if (token == NULL)
-// 		return (1);
-// 	if (token->next == NULL)
-// 		ft_putstr_fd("exit\n", 2);
-// 	if (token->next != NULL)
-// 	{
-// 		token = token->next;
-// 		nbr = ft_stoi(token->value);
-// 		if (if_all_num(token->value) == 1)
-// 		{
-// 			ft_putstr_fd("exit\nminishell: numeric argument required\n", 2);
-// 			s_var()->exit_status = 2;
-// 		}
-// 		else if (token->next != NULL)
-// 		{
-// 			ft_putstr_fd("exit\nminishell: too many arguments\n", 2);
-// 			s_var()->exit_status = 1;
-// 			return (1);
-// 		}
-// 		else if (nbr == (unsigned long)LONG_MAX + 1)
-// 		{
-// 			ft_putstr_fd("exit\nminishell: numeric argument required\n", 2);
-// 			s_var()->exit_status = 2;
-// 		}
-// 		else
-// 		{
-// 			printf("exit\n");
-// 			s_var()->exit_status = nbr % 256;
-// 		}
-// 	}
-// 	exit(s_var()->exit_status);
-// }

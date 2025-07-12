@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 14:31:31 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/12 15:19:17 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/12 22:06:57 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	free_env(t_env *env)
 
 void	memory_management(t_env *env, int is_free_env)
 {
+	unlink_func(NULL, 1);
 	garbage_collector(NULL, 1);
 	if (is_free_env)
 	{

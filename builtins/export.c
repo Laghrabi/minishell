@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:48:22 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/11 22:14:48 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/12 22:16:45 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	process_export_variable(char *key, char *value, t_token *token,
 		node->value = value;
 		node->next = NULL;
 		env_add_back(env_list, node);
-	} 
+	}
 	else
 		free(key);
 	if (token->next == NULL)

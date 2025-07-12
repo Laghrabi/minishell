@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 20:02:07 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/09 14:55:01 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/12 22:29:31 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,13 @@ t_token	*list_token(t_extoken *extoken, int i, int l, int word)
 		}
 		else if (i_o(value[i]) && word == 1 && (field[i] == 1 || field[i] == 0))
 		{
-			add_new_token(&head, value, field, (db_int){l, i});
+			add_new_token(&head, value, field, (t_int){l, i});
 			word = 0;
 		}
 		i++;
 	}
 	if (word == 1)
-		add_new_token(&head, value, field, (db_int){l, i});
+		add_new_token(&head, value, field, (t_int){l, i});
 	return (head);
 }
 

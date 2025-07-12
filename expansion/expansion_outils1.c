@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 20:39:58 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/08 20:50:34 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/12 22:28:01 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	*ft_subint(int *field, int start, int len)
 	return (new_field);
 }
 
-void	add_new_token(t_token **head, char *value, int *field, db_int db_int)
+void	add_new_token(t_token **head, char *value, int *field, t_int db_int)
 {
 	char	*one_token;
 	int		*token_field;

@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 14:28:45 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/12 18:31:56 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/12 22:38:43 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,13 @@ int	is_di_or_builtin(t_ast *node, t_env *env_list, int i)
 	if (node->left && node->left->token_list
 		&& if_builtin(node->left->token_list->value))
 		return (handle_simple_command(node, env_list, NULL));
+	else if (node->left && node->left->token_list
+		&& node->left->token_list->value[0] == '\0'
+		&& node->left->token_list->ambiguous != 1)
+	{
+		ft_putstr_fd("Command '' not found\n", 2);
+		return (127);
+	}
 	else if (i == 1)
 		return (is_absolute_path(node, env_list));
 	else
