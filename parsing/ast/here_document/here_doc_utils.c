@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 21:15:30 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/11 22:31:58 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/12 01:06:40 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,25 +84,33 @@ void	remove_quote(char *token, int sg_quote, int db_quote)
 char	*read_heredoc_lines(char *delimiter, int *ctrc)
 {
 	pid_t	pid;
-	int		pipefd[2];
+	int		fd;
+	char	*file_name;
+	//int		pipefd[2];
 
-	if (pipe(pipefd) == -1)
-		return (NULL);
+	// if (pipe(pipefd) == -1)
+	// 	return (NULL);
+	file_name = creat_herdoc_file();
+	//printf("HERE: [%s]\n", file_name);
+	fd = open(file_name, O_RDWR);
+	//printf("HERE: [%d]\n", fd);
 	pid = fork();
 	if (pid < 0)
 	{
-		close(pipefd[0]);
-		close(pipefd[1]);
+		close(fd);
+		// close(pipefd[0]);
+		// close(pipefd[1]);
 		return (NULL);
 	}
 	if (pid == 0)
-		child_process(pipefd, delimiter);
+		child_process(fd, delimiter);
 	else
 	{
-		if (parent_process(pid, pipefd, ctrc) == 1)
+		if (parent_process(pid, fd, ctrc) == 1)
 			return (NULL);
 	}
-	return (read_from_pipe(pipefd[0]));
+	//return (read_from_pipe(fd));
+	return (file_name);
 }
 
 char	*parse_herdoc_helper(int *i, int *ctrc)

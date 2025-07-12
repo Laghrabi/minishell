@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_pipe.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 10:27:21 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/12 00:09:03 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/12 00:42:52 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	execute_last_command(t_ast *node, t_env *env_list, int pipe_read_end)
 
 int	prepare_pipe_execution(t_ast *node, t_env *env_list, t_pipe **pip, int *input_fd)
 {
+	(void)input_fd;
 	if (!node)
 		return (1);
 	*pip = initialize_pipe();

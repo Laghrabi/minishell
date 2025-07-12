@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 20:52:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/10 19:00:48 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/12 01:14:05 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ t_ast	*create_ast_node(t_ast *left, t_ast *right, t_token *token_list,
 {
 	t_ast	*node;
 
+	//printf("I'M HERE: {%s}\n", token_list->value);
 	node = gc_malloc(sizeof(t_ast));
 	if (node == NULL)
 		return (NULL);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 03:44:43 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/09 14:23:11 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/12 01:20:56 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,31 +28,32 @@ char	*get_file_name(t_ast *redir_node)
 	return (NULL);
 }
 
-int	creat_herdoc_file(char *text)
+int	open_herdoc_file(char *text)
 {
-	char	*name;
-	char	*random;
+	// char	*name;
+	// char	*random;
 	int		fd_random;
 
-	random = gc_malloc(sizeof(char) * 10);
-	ft_bzero(random, 10);
-	fd_random = open("/dev/random", O_RDONLY);
-	if (fd_random != -1)
-	{
-		read(fd_random, random, 9);
-		random[9] = '\0';
-		while (ft_strchr(random, '$') != NULL)
-		{
-			read(fd_random, random, 9);
-			random[9] = '\0';
-		}
-	}
-	close(fd_random);
-	name = ft_strjoin("/tmp/herdoc", random);
-	fd_random = open(name, O_CREAT | O_RDWR, 0644);
-	write(fd_random, text, ft_strlen(text));
-	close(fd_random);
-	fd_random = open(name, O_RDONLY);
+	// random = gc_malloc(sizeof(char) * 10);
+	// ft_bzero(random, 10);
+	// fd_random = open("/dev/random", O_RDONLY);
+	// if (fd_random != -1)
+	// {
+	// 	read(fd_random, random, 9);
+	// 	random[9] = '\0';
+	// 	while (ft_strchr(random, '$') != NULL)
+	// 	{
+	// 		read(fd_random, random, 9);
+	// 		random[9] = '\0';
+	// 	}
+	// }
+	//close(fd_random);
+	//name = ft_strjoin("/tmp/herdoc", random);
+	//fd_random = open(name, O_CREAT | O_RDWR, 0644);
+	//write(fd_random, text, ft_strlen(text));
+	//close(fd_random);
+	printf("TEXT:[%s]\n", text);
+	fd_random = open(text, O_RDONLY);
 	return (fd_random);
 }
 
@@ -61,7 +62,7 @@ int	heredoc_to_fd(t_ast *heredoc_node, t_env *env_list)
 	(void)env_list;
 	if (heredoc_node == NULL || heredoc_node->token_list == NULL)
 		return (-1);
-	return (creat_herdoc_file(heredoc_node->token_list->value));
+	return (open_herdoc_file(heredoc_node->token_list->value));
 }
 
 int	handle_one_redirection(t_ast *redir, t_env *env_list)
@@ -96,8 +97,16 @@ int	setup_redirections(t_ast *redir_list, t_env *env_list)
 
 	if (redir_list == NULL || env_list == NULL)
 		return (1);
+	t_ast *tmp = redir_list;
+	int i = 0;
+	while (tmp) {
+		printf("REDIR %d: type = %d, value = %s\n", i++, tmp->type, tmp->token_list->value);
+		tmp = tmp->right;
+	}
 	while (redir_list != NULL)
 	{
+		printf("AGAIN\n");
+		printf("TOKEN_LIST: [%s]\n", redir_list->token_list->value);
 		fd = handle_one_redirection(redir_list, env_list);
 		if (fd == -1)
 			return (1);
