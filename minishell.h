@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/12 01:28:03 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/12 01:31:20 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ typedef struct s_info {
 typedef struct s_variabls
 {
     t_env	**env_list;
+    int     fd;
     int     exit_status;
     int     g_child_ctrc;
     int     syntax_error;

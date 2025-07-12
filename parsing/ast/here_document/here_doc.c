@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 21:13:04 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/12 01:18:36 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/12 01:39:35 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,17 +44,13 @@ void	child_process(int fd, char *delimiter)
 {
 	char	*line;
 
-	// s_var()->pipe[0] = pipefd[0];
-	// s_var()->pipe[1] = pipefd[1];
 	signal(SIGINT, sigint_handler_child);
-	//close(pipefd[0]);
 		while (1)
 	{
 		line = readline("> ");
 		if (line == NULL)
 		{
 			ft_putstr_fd("here-doc delemited by EOF\n", 2);
-			memory_management(*(s_var()->env_list), 1);
 			break ;
 		}
 		if (line && ft_strcmp(line, delimiter) == 0)
@@ -64,10 +60,8 @@ void	child_process(int fd, char *delimiter)
 		}
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
-		//printf("CHAIMAA\n");
 		free(line);
 	}
-	//close(pipefd[1]);
 	close(fd);
 	memory_management(*(s_var()->env_list), 1);
 	exit(0);
@@ -77,7 +71,6 @@ int	parent_process(pid_t pid, int fd, int *ctrc)
 {
 	int	status;
 
-	//close(pipefd[1]);
 	close(fd);
 	signal(SIGINT, SIG_IGN);
 	waitpid(pid, &status, 0);
@@ -120,9 +113,7 @@ int	parse_herdoc(t_ast **redir_head, t_ast **redir_tail, int *ctrc)
 	if (!peek() || peek()->token != T_WORD)
 		return (1);
 	text = parse_herdoc_helper(&(peek()->expansion), ctrc);
-	//printf("text= %s\n", text);
 	peek()->value = text;
-	//printf("peek()->value= %s\n", text);
 	peek()->is_herdoc = 7;
 	redir = create_ast_node(NULL, NULL, single_lst(consume()),
 			convert_type(op_type));

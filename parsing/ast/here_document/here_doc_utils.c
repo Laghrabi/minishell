@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 21:15:30 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/12 01:06:40 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/12 01:39:52 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,13 +86,12 @@ char	*read_heredoc_lines(char *delimiter, int *ctrc)
 	pid_t	pid;
 	int		fd;
 	char	*file_name;
-	//int		pipefd[2];
 
-	// if (pipe(pipefd) == -1)
 	// 	return (NULL);
 	file_name = creat_herdoc_file();
 	//printf("HERE: [%s]\n", file_name);
 	fd = open(file_name, O_RDWR);
+	s_var()->fd = fd;
 	//printf("HERE: [%d]\n", fd);
 	pid = fork();
 	if (pid < 0)
