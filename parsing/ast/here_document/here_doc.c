@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 21:13:04 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/12 01:39:35 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/12 17:41:22 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,7 @@ char	*creat_herdoc_file(void)
 	close(fd_random);
 	name = ft_strjoin("/tmp/herdoc", random);
 	fd_random = open(name, O_CREAT | O_RDWR, 0644);
-	//write(fd_random, text, ft_strlen(text));
 	close(fd_random);
-	//fd_random = open(name, O_RDONLY);
 	return (name);
 }
 

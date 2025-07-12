@@ -6,7 +6,7 @@
 /*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 22:47:58 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/11 16:50:02 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/12 17:49:04 by claghrab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,11 @@ int	builtin_cd(t_token *token, t_env *env_list)
 	if (handle_too_many_args(token, env_list))
 		return (1);
 	determine_path(token, env_list, &new_path, &flag);
+	if (flag == 0 && new_path == NULL)
+	{
+		ft_putstr_fd("cd: error: HOME path not set\n", 2);
+		return (1);
+	}
 	replace_variable(&flag, env_list, token);
 	if (cd_helper(new_path, env_list, token) == 1)
 		return (1);
