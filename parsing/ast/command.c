@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 20:52:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/10 19:10:21 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/12 18:45:23 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	*syntax_error(int status)
 		s_var()->printed = 1;
 	}
 	s_var()->exit_status = status;
+	s_var()->syntax_error = status;
 	return (NULL);
 }
 

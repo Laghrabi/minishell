@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 10:27:21 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/12 17:20:38 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/12 18:29:00 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	handle_pipe_sequence(t_ast **node, t_pipe *pip, t_env *env_list,
 int	handle_last_pipe_command(t_ast *node, t_pipe *pip, t_env *env_list,
 		t_mul var)
 {
-	if (node && node->type == NODE_CMD)
+	if (node && (node->type == NODE_CMD || node->type == NODE_SUBSHELL))
 	{
 		var.pids[(*(var.cmd_count))++] = execute_last_command(node, env_list,
 				*(var.input_fd));
