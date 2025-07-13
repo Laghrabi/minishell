@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 22:48:18 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/12 22:38:30 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/13 01:32:32 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,10 @@ int	execute_compound_command(t_ast *node, t_env *env_list)
 
 int	execute_ast(t_ast *node, t_env *env_list)
 {
+	int	result;
+
 	if (!node)
 		return (EXIT_FAILURE);
-	return (execute_compound_command(node, env_list));
-	return (EXIT_FAILURE);
+	result = execute_compound_command(node, env_list);
+	return (result);
 }

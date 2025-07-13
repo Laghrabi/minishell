@@ -1,9 +1,0 @@
-
-fds --> ctrl+c 
-export q1=10
-
-
-testi echo $9klsdhf
-
-ambigouse in wildcard
-handle (false && true) || echo 9lawi

@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 03:44:43 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/12 22:38:49 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/13 01:25:04 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int	rewrite(char *value)
 	char	*name;
 
 	name = creat_herdoc_file();
-	unlink_func(name, 0);
 	fd = open(name, O_RDWR);
 	write(fd, value, ft_strlen(value));
 	close(fd);
