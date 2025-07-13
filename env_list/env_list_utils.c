@@ -3,14 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   env_list_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: claghrab <claghrab@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 14:41:04 by zfarouk           #+#    #+#             */
-/*   Updated: 2025/07/11 17:12:14 by claghrab         ###   ########.fr       */
+/*   Updated: 2025/07/13 01:42:08 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+char	*get_file_name(t_ast *redir_node)
+{
+	if (redir_node == NULL)
+		return (NULL);
+	if (redir_node->token_list != NULL)
+	{
+		if (redir_node->token_list->ambiguous == 1)
+		{
+			ft_putstr_fd("minishell: ambiguous redirect\n", 2);
+			return (NULL);
+		}
+		return (redir_node->token_list->value);
+	}
+	return (NULL);
+}
 
 int	find_chr_pos(char *str, char c)
 {

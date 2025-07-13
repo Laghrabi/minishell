@@ -6,7 +6,7 @@
 /*   By: zfarouk <zfarouk@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:10:39 by claghrab          #+#    #+#             */
-/*   Updated: 2025/07/12 22:52:20 by zfarouk          ###   ########.fr       */
+/*   Updated: 2025/07/13 01:38:12 by zfarouk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,8 +209,6 @@ void					copy_env_key_value(char **argv, int *i, t_env *env);
 char					**convert_env_to_array(t_env *env_list);
 
 /*execution function*/
-t_unlinked				*new_file(void *ptr);
-void					unlink_func(char *path_name, int i);
 int						num_of_pipes(t_ast *node);
 void					replace_last_executed_cmd(t_env *env_list, char **argv);
 void					free_double_array(char **db_str);
